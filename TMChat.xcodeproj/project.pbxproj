@@ -16,6 +16,10 @@
 		264155551DA89FC200473333 /* Page3CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155541DA89FC200473333 /* Page3CollectionViewCell.swift */; };
 		264155571DA89FD100473333 /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155561DA89FD100473333 /* BaseCollectionViewCell.swift */; };
 		264155591DA8A0DB00473333 /* ExtensionFunc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155581DA8A0DB00473333 /* ExtensionFunc.swift */; };
+		2641555F1DA8A40400473333 /* MenuBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2641555E1DA8A40400473333 /* MenuBarViewController.swift */; };
+		264155631DA8A57400473333 /* MenuBarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155621DA8A57400473333 /* MenuBarCollectionViewCell.swift */; };
+		264155651DA8A88400473333 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155641DA8A88400473333 /* BaseView.swift */; };
+		264155671DA8C3CC00473333 /* Page4CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155661DA8C3CC00473333 /* Page4CollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +34,10 @@
 		264155541DA89FC200473333 /* Page3CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page3CollectionViewCell.swift; sourceTree = "<group>"; };
 		264155561DA89FD100473333 /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
 		264155581DA8A0DB00473333 /* ExtensionFunc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionFunc.swift; sourceTree = "<group>"; };
+		2641555E1DA8A40400473333 /* MenuBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarViewController.swift; sourceTree = "<group>"; };
+		264155621DA8A57400473333 /* MenuBarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarCollectionViewCell.swift; sourceTree = "<group>"; };
+		264155641DA8A88400473333 /* BaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
+		264155661DA8C3CC00473333 /* Page4CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page4CollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,7 +76,11 @@
 				264155501DA89FAA00473333 /* Page1CollectionViewCell.swift */,
 				264155521DA89FB700473333 /* Page2CollectionViewCell.swift */,
 				264155541DA89FC200473333 /* Page3CollectionViewCell.swift */,
+				264155661DA8C3CC00473333 /* Page4CollectionViewCell.swift */,
 				264155561DA89FD100473333 /* BaseCollectionViewCell.swift */,
+				2641555E1DA8A40400473333 /* MenuBarViewController.swift */,
+				264155621DA8A57400473333 /* MenuBarCollectionViewCell.swift */,
+				264155641DA8A88400473333 /* BaseView.swift */,
 			);
 			path = TMChat;
 			sourceTree = "<group>";
@@ -167,10 +179,14 @@
 				264155591DA8A0DB00473333 /* ExtensionFunc.swift in Sources */,
 				264155551DA89FC200473333 /* Page3CollectionViewCell.swift in Sources */,
 				264155411DA8994000473333 /* MainViewController.swift in Sources */,
+				264155631DA8A57400473333 /* MenuBarCollectionViewCell.swift in Sources */,
 				2641553F1DA8994000473333 /* AppDelegate.swift in Sources */,
 				264155531DA89FB700473333 /* Page2CollectionViewCell.swift in Sources */,
 				264155511DA89FAA00473333 /* Page1CollectionViewCell.swift in Sources */,
+				264155651DA8A88400473333 /* BaseView.swift in Sources */,
 				264155571DA89FD100473333 /* BaseCollectionViewCell.swift in Sources */,
+				2641555F1DA8A40400473333 /* MenuBarViewController.swift in Sources */,
+				264155671DA8C3CC00473333 /* Page4CollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
