@@ -146,7 +146,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         switch collectionView {
         case myCollectionView:
-            return CGSize(width: view.frame.width , height: view.frame.height)
+            return CGSize(width: view.frame.width , height: view.frame.height - 50)
         case menuBar.collMenuBar:
             return CGSize(width: menuBar.frame.size.width / CGFloat(self.arrIdCell.count), height: menuBar.frame.size.height)
         default:

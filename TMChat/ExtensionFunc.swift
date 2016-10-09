@@ -27,4 +27,8 @@ extension UINavigationBar {
     }
 }
 
-
+enum stateOfVC {
+    case minimized
+    case fullScreen
+    case hidden
+}

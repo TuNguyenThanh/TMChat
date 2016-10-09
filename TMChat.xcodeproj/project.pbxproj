@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2637E78D1DA9D7AA00F4B3D2 /* ChatLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637E78C1DA9D7AA00F4B3D2 /* ChatLogViewController.swift */; };
+		2637E78F1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637E78E1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift */; };
 		2641553F1DA8994000473333 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2641553E1DA8994000473333 /* AppDelegate.swift */; };
 		264155411DA8994000473333 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155401DA8994000473333 /* MainViewController.swift */; };
 		264155441DA8994000473333 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 264155421DA8994000473333 /* Main.storyboard */; };
@@ -20,9 +22,13 @@
 		264155631DA8A57400473333 /* MenuBarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155621DA8A57400473333 /* MenuBarCollectionViewCell.swift */; };
 		264155651DA8A88400473333 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155641DA8A88400473333 /* BaseView.swift */; };
 		264155671DA8C3CC00473333 /* Page4CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155661DA8C3CC00473333 /* Page4CollectionViewCell.swift */; };
+		26C694351DA90D6A005E8E10 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C694341DA90D6A005E8E10 /* HomeTableViewCell.swift */; };
+		26EA299A1DA953C80042BAD5 /* ChatLogLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EA29991DA953C80042BAD5 /* ChatLogLauncher.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2637E78C1DA9D7AA00F4B3D2 /* ChatLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogViewController.swift; sourceTree = "<group>"; };
+		2637E78E1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogCollectionViewCell.swift; sourceTree = "<group>"; };
 		2641553B1DA8994000473333 /* TMChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2641553E1DA8994000473333 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		264155401DA8994000473333 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -38,6 +44,8 @@
 		264155621DA8A57400473333 /* MenuBarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarCollectionViewCell.swift; sourceTree = "<group>"; };
 		264155641DA8A88400473333 /* BaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		264155661DA8C3CC00473333 /* Page4CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page4CollectionViewCell.swift; sourceTree = "<group>"; };
+		26C694341DA90D6A005E8E10 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		26EA29991DA953C80042BAD5 /* ChatLogLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogLauncher.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,10 +78,11 @@
 		2641553D1DA8994000473333 /* TMChat */ = {
 			isa = PBXGroup;
 			children = (
+				26EA29981DA953A50042BAD5 /* ChatLog */,
+				26C694331DA90D38005E8E10 /* Home */,
 				2641555B1DA8A0FA00473333 /* Support */,
 				2641555A1DA8A0ED00473333 /* Extension */,
 				264155401DA8994000473333 /* MainViewController.swift */,
-				264155501DA89FAA00473333 /* Page1CollectionViewCell.swift */,
 				264155521DA89FB700473333 /* Page2CollectionViewCell.swift */,
 				264155541DA89FC200473333 /* Page3CollectionViewCell.swift */,
 				264155661DA8C3CC00473333 /* Page4CollectionViewCell.swift */,
@@ -102,6 +111,25 @@
 				2641554A1DA8994000473333 /* Info.plist */,
 			);
 			name = Support;
+			sourceTree = "<group>";
+		};
+		26C694331DA90D38005E8E10 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				264155501DA89FAA00473333 /* Page1CollectionViewCell.swift */,
+				26C694341DA90D6A005E8E10 /* HomeTableViewCell.swift */,
+			);
+			name = Home;
+			sourceTree = "<group>";
+		};
+		26EA29981DA953A50042BAD5 /* ChatLog */ = {
+			isa = PBXGroup;
+			children = (
+				26EA29991DA953C80042BAD5 /* ChatLogLauncher.swift */,
+				2637E78C1DA9D7AA00F4B3D2 /* ChatLogViewController.swift */,
+				2637E78E1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift */,
+			);
+			name = ChatLog;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -181,7 +209,11 @@
 				264155411DA8994000473333 /* MainViewController.swift in Sources */,
 				264155631DA8A57400473333 /* MenuBarCollectionViewCell.swift in Sources */,
 				2641553F1DA8994000473333 /* AppDelegate.swift in Sources */,
+				2637E78F1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift in Sources */,
+				2637E78D1DA9D7AA00F4B3D2 /* ChatLogViewController.swift in Sources */,
+				26EA299A1DA953C80042BAD5 /* ChatLogLauncher.swift in Sources */,
 				264155531DA89FB700473333 /* Page2CollectionViewCell.swift in Sources */,
+				26C694351DA90D6A005E8E10 /* HomeTableViewCell.swift in Sources */,
 				264155511DA89FAA00473333 /* Page1CollectionViewCell.swift in Sources */,
 				264155651DA8A88400473333 /* BaseView.swift in Sources */,
 				264155571DA89FD100473333 /* BaseCollectionViewCell.swift in Sources */,
@@ -342,6 +374,7 @@
 				2641554F1DA8994000473333 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
