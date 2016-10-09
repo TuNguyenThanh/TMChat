@@ -18,23 +18,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: MainViewController())
+        window?.rootViewController = LoginViewController()
+//        window?.rootViewController = UINavigationController(rootViewController: MainViewController())
+//        
+//        UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+//        UINavigationBar.appearance().shadowImage = UIImage()
+//        UINavigationBar.appearance().setBackgroundImage(UIImage(),for : .default)
+//        
+//        application.statusBarStyle = .lightContent
+//        
+//        let statusBarBackgroundView = UIView()
+//        statusBarBackgroundView.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+//        
+//        window?.addSubview(statusBarBackgroundView)
+//        window?.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: statusBarBackgroundView)
+//        window?.addConstrainWithVisualFormat(VSFormat: "V:|[v0(20)]", views: statusBarBackgroundView)
         
-        UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
-        UINavigationBar.appearance().shadowImage = UIImage()
-        UINavigationBar.appearance().setBackgroundImage(UIImage(),for : .default)
-        
-        application.statusBarStyle = .lightContent
-        
-        let statusBarBackgroundView = UIView()
-        statusBarBackgroundView.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
-        
-        window?.addSubview(statusBarBackgroundView)
-        window?.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: statusBarBackgroundView)
-        window?.addConstrainWithVisualFormat(VSFormat: "V:|[v0(20)]", views: statusBarBackgroundView)
-        
-        //UINavigationBar.appearance().tintColor = UIColor.white
-        //UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName:UIColor.white]
         return true
     }
 

@@ -36,4 +36,6 @@ class MenuBarCollectionViewCell: BaseCollectionViewCell {
         imgMenuView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: 4/5, constant: 0).isActive = true
         imgMenuView.widthAnchor.constraint(equalTo: imgMenuView.heightAnchor, multiplier: 1, constant: 0).isActive = true
     }
+    
+    
 }

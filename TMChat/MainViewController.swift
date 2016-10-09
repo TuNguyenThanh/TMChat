@@ -62,6 +62,9 @@ class MainViewController: UIViewController {
     
     func handleSearch() {
         let indexPath = IndexPath(item: 2, section: 0)
+        if let titleLabel = navigationItem.titleView as? UILabel {
+            titleLabel.text = "  \(titles[2])"
+        }
         myCollectionView.scrollToItem(at: indexPath, at: .left, animated: true)
     }
     
@@ -71,6 +74,8 @@ class MainViewController: UIViewController {
         
         self.view.addSubview(menuBar)
         self.view.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: menuBar)
+        //menuBar.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        //menuBar.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         menuBar.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         menuBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
@@ -116,6 +121,9 @@ class MainViewController: UIViewController {
         
     }
     
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        myCollectionView.collectionViewLayout.invalidateLayout()
+    }
    
 }
 
@@ -134,7 +142,7 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
         case myCollectionView:
             print("aaaa")
         default:
-            myCollectionView.selectItem(at: IndexPath.init(row: indexPath.row, section: 0), animated: true, scrollPosition: UICollectionViewScrollPosition.left)
+            myCollectionView.scrollToItem(at: IndexPath.init(item: indexPath.row, section: 0), at: UICollectionViewScrollPosition.left, animated: true)
             if let titleLabel = navigationItem.titleView as? UILabel {
                 titleLabel.text = "  \(titles[indexPath.row])"
             }

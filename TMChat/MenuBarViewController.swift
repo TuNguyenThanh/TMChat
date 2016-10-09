@@ -40,14 +40,23 @@ class MenuBarViewController: BaseView {
         self.addSubview(collMenuBar)
         self.addSubview(viewLine)
         
-        self.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: collMenuBar)
-        self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: collMenuBar)
+        //self.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: collMenuBar)
+        //self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: collMenuBar)
+        collMenuBar.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        collMenuBar.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        collMenuBar.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        collMenuBar.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        
         
         viewLine.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         viewLine.heightAnchor.constraint(equalToConstant: 5).isActive = true
         viewLine.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/4, constant: 0).isActive =  true
         hori = viewLine.leftAnchor.constraint(equalTo: self.leftAnchor)
         hori?.isActive = true
+    }
+    
+    func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        collMenuBar.collectionViewLayout.invalidateLayout()
     }
 }
 

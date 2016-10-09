@@ -15,7 +15,7 @@ class Page1CollectionViewCell: BaseCollectionViewCell {
     let cellId:String = "Cell"
     
     override func setupView() {
-        self.backgroundColor = #colorLiteral(red: 0.1411764771, green: 0.3960784376, blue: 0.5647059083, alpha: 1)
+        self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         self.addSubview(myTableView)
         
         self.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: myTableView)
@@ -31,6 +31,7 @@ class Page1CollectionViewCell: BaseCollectionViewCell {
         tbl.translatesAutoresizingMaskIntoConstraints = false
         return tbl
     }()
+    
 }
 
 extension Page1CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
@@ -45,6 +46,7 @@ extension Page1CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
         cell.imgAvatar.image = UIImage(named: "avatar")
         cell.lblText.text = "Hello thanh tu"
         cell.lblTimestamp.text = "12:03 PM"
+        
         return cell
     }
     
