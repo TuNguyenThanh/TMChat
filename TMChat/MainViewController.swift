@@ -45,7 +45,7 @@ class MainViewController: UIViewController {
     }
     
     func setupNavigationView(){
-        navigationController?.hidesBarsOnSwipe = true
+        //navigationController?.hidesBarsOnSwipe = true
         
         let labelTitle = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width - 32, height: self.view.frame.height))
         labelTitle.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)

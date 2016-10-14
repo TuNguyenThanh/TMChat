@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		2627761D1DAA84BB0048CC5B /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2627761C1DAA84BB0048CC5B /* RegisterViewController.swift */; };
+		262A20B11DB085F300B8A5B7 /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262A20B01DB085F300B8A5B7 /* HeaderTableViewCell.swift */; };
+		262A20B31DB0865100B8A5B7 /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262A20B21DB0865100B8A5B7 /* DetailTableViewCell.swift */; };
 		2637E78D1DA9D7AA00F4B3D2 /* ChatLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637E78C1DA9D7AA00F4B3D2 /* ChatLogViewController.swift */; };
 		2637E78F1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637E78E1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift */; };
 		2641553F1DA8994000473333 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2641553E1DA8994000473333 /* AppDelegate.swift */; };
@@ -31,6 +33,8 @@
 
 /* Begin PBXFileReference section */
 		2627761C1DAA84BB0048CC5B /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		262A20B01DB085F300B8A5B7 /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
+		262A20B21DB0865100B8A5B7 /* DetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
 		2637E78C1DA9D7AA00F4B3D2 /* ChatLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogViewController.swift; sourceTree = "<group>"; };
 		2637E78E1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogCollectionViewCell.swift; sourceTree = "<group>"; };
 		2641553B1DA8994000473333 /* TMChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -65,6 +69,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		262A20AF1DB0773300B8A5B7 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				264155661DA8C3CC00473333 /* Page4CollectionViewCell.swift */,
+				262A20B01DB085F300B8A5B7 /* HeaderTableViewCell.swift */,
+				262A20B21DB0865100B8A5B7 /* DetailTableViewCell.swift */,
+			);
+			name = Setting;
+			sourceTree = "<group>";
+		};
 		264155321DA8993F00473333 = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +98,7 @@
 		2641553D1DA8994000473333 /* TMChat */ = {
 			isa = PBXGroup;
 			children = (
+				262A20AF1DB0773300B8A5B7 /* Setting */,
 				26525A741DAA51B200863510 /* Models */,
 				26EA29981DA953A50042BAD5 /* ChatLog */,
 				26C694331DA90D38005E8E10 /* Home */,
@@ -92,7 +107,6 @@
 				264155401DA8994000473333 /* MainViewController.swift */,
 				264155521DA89FB700473333 /* Page2CollectionViewCell.swift */,
 				264155541DA89FC200473333 /* Page3CollectionViewCell.swift */,
-				264155661DA8C3CC00473333 /* Page4CollectionViewCell.swift */,
 				2641555E1DA8A40400473333 /* MenuBarViewController.swift */,
 				264155621DA8A57400473333 /* MenuBarCollectionViewCell.swift */,
 				264155561DA89FD100473333 /* BaseCollectionViewCell.swift */,
@@ -223,6 +237,7 @@
 			files = (
 				264155591DA8A0DB00473333 /* ExtensionFunc.swift in Sources */,
 				26525A761DAA51BF00863510 /* Messages.swift in Sources */,
+				262A20B11DB085F300B8A5B7 /* HeaderTableViewCell.swift in Sources */,
 				264155551DA89FC200473333 /* Page3CollectionViewCell.swift in Sources */,
 				264155411DA8994000473333 /* MainViewController.swift in Sources */,
 				2627761D1DAA84BB0048CC5B /* RegisterViewController.swift in Sources */,
@@ -238,6 +253,7 @@
 				264155651DA8A88400473333 /* BaseView.swift in Sources */,
 				264155571DA89FD100473333 /* BaseCollectionViewCell.swift in Sources */,
 				2641555F1DA8A40400473333 /* MenuBarViewController.swift in Sources */,
+				262A20B31DB0865100B8A5B7 /* DetailTableViewCell.swift in Sources */,
 				264155671DA8C3CC00473333 /* Page4CollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
