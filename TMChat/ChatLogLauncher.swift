@@ -11,7 +11,7 @@ import UIKit
 class ChatLogLauncher: NSObject {
     func showChatLogView(){
         print("chat log view show")
-        if let keyWindown = UIApplication.shared.keyWindow {
+        /*if let keyWindown = UIApplication.shared.keyWindow {
             //setting chatlogcontroller
             let chatLogVC = ChatLogViewController(frame: CGRect(x: keyWindown.frame.width - 10, y: keyWindown.frame.height - 10, width: 10, height: 10))
             
@@ -24,6 +24,6 @@ class ChatLogLauncher: NSObject {
                     //maybe we'll do something here later...
                     //UIApplication.shared.setStatusBarHidden(true, with: .fade)
             })
-        }
+        }*/
     }
 }

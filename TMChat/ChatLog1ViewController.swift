@@ -1,16 +1,41 @@
 //
-//  ABCViewController.swift
+//  ChatLogViewController.swift
 //  TMChat
 //
-//  Created by Nguyễn Thanh Tú on 10/14/16.
+//  Created by Nguyễn Thanh Tú on 10/9/16.
 //  Copyright © 2016 ThanhTu. All rights reserved.
 //
 
 import UIKit
 
-class ChatLogViewController: UIViewController {
+class ChatLog1ViewController: BaseView {
     let cellId:String = "Cell"
     var arrMessages:Array<Messages> = Array<Messages>()
+
+    let viewNavi:UIView = {
+        let v = UIView()
+        v.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let lblTitle:UILabel = {
+        let lbl = UILabel()
+        lbl.textAlignment = .center
+        lbl.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        lbl.font = UIFont.boldSystemFont(ofSize: 18)
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    
+    lazy var btnDismiss:UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setTitle("Dissmiss", for: UIControlState.normal)
+        btn.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        btn.addTarget(self, action: #selector(self.abtnDismiss), for: UIControlEvents.touchUpInside)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
     
     lazy var myCollectionView:UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -52,7 +77,7 @@ class ChatLogViewController: UIViewController {
         img.image = UIImage(named: "upload_image")
         img.isUserInteractionEnabled = true
         img.clipsToBounds = true
-        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ChatLogViewController.aChooseImage(tap:))))
+        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ChatLog1ViewController.aChooseImage(tap:))))
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
@@ -63,10 +88,15 @@ class ChatLogViewController: UIViewController {
         vi.translatesAutoresizingMaskIntoConstraints = false
         return vi
     }()
-    
+
     func abtnDismiss(){
         print("dismiss view")
-        self.dismiss(animated: true, completion: nil)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.frame = CGRect(x: self.frame.width - 10, y: self.frame.height - 10, width: 10, height: 10)
+            }, completion: { (true) in
+                //maybe we'll do something here later...
+                self.removeFromSuperview()
+        })
     }
     
     func abtnSend(){
@@ -74,16 +104,30 @@ class ChatLogViewController: UIViewController {
         inputTextField.text = nil
     }
 
+    
     let picker = UIImagePickerController()
     func aChooseImage(tap : UITapGestureRecognizer){
-        print("aaaa")
-        let alertView:UIAlertController = UIAlertController(title: "Chon Hinh", message: "Vui long chon", preferredStyle: UIAlertControllerStyle.alert)
+        print("abc")
+        
+        
+        DispatchQueue.main.async {
+            self.picker.allowsEditing = false
+            self.picker.sourceType = .photoLibrary
+            self.picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+            
+            
+            
+            UIApplication.shared.keyWindow?.rootViewController?.present(self.picker, animated: true, completion: nil)
+        }
+        
+        
+       /* let alertView:UIAlertController = UIAlertController(title: "Chon Hinh", message: "Vui long chon", preferredStyle: UIAlertControllerStyle.alert)
         let photoLibrary:UIAlertAction = UIAlertAction(title: "Photo Library", style: UIAlertActionStyle.default) { (photoLibrary) in
             print("photo Lybrary")
             self.picker.allowsEditing = false
             self.picker.sourceType = .photoLibrary
             self.picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
-            self.present(self.picker, animated: true, completion: nil)
+            UIApplication.shared.keyWindow?.rootViewController?.present(self.picker, animated: true, completion: nil)
         }
         let camera:UIAlertAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default) { (camera) in
             print("Camera")
@@ -92,7 +136,7 @@ class ChatLogViewController: UIViewController {
                 self.picker.sourceType = UIImagePickerControllerSourceType.camera
                 self.picker.cameraCaptureMode = .photo
                 self.picker.modalPresentationStyle = .fullScreen
-                self.present(self.picker,animated: true,completion: nil)
+                UIApplication.shared.keyWindow?.rootViewController?.present(self.picker,animated: true,completion: nil)
             }else{
                 //self.noCamera()
             }
@@ -100,33 +144,49 @@ class ChatLogViewController: UIViewController {
         alertView.addAction(photoLibrary)
         alertView.addAction(camera)
         
-        self.present(alertView, animated: true, completion: nil)
+        ////UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.present(alertView, animated: true, completion: nil)
+        
+        UIApplication.shared.keyWindow?.rootViewController?.present(alertView, animated: true, completion: nil)*/
+            
+        
     }
     
-
-    
-    func setupView(){
-        self.view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    override func setupView() {
+        self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         self.picker.delegate = self
         
-        self.view.addSubview(myCollectionView)
-        self.view.addSubview(inputComponents)
+        self.addSubview(viewNavi)
+        self.addSubview(myCollectionView)
+        self.addSubview(inputComponents)
+        viewNavi.addSubview(lblTitle)
+        viewNavi.addSubview(btnDismiss)
         inputComponents.addSubview(btnSend)
         inputComponents.addSubview(imgChooseImage)
         inputComponents.addSubview(inputTextField)
         inputComponents.addSubview(viewLine)
         
-        myCollectionView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
-        myCollectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -50).isActive = true
-        myCollectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        myCollectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        viewNavi.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        viewNavi.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        viewNavi.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        viewNavi.heightAnchor.constraint(equalToConstant: 64.0).isActive = true
         
+
+        lblTitle.centerYAnchor.constraint(equalTo: viewNavi.centerYAnchor).isActive = true
+        lblTitle.centerXAnchor.constraint(equalTo: viewNavi.centerXAnchor).isActive = true
+        
+        btnDismiss.centerYAnchor.constraint(equalTo: viewNavi.centerYAnchor).isActive = true
+        btnDismiss.leftAnchor.constraint(equalTo: viewNavi.leftAnchor, constant: 10).isActive = true
+
+        myCollectionView.topAnchor.constraint(equalTo: self.viewNavi.bottomAnchor).isActive = true
+        myCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -50).isActive = true
+        myCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        myCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         myCollectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 58, right: 0)
         myCollectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         
-        inputComponents.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        inputComponents.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        inputComponents.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
+        inputComponents.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        inputComponents.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        inputComponents.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         inputComponents.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
         imgChooseImage.leftAnchor.constraint(equalTo: inputComponents.leftAnchor).isActive = true
@@ -149,22 +209,17 @@ class ChatLogViewController: UIViewController {
         viewLine.rightAnchor.constraint(equalTo: inputComponents.rightAnchor).isActive = true
         viewLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
+        
         arrMessages.append(Messages(keyMess: "k1", fromId: "I1", toId: "A1", text: "Hello"))
         arrMessages.append(Messages(keyMess: "k2", fromId: "I1", toId: "A3", text: "Hello say you do"))
         arrMessages.append(Messages(keyMess: "k3", fromId: "I1", toId: "A4", text: "Một bài test đã gây sóng gió cho biết bao nhiêu người,trong đó có cả người bản xứ."))
         arrMessages.append(Messages(keyMess: "k4", fromId: "k1", toId: "A5", text: "Bạn có đủ tự tin để làm bài test này không nào? Thử ngay để biết trình độ tiếng Anh của mình. QuizV-Bài kiểm tra gây sóng gió ngay cả với người bản xứ"))
-        
+ 
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupView()
-    }
 }
 
-
-
-extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDelegate {
+extension ChatLog1ViewController: UICollectionViewDataSource , UICollectionViewDelegate {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.arrMessages.count
@@ -193,7 +248,7 @@ extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDe
     }
 }
 
-extension ChatLogViewController: UICollectionViewDelegateFlowLayout{
+extension ChatLog1ViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height:CGFloat = 80
         
@@ -201,7 +256,7 @@ extension ChatLogViewController: UICollectionViewDelegateFlowLayout{
             height = estimateFrameForText(text: isText).height + 20
         }
         
-        return CGSize(width: self.view.frame.width, height: height)
+        return CGSize(width: self.frame.width, height: height)
     }
     
     //get with height text chat bubble
@@ -210,27 +265,32 @@ extension ChatLogViewController: UICollectionViewDelegateFlowLayout{
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 16)], context: nil)
     }
-    
+
 }
 
-extension ChatLogViewController: UITextFieldDelegate{
+extension ChatLog1ViewController: UITextFieldDelegate{
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.abtnSend()
         return true
     }
 }
 
-extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+extension ChatLog1ViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         ///imgAvatar.image = chosenImage
         print(chosenImage)
-        self.dismiss(animated:true, completion: nil)
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated:true, completion: nil)
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.dismiss(animated: true, completion: nil)
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 }
+
+
+
+
+
 
 
 

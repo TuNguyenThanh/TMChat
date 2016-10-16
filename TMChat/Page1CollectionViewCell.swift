@@ -8,11 +8,14 @@
 
 import UIKit
 
-var usernameSelected:String!
+protocol pushChatLogControllerDelegate {
+    func push(title:String)
+}
 
 class Page1CollectionViewCell: BaseCollectionViewCell {
     
     let cellId:String = "Cell"
+    var delegate:pushChatLogControllerDelegate?
     
     override func setupView() {
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -31,7 +34,6 @@ class Page1CollectionViewCell: BaseCollectionViewCell {
         tbl.translatesAutoresizingMaskIntoConstraints = false
         return tbl
     }()
-    
 }
 
 extension Page1CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
@@ -54,10 +56,17 @@ extension Page1CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
         return 100.0
     }
     
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let chatLogVC = ChatLogLauncher()
-        usernameSelected = "Nguyen Thanh Tu"
-        chatLogVC.showChatLogView()
+        //let chatLogVC = ChatLogLauncher()
+        //usernameSelected = "Nguyen Thanh Tu"
+        //chatLogVC.showChatLogView()
+        
+        self.delegate?.push(title: "Thanh Tu")
+        
+//        let chatLogVC = ChatLogViewController()
+//        chatLogVC.lblTitle.text = "Nguyen Thanh Tu"
+//        UIApplication.shared.keyWindow?.rootViewController?.present(chatLogVC, animated: true, completion: nil)
     }
 }
 

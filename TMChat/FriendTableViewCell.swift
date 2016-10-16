@@ -1,28 +1,18 @@
 //
-//  HomeTableViewCell.swift
+//  FriendTableViewCell.swift
 //  TMChat
 //
-//  Created by Nguyễn Thanh Tú on 10/8/16.
+//  Created by Nguyễn Thanh Tú on 10/14/16.
 //  Copyright © 2016 ThanhTu. All rights reserved.
 //
 
 import UIKit
 
-
-
-class HomeTableViewCell: BaseTableViewCell {
+class FriendTableViewCell: BaseTableViewCell {
     
     let lblName:UILabel = {
         let lbl = UILabel()
         lbl.font = UIFont.boldSystemFont(ofSize: 18)
-        lbl.translatesAutoresizingMaskIntoConstraints = false
-        return lbl
-    }()
-    
-    let lblText:UILabel = {
-        let lbl = UILabel()
-        lbl.textColor = UIColor.darkGray
-        lbl.font = UIFont.boldSystemFont(ofSize: 13)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
@@ -36,23 +26,29 @@ class HomeTableViewCell: BaseTableViewCell {
         return img
     }()
     
-    let lblTimestamp:UILabel = {
+    let lblOnOff:UILabel = {
         let lbl = UILabel()
-        lbl.text = "HH:MM:SS"
         lbl.textColor = UIColor.darkGray
         lbl.font = UIFont.boldSystemFont(ofSize: 13)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
     
+    let viewOnOff:UIView = {
+        let v = UIView()
+        v.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
+        v.layer.cornerRadius = 5
+        v.clipsToBounds = true
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     
-    override func setupView(){
-        self.backgroundColor  = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
+    
+    override func setupView() {
         self.addSubview(imgAvatar)
         self.addSubview(lblName)
-        self.addSubview(lblText)
-        self.addSubview(lblTimestamp)
+        self.addSubview(lblOnOff)
+        self.addSubview(viewOnOff)
         
         imgAvatar.widthAnchor.constraint(equalTo: self.heightAnchor, constant: -20).isActive = true
         imgAvatar.heightAnchor.constraint(equalTo: imgAvatar.widthAnchor).isActive = true
@@ -64,15 +60,13 @@ class HomeTableViewCell: BaseTableViewCell {
         lblName.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
         lblName.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        lblText.topAnchor.constraint(equalTo: lblName.bottomAnchor).isActive = true
-        lblText.leftAnchor.constraint(equalTo: lblName.leftAnchor).isActive = true
-        lblText.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
-        lblText.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        lblOnOff.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        lblOnOff.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -10).isActive = true
         
-        lblTimestamp.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
-        lblTimestamp.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 10).isActive = true
-        lblTimestamp.widthAnchor.constraint(equalToConstant: 100).isActive = true
-        lblTimestamp.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        viewOnOff.widthAnchor.constraint(equalToConstant: 10).isActive = true
+        viewOnOff.heightAnchor.constraint(equalTo: viewOnOff.widthAnchor).isActive = true
+        viewOnOff.centerYAnchor.constraint(equalTo: lblOnOff.centerYAnchor).isActive = true
+        viewOnOff.rightAnchor.constraint(equalTo: lblOnOff.leftAnchor, constant: -8).isActive = true
     }
     
     override func awakeFromNib() {

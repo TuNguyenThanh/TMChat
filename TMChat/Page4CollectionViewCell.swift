@@ -10,6 +10,7 @@ import UIKit
 
 class Page4CollectionViewCell: BaseCollectionViewCell {
     
+    
     lazy var tableView:UITableView = {
         let tbl = UITableView(frame: CGRect.zero, style: UITableViewStyle.plain)
         tbl.dataSource = self
@@ -35,13 +36,12 @@ class Page4CollectionViewCell: BaseCollectionViewCell {
 
 extension Page4CollectionViewCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return 6
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellHeader", for: indexPath) as! HeaderTableViewCell
-            cell.delegate = self
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellDetail", for: indexPath) as! DetailTableViewCell
@@ -53,6 +53,12 @@ extension Page4CollectionViewCell: UITableViewDataSource, UITableViewDelegate {
                 cell.imgIcon.image = UIImage(named: "phone")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
                 cell.lbl.text = "0903016975"
             }else if indexPath.row == 3 {
+                cell.imgIcon.image = UIImage(named: "logout")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+                cell.lbl.text = "cap nhat thong tin"
+            }else if indexPath.row == 4 {
+                cell.imgIcon.image = UIImage(named: "logout")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+                cell.lbl.text = "Quen mat khhau"
+            }else if indexPath.row == 5 {
                 cell.imgIcon.image = UIImage(named: "logout")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
                 cell.lbl.text = "Logout"
             }
@@ -83,11 +89,9 @@ extension Page4CollectionViewCell: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-extension Page4CollectionViewCell: HeaderTableViewCellDelegate{
-    func didTapAvatar() {
-        print("efefefefefefe")
-    }
-}
+
+
+
 
 
 

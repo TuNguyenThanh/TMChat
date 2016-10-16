@@ -31,13 +31,6 @@ class MainViewController: UIViewController {
         return collectionView
     }()
     
-    let navView:UIView = {
-        let v = UIView()
-        v.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
-    
     private func setTitleForIndex(index: Int) {
         if let titleLabel = navigationItem.titleView as? UILabel {
             titleLabel.text = "  \(titles[index])"
@@ -45,8 +38,6 @@ class MainViewController: UIViewController {
     }
     
     func setupNavigationView(){
-        //navigationController?.hidesBarsOnSwipe = true
-        
         let labelTitle = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width - 32, height: self.view.frame.height))
         labelTitle.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         labelTitle.text = "  Home"
@@ -74,8 +65,6 @@ class MainViewController: UIViewController {
         
         self.view.addSubview(menuBar)
         self.view.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: menuBar)
-        //menuBar.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        //menuBar.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         menuBar.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor).isActive = true
         menuBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
@@ -86,17 +75,14 @@ class MainViewController: UIViewController {
         setupNavigationView()
         
         self.view.addSubview(myCollectionView)
-        self.view.addSubview(navView)
-        
+   
         automaticallyAdjustsScrollViewInsets = false
         myCollectionView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor, constant: 50).isActive = true
         myCollectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
         self.view.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: myCollectionView)
-        
-        self.view.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: navView)
-        self.view.addConstrainWithVisualFormat(VSFormat: "V:|[v0(50)]", views: navView)
-    }
 
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -124,8 +110,10 @@ class MainViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         myCollectionView.collectionViewLayout.invalidateLayout()
     }
-   
+      
 }
+
+
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -133,8 +121,23 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.arrIdCell[indexPath.row], for: indexPath)
-        return cell
+        if indexPath.row == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.arrIdCell[indexPath.row], for: indexPath) as! Page1CollectionViewCell
+            cell.delegate = self
+            return cell
+        }else if indexPath.row == 1{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.arrIdCell[indexPath.row], for: indexPath) as! Page2CollectionViewCell
+            cell.delegate = self
+            cell.delegate1 = self
+            return cell
+        }else if indexPath.row == 2{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.arrIdCell[indexPath.row], for: indexPath) as! Page3CollectionViewCell
+            cell.delegate = self
+            return cell
+        }else{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.arrIdCell[indexPath.row], for: indexPath)
+            return cell
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -175,7 +178,20 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+extension MainViewController: pushChatLogControllerDelegate{
+    func push(title: String) {
+        let chatLogVC = ChatLogViewController()
+        chatLogVC.title = title
+        self.navigationController?.pushViewController(chatLogVC, animated: true)
+    }
+}
 
+extension MainViewController: Page2CollectionViewCellDelegate{
+    func pushCreateGroupController() {
+        let createGroupVC = CreateGroupViewController()
+        self.navigationController?.pushViewController(createGroupVC, animated: true)
+    }
+}
 
 
 

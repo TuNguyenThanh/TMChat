@@ -10,7 +10,7 @@
 		2627761D1DAA84BB0048CC5B /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2627761C1DAA84BB0048CC5B /* RegisterViewController.swift */; };
 		262A20B11DB085F300B8A5B7 /* HeaderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262A20B01DB085F300B8A5B7 /* HeaderTableViewCell.swift */; };
 		262A20B31DB0865100B8A5B7 /* DetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 262A20B21DB0865100B8A5B7 /* DetailTableViewCell.swift */; };
-		2637E78D1DA9D7AA00F4B3D2 /* ChatLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637E78C1DA9D7AA00F4B3D2 /* ChatLogViewController.swift */; };
+		2637E78D1DA9D7AA00F4B3D2 /* ChatLog1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637E78C1DA9D7AA00F4B3D2 /* ChatLog1ViewController.swift */; };
 		2637E78F1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2637E78E1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift */; };
 		2641553F1DA8994000473333 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2641553E1DA8994000473333 /* AppDelegate.swift */; };
 		264155411DA8994000473333 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155401DA8994000473333 /* MainViewController.swift */; };
@@ -25,17 +25,22 @@
 		264155631DA8A57400473333 /* MenuBarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155621DA8A57400473333 /* MenuBarCollectionViewCell.swift */; };
 		264155651DA8A88400473333 /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155641DA8A88400473333 /* BaseView.swift */; };
 		264155671DA8C3CC00473333 /* Page4CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264155661DA8C3CC00473333 /* Page4CollectionViewCell.swift */; };
+		264DB4891DB3AEC30096ACF2 /* GroupCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264DB4881DB3AEC30096ACF2 /* GroupCollectionViewCell.swift */; };
+		264DB48B1DB3C6820096ACF2 /* CreateGroupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 264DB48A1DB3C6820096ACF2 /* CreateGroupViewController.swift */; };
 		26525A761DAA51BF00863510 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26525A751DAA51BF00863510 /* Messages.swift */; };
 		26525A7A1DAA6EB600863510 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26525A791DAA6EB600863510 /* LoginViewController.swift */; };
 		26C694351DA90D6A005E8E10 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C694341DA90D6A005E8E10 /* HomeTableViewCell.swift */; };
 		26EA299A1DA953C80042BAD5 /* ChatLogLauncher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26EA29991DA953C80042BAD5 /* ChatLogLauncher.swift */; };
+		26F9C8C51DB10641004C88A2 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F9C8C41DB10641004C88A2 /* BaseTableViewCell.swift */; };
+		26F9C8CA1DB12025004C88A2 /* FriendTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F9C8C91DB12025004C88A2 /* FriendTableViewCell.swift */; };
+		26F9C8CC1DB1360C004C88A2 /* ChatLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F9C8CB1DB1360C004C88A2 /* ChatLogViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2627761C1DAA84BB0048CC5B /* RegisterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
 		262A20B01DB085F300B8A5B7 /* HeaderTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderTableViewCell.swift; sourceTree = "<group>"; };
 		262A20B21DB0865100B8A5B7 /* DetailTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailTableViewCell.swift; sourceTree = "<group>"; };
-		2637E78C1DA9D7AA00F4B3D2 /* ChatLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogViewController.swift; sourceTree = "<group>"; };
+		2637E78C1DA9D7AA00F4B3D2 /* ChatLog1ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLog1ViewController.swift; sourceTree = "<group>"; };
 		2637E78E1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogCollectionViewCell.swift; sourceTree = "<group>"; };
 		2641553B1DA8994000473333 /* TMChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TMChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2641553E1DA8994000473333 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -52,10 +57,15 @@
 		264155621DA8A57400473333 /* MenuBarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarCollectionViewCell.swift; sourceTree = "<group>"; };
 		264155641DA8A88400473333 /* BaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		264155661DA8C3CC00473333 /* Page4CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page4CollectionViewCell.swift; sourceTree = "<group>"; };
+		264DB4881DB3AEC30096ACF2 /* GroupCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupCollectionViewCell.swift; sourceTree = "<group>"; };
+		264DB48A1DB3C6820096ACF2 /* CreateGroupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateGroupViewController.swift; sourceTree = "<group>"; };
 		26525A751DAA51BF00863510 /* Messages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		26525A791DAA6EB600863510 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		26C694341DA90D6A005E8E10 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		26EA29991DA953C80042BAD5 /* ChatLogLauncher.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogLauncher.swift; sourceTree = "<group>"; };
+		26F9C8C41DB10641004C88A2 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
+		26F9C8C91DB12025004C88A2 /* FriendTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendTableViewCell.swift; sourceTree = "<group>"; };
+		26F9C8CB1DB1360C004C88A2 /* ChatLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLogViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,21 +108,13 @@
 		2641553D1DA8994000473333 /* TMChat */ = {
 			isa = PBXGroup;
 			children = (
-				262A20AF1DB0773300B8A5B7 /* Setting */,
+				26F9C8C61DB11EB3004C88A2 /* ViewController */,
 				26525A741DAA51B200863510 /* Models */,
-				26EA29981DA953A50042BAD5 /* ChatLog */,
-				26C694331DA90D38005E8E10 /* Home */,
 				2641555B1DA8A0FA00473333 /* Support */,
 				2641555A1DA8A0ED00473333 /* Extension */,
 				264155401DA8994000473333 /* MainViewController.swift */,
-				264155521DA89FB700473333 /* Page2CollectionViewCell.swift */,
-				264155541DA89FC200473333 /* Page3CollectionViewCell.swift */,
 				2641555E1DA8A40400473333 /* MenuBarViewController.swift */,
 				264155621DA8A57400473333 /* MenuBarCollectionViewCell.swift */,
-				264155561DA89FD100473333 /* BaseCollectionViewCell.swift */,
-				264155641DA8A88400473333 /* BaseView.swift */,
-				26525A791DAA6EB600863510 /* LoginViewController.swift */,
-				2627761C1DAA84BB0048CC5B /* RegisterViewController.swift */,
 			);
 			path = TMChat;
 			sourceTree = "<group>";
@@ -132,8 +134,21 @@
 				264155421DA8994000473333 /* Main.storyboard */,
 				2641553E1DA8994000473333 /* AppDelegate.swift */,
 				2641554A1DA8994000473333 /* Info.plist */,
+				264155641DA8A88400473333 /* BaseView.swift */,
+				264155561DA89FD100473333 /* BaseCollectionViewCell.swift */,
+				26F9C8C41DB10641004C88A2 /* BaseTableViewCell.swift */,
 			);
 			name = Support;
+			sourceTree = "<group>";
+		};
+		264DB4871DB3AC7D0096ACF2 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+				264155521DA89FB700473333 /* Page2CollectionViewCell.swift */,
+				264DB4881DB3AEC30096ACF2 /* GroupCollectionViewCell.swift */,
+				264DB48A1DB3C6820096ACF2 /* CreateGroupViewController.swift */,
+			);
+			name = Group;
 			sourceTree = "<group>";
 		};
 		26525A741DAA51B200863510 /* Models */ = {
@@ -157,10 +172,42 @@
 			isa = PBXGroup;
 			children = (
 				26EA29991DA953C80042BAD5 /* ChatLogLauncher.swift */,
-				2637E78C1DA9D7AA00F4B3D2 /* ChatLogViewController.swift */,
+				2637E78C1DA9D7AA00F4B3D2 /* ChatLog1ViewController.swift */,
+				26F9C8CB1DB1360C004C88A2 /* ChatLogViewController.swift */,
 				2637E78E1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift */,
 			);
 			name = ChatLog;
+			sourceTree = "<group>";
+		};
+		26F9C8C61DB11EB3004C88A2 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				26F9C8C81DB11EF7004C88A2 /* LoginRegister */,
+				26C694331DA90D38005E8E10 /* Home */,
+				264DB4871DB3AC7D0096ACF2 /* Group */,
+				26F9C8C71DB11EE0004C88A2 /* Friend */,
+				262A20AF1DB0773300B8A5B7 /* Setting */,
+				26EA29981DA953A50042BAD5 /* ChatLog */,
+			);
+			name = ViewController;
+			sourceTree = "<group>";
+		};
+		26F9C8C71DB11EE0004C88A2 /* Friend */ = {
+			isa = PBXGroup;
+			children = (
+				264155541DA89FC200473333 /* Page3CollectionViewCell.swift */,
+				26F9C8C91DB12025004C88A2 /* FriendTableViewCell.swift */,
+			);
+			name = Friend;
+			sourceTree = "<group>";
+		};
+		26F9C8C81DB11EF7004C88A2 /* LoginRegister */ = {
+			isa = PBXGroup;
+			children = (
+				26525A791DAA6EB600863510 /* LoginViewController.swift */,
+				2627761C1DAA84BB0048CC5B /* RegisterViewController.swift */,
+			);
+			name = LoginRegister;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,21 +286,26 @@
 				26525A761DAA51BF00863510 /* Messages.swift in Sources */,
 				262A20B11DB085F300B8A5B7 /* HeaderTableViewCell.swift in Sources */,
 				264155551DA89FC200473333 /* Page3CollectionViewCell.swift in Sources */,
+				26F9C8C51DB10641004C88A2 /* BaseTableViewCell.swift in Sources */,
 				264155411DA8994000473333 /* MainViewController.swift in Sources */,
 				2627761D1DAA84BB0048CC5B /* RegisterViewController.swift in Sources */,
 				264155631DA8A57400473333 /* MenuBarCollectionViewCell.swift in Sources */,
 				26525A7A1DAA6EB600863510 /* LoginViewController.swift in Sources */,
 				2641553F1DA8994000473333 /* AppDelegate.swift in Sources */,
+				264DB48B1DB3C6820096ACF2 /* CreateGroupViewController.swift in Sources */,
 				2637E78F1DA9EB4800F4B3D2 /* ChatLogCollectionViewCell.swift in Sources */,
-				2637E78D1DA9D7AA00F4B3D2 /* ChatLogViewController.swift in Sources */,
+				2637E78D1DA9D7AA00F4B3D2 /* ChatLog1ViewController.swift in Sources */,
+				264DB4891DB3AEC30096ACF2 /* GroupCollectionViewCell.swift in Sources */,
 				26EA299A1DA953C80042BAD5 /* ChatLogLauncher.swift in Sources */,
 				264155531DA89FB700473333 /* Page2CollectionViewCell.swift in Sources */,
 				26C694351DA90D6A005E8E10 /* HomeTableViewCell.swift in Sources */,
+				26F9C8CA1DB12025004C88A2 /* FriendTableViewCell.swift in Sources */,
 				264155511DA89FAA00473333 /* Page1CollectionViewCell.swift in Sources */,
 				264155651DA8A88400473333 /* BaseView.swift in Sources */,
 				264155571DA89FD100473333 /* BaseCollectionViewCell.swift in Sources */,
 				2641555F1DA8A40400473333 /* MenuBarViewController.swift in Sources */,
 				262A20B31DB0865100B8A5B7 /* DetailTableViewCell.swift in Sources */,
+				26F9C8CC1DB1360C004C88A2 /* ChatLogViewController.swift in Sources */,
 				264155671DA8C3CC00473333 /* Page4CollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,10 +423,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XG2M7U44A7;
 				INFOPLIST_FILE = TMChat/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ThanhTu.TMChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -384,10 +438,12 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = XG2M7U44A7;
 				INFOPLIST_FILE = TMChat/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ThanhTu.TMChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};

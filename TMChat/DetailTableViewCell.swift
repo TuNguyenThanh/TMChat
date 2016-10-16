@@ -8,7 +8,12 @@
 
 import UIKit
 
-class DetailTableViewCell: UITableViewCell {
+protocol DetailTableViewCellDelegate {
+    
+}
+
+class DetailTableViewCell: BaseTableViewCell {
+    var delegate:DetailTableViewCellDelegate?
     
     let imgIcon:UIImageView = {
         let img = UIImageView()
@@ -24,7 +29,7 @@ class DetailTableViewCell: UITableViewCell {
         return lbl
     }()
     
-    func setupView() {
+    override func setupView() {
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         self.selectionStyle = .none
         self.addSubview(imgIcon)
@@ -40,23 +45,7 @@ class DetailTableViewCell: UITableViewCell {
         lbl.leftAnchor.constraint(equalTo: imgIcon.rightAnchor, constant: 8).isActive = true
         lbl.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8).isActive = true
         lbl.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-    }
-    
-    
-    
-    
-    
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupView()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    
+    }    
     
     override func awakeFromNib() {
         super.awakeFromNib()

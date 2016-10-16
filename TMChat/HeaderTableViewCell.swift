@@ -8,13 +8,9 @@
 
 import UIKit
 
-protocol HeaderTableViewCellDelegate: class {
-    func didTapAvatar()
-}
 
-class HeaderTableViewCell: UITableViewCell {
-
-    var delegate:HeaderTableViewCellDelegate?
+class HeaderTableViewCell: BaseTableViewCell {
+    let picker = UIImagePickerController()
     
     lazy var imgAvatar:UIImageView = {
         let img = UIImageView()
@@ -37,14 +33,37 @@ class HeaderTableViewCell: UITableViewCell {
     }()
     
     func aChooseImage(tap : UITapGestureRecognizer){
-        if let delegate = self.delegate {
-            delegate.didTapAvatar()
+        print("fefwefe")
+        let alertView:UIAlertController = UIAlertController(title: "Chon Hinh", message: "Vui long chon", preferredStyle: UIAlertControllerStyle.alert)
+        let photoLibrary:UIAlertAction = UIAlertAction(title: "Photo Library", style: UIAlertActionStyle.default) { (photoLibrary) in
+            print("photo Lybrary")
+            self.picker.allowsEditing = false
+            self.picker.sourceType = .photoLibrary
+            self.picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
+            UIApplication.shared.keyWindow?.rootViewController?.present(self.picker, animated: true, completion: nil)
         }
+        let camera:UIAlertAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default) { (camera) in
+            print("Camera")
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                self.picker.allowsEditing = false
+                self.picker.sourceType = UIImagePickerControllerSourceType.camera
+                self.picker.cameraCaptureMode = .photo
+                self.picker.modalPresentationStyle = .fullScreen
+                UIApplication.shared.keyWindow?.rootViewController?.present(self.picker,animated: true,completion: nil)
+            }else{
+                //self.noCamera()
+            }
+        }
+        alertView.addAction(photoLibrary)
+        alertView.addAction(camera)
+        
+        UIApplication.shared.keyWindow?.rootViewController?.present(alertView, animated: true, completion: nil)
     }
     
-    func setupView(){
+    override func setupView(){
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         self.selectionStyle = .none
+        picker.delegate = self
         
         self.addSubview(imgAvatar)
         self.addSubview(lblName)
@@ -58,16 +77,6 @@ class HeaderTableViewCell: UITableViewCell {
         lblName.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
 
     }
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupView()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
  
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -81,3 +90,23 @@ class HeaderTableViewCell: UITableViewCell {
     }
 
 }
+
+extension HeaderTableViewCell: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
+        imgAvatar.image = chosenImage
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated:true, completion: nil)
+    }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        UIApplication.shared.keyWindow?.rootViewController?.dismiss(animated: true, completion: nil)
+    }
+}
+
+
+
+
+
+
+
+
+
