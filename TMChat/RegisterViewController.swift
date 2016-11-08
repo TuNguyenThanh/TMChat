@@ -10,6 +10,13 @@ import UIKit
 
 class RegisterViewController: UIViewController {
 
+    let bg:UIImageView = {
+        let img = UIImageView()
+        img.image = UIImage(named: "bg")
+        img.translatesAutoresizingMaskIntoConstraints = false
+        return img
+    }()
+    
     lazy var imgChooseAvatar:UIImageView = {
         let img = UIImageView()
         img.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -17,8 +24,8 @@ class RegisterViewController: UIViewController {
         img.contentMode = .scaleAspectFill
         img.isUserInteractionEnabled = true
         img.clipsToBounds = true
-        img.image = UIImage(named: "camera")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ChatLogViewController.aChooseImage(tap:))))
+        img.image = UIImage(named: "camera-1")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(selectImage)))
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
@@ -38,7 +45,6 @@ class RegisterViewController: UIViewController {
         txt.translatesAutoresizingMaskIntoConstraints = false
         return txt
     }()
-    
     
     let viewLineUsername:UIView = {
         let v = UIView()
@@ -81,6 +87,7 @@ class RegisterViewController: UIViewController {
     let txtPassword:UITextField = {
         let txt = UITextField()
         txt.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        txt.isSecureTextEntry = true
         txt.attributedPlaceholder = NSAttributedString(string:"Password", attributes:[NSForegroundColorAttributeName: UIColor.white])
         txt.translatesAutoresizingMaskIntoConstraints = false
         return txt
@@ -97,7 +104,7 @@ class RegisterViewController: UIViewController {
         let btn = UIButton(type: .system )
         btn.setTitle("Cancel", for: UIControlState.normal)
         btn.setTitleColor(UIColor.white, for: UIControlState.normal)
-        btn.backgroundColor = UIColor.clear
+        btn.backgroundColor = UIColor(red: 212/255, green: 41/255, blue: 41/255, alpha: 0.5)
         btn.layer.borderColor = UIColor.white.cgColor
         btn.layer.borderWidth = 2
         btn.layer.cornerRadius = 20
@@ -111,7 +118,7 @@ class RegisterViewController: UIViewController {
         let btn = UIButton(type: .system )
         btn.setTitle("Register", for: UIControlState.normal)
         btn.setTitleColor(UIColor.white, for: UIControlState.normal)
-        btn.backgroundColor = UIColor.clear
+        btn.backgroundColor = UIColor(red: 212/255, green: 41/255, blue: 41/255, alpha: 0.5)
         btn.layer.borderColor = UIColor.white.cgColor
         btn.layer.borderWidth = 2
         btn.layer.cornerRadius = 20
@@ -123,6 +130,7 @@ class RegisterViewController: UIViewController {
     
     func setupView(){
         self.view.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+        self.view.addSubview(bg)
         self.view.addSubview(imgChooseAvatar)
         self.view.addSubview(txtUsername)
         self.view.addSubview(imgUsername)
@@ -139,10 +147,12 @@ class RegisterViewController: UIViewController {
         txtUsername.delegate = self
         txtEmail.delegate = self
         txtPassword.delegate = self
-        picker.delegate = self
+        
+        self.view.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: bg)
+        self.view.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: bg)
         
         imgChooseAvatar.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        imgChooseAvatar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 80).isActive = true
+        imgChooseAvatar.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 120).isActive = true
         imgChooseAvatar.heightAnchor.constraint(equalToConstant: 128).isActive = true
         imgChooseAvatar.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
@@ -203,52 +213,20 @@ class RegisterViewController: UIViewController {
     }
     
     func abtnCancel(){
-        print("Cancel")
         self.dismiss(animated: true, completion: nil)
     }
     
     func abtnRegister(){
-        print("Register")
-    }
-    
-    func noCamera(){
-        let alertVC = UIAlertController(title: "No Camera",message: "Sorry, this device has no camera",preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK",style:.default,handler: nil)
-        alertVC.addAction(okAction)
-        present(alertVC,animated: true,completion: nil)
-    }
-    
-    func aChooseImage(tap : UITapGestureRecognizer){
-        print("abc")
-        
-        let alertView:UIAlertController = UIAlertController(title: "Chon Hinh", message: "Vui long chon", preferredStyle: UIAlertControllerStyle.alert)
-        let photoLibrary:UIAlertAction = UIAlertAction(title: "Photo Library", style: UIAlertActionStyle.default) { (photoLibrary) in
-            print("photo Lybrary")
-            self.picker.allowsEditing = false
-            self.picker.sourceType = .photoLibrary
-            self.picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
-            self.present(self.picker, animated: true, completion: nil)
-        }
-        let camera:UIAlertAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default) { (camera) in
-            print("Camera")
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                self.picker.allowsEditing = false
-                self.picker.sourceType = UIImagePickerControllerSourceType.camera
-                self.picker.cameraCaptureMode = .photo
-                self.picker.modalPresentationStyle = .fullScreen
-                self.present(self.picker,animated: true,completion: nil)
-            }else{
-                self.noCamera()
+        if Helper.helper.checkInputRegister(username: txtUsername.text!, email: txtEmail.text!, pass: txtPassword.text!) == true {
+            Helper.helper.registerUser(username: txtUsername.text!, email: txtEmail.text!, password: txtPassword.text!, imgAvatar: imgChooseAvatar) { (check) in
+                if check == true {
+                    self.dismiss(animated: true, completion: nil)
+                }else{
+                    print("dang ky that bai")
+                }
             }
         }
-        alertView.addAction(photoLibrary)
-        alertView.addAction(camera)
-        
-        self.present(alertView, animated: true, completion: nil)
-        
     }
-    
-    let picker = UIImagePickerController()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -295,11 +273,59 @@ extension RegisterViewController: UITextFieldDelegate {
 }
 
 extension RegisterViewController : UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+    func selectImage(){
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        imagePicker.navigationBar.isTranslucent = false
+        imagePicker.navigationBar.barTintColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1) // Background color
+        imagePicker.navigationBar.tintColor = .white // Cancel button ~ any UITabBarButton items
+        imagePicker.navigationBar.titleTextAttributes = [
+            NSForegroundColorAttributeName : UIColor.white
+        ]
+        
+        let alert = SCLAlertView()
+        alert.addButton("Photo Library") {
+            imagePicker.sourceType = .photoLibrary
+            imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: UIImagePickerControllerSourceType.photoLibrary)!
+            imagePicker.modalPresentationStyle = .popover
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+        alert.addButton("Camera") {
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+                imagePicker.cameraCaptureMode = .photo
+                imagePicker.modalPresentationStyle = .fullScreen
+                self.present(imagePicker, animated: true, completion: nil)
+            } else {
+                self.noCamera()
+            }
+        }
+        alert.showNotice("Chọn hình", subTitle: "Chọn 1 trong 2",closeButtonTitle: "Thoát")
+    }
+    
+    func noCamera(){
+        let alter:UIAlertController = UIAlertController(title: "No Camera", message: "Sorry, this device has no camera", preferredStyle: UIAlertControllerStyle.alert)
+        let OK = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+        alter.addAction(OK)
+        self.present(alter, animated: true, completion: nil)
+    }
+
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        imgChooseAvatar.image = chosenImage
+        var selectedImageFromPicker: UIImage?
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            selectedImageFromPicker = editedImage
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            selectedImageFromPicker = originalImage
+        }
+        
+        if let selectedImage = selectedImageFromPicker {
+            imgChooseAvatar.image = selectedImage
+        }
+
         self.dismiss(animated:true, completion: nil)
     }
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }

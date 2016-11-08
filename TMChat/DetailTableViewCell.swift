@@ -8,12 +8,8 @@
 
 import UIKit
 
-protocol DetailTableViewCellDelegate {
-    
-}
 
 class DetailTableViewCell: BaseTableViewCell {
-    var delegate:DetailTableViewCellDelegate?
     
     let imgIcon:UIImageView = {
         let img = UIImageView()
@@ -34,7 +30,6 @@ class DetailTableViewCell: BaseTableViewCell {
         self.selectionStyle = .none
         self.addSubview(imgIcon)
         self.addSubview(lbl)
-        
         
         imgIcon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         imgIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true

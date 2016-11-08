@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
+	<string>ca-app-pub-3940256099942544/2934735716</string>
+	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
+	<string>ca-app-pub-3940256099942544/4411468910</string>
+	<key>CLIENT_ID</key>
+	<string>556913928398-q3lnk1vkakl74a5dl43d1ipe12eo5vev.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.556913928398-q3lnk1vkakl74a5dl43d1ipe12eo5vev</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCLPinjFJQK_IckhRoTNM5z1v-eD_O9VE8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>556913928398</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>ThanhTu.TMChat</string>
+	<key>PROJECT_ID</key>
+	<string>tmchat-85116</string>
+	<key>STORAGE_BUCKET</key>
+	<string>tmchat-85116.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<true/>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false/>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true/>
+	<key>IS_GCM_ENABLED</key>
+	<true/>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true/>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:556913928398:ios:f160ee1a194e2c98</string>
+	<key>DATABASE_URL</key>
+	<string>https://tmchat-85116.firebaseio.com</string>
+</dict>
+</plist>

@@ -83,13 +83,6 @@ class MainViewController: UIViewController {
 
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        setupView()
-        setupMenuBar()
-    }
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //print(scrollView.contentOffset.x)
         menuBar.hori?.constant = scrollView.contentOffset.x / CGFloat(self.arrIdCell.count)
@@ -104,16 +97,21 @@ class MainViewController: UIViewController {
             self.setTitleForIndex(index: Int(index2))
             print(index2)
         }
-        
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         myCollectionView.collectionViewLayout.invalidateLayout()
     }
-      
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+                
+        setupView()
+        setupMenuBar()
+        print("main viewdidload")
+    }
+    
 }
-
-
 
 extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -135,7 +133,9 @@ extension MainViewController: UICollectionViewDelegate, UICollectionViewDataSour
             cell.delegate = self
             return cell
         }else{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.arrIdCell[indexPath.row], for: indexPath)
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.arrIdCell[indexPath.row], for: indexPath) as! Page4CollectionViewCell
+            cell.delegate = self
+            cell.delegate2 = self
             return cell
         }
     }
@@ -165,7 +165,6 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
         }
     }
     
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
@@ -179,9 +178,10 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 }
 
 extension MainViewController: pushChatLogControllerDelegate{
-    func push(title: String) {
+    func push(userTo: User) {
         let chatLogVC = ChatLogViewController()
-        chatLogVC.title = title
+        chatLogVC.title = userTo.userName
+        chatLogVC.userTo = userTo
         self.navigationController?.pushViewController(chatLogVC, animated: true)
     }
 }
@@ -192,6 +192,25 @@ extension MainViewController: Page2CollectionViewCellDelegate{
         self.navigationController?.pushViewController(createGroupVC, animated: true)
     }
 }
+
+extension MainViewController: Page4CollectionViewCellDelegate{
+    func presentLoginVC() {
+        self.present(LoginViewController(), animated: true, completion: nil)
+    }
+}
+
+extension MainViewController: Page4CollectionViewCellDelegate2{
+    func showPicker(picker: UIImagePickerController) {
+        self.present(picker, animated: true, completion: nil)
+    }
+    
+    func dissmissVC() {
+        self.dismiss(animated:true, completion: nil)
+    }
+}
+
+
+
 
 
 

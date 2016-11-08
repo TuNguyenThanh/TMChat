@@ -37,16 +37,17 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         return img
     }()
 
-    var bubbleViewWithAnchor:NSLayoutConstraint?
-    var bubbleViewRightAnchor:NSLayoutConstraint?
-    var bubbleViewLeftAnchor:NSLayoutConstraint?
+
+    var bubbleViewWith:NSLayoutConstraint?
+    var bubbleViewRight:NSLayoutConstraint?
+    var bubbleViewLeft:NSLayoutConstraint?
     
     override func setupView() {
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         self.addSubview(bubbleView)
         self.addSubview(imgAvatar)
         bubbleView.addSubview(txtTextMessages)
-    
+        
         imgAvatar.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
         imgAvatar.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
         imgAvatar.widthAnchor.constraint(equalToConstant: 32).isActive = true
@@ -55,15 +56,15 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         ///--
         bubbleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
         
-        bubbleViewRightAnchor = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8)
-        bubbleViewRightAnchor?.isActive = true
+        bubbleViewRight = bubbleView.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -8)
+        bubbleViewRight?.isActive = true
         
-        bubbleViewLeftAnchor = bubbleView.leftAnchor.constraint(equalTo: imgAvatar.rightAnchor, constant: 8)
-        bubbleViewLeftAnchor?.isActive = false
+        bubbleViewLeft = bubbleView.leftAnchor.constraint(equalTo: imgAvatar.rightAnchor, constant: 8)
+        //bubbleViewLeft?.isActive = false
         
         bubbleView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
-        bubbleViewWithAnchor = bubbleView.widthAnchor.constraint(equalToConstant: 200)
-        bubbleViewWithAnchor?.isActive = true
+        bubbleViewWith = bubbleView.widthAnchor.constraint(equalToConstant: 200)
+        bubbleViewWith?.isActive = true
         
         
         ///----
@@ -71,7 +72,6 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         txtTextMessages.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 8).isActive = true
         txtTextMessages.rightAnchor.constraint(equalTo: bubbleView.rightAnchor, constant: -8).isActive = true
         txtTextMessages.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
-
     }
 
 }

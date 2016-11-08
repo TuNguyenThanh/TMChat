@@ -7,19 +7,34 @@
 //
 
 import UIKit
+import Firebase
+import FBSDKCoreKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
+        
+        Helper.helper.checkUserLogin { (user) in
+            if user != nil && userCurrent == nil {
+                print("login roi")
+                Helper.helper.online()
+                Helper.helper.fetchUserCurrent()
+                self.window?.rootViewController = UINavigationController(rootViewController: MainViewController()) 
+            }else{
+                print("chua login")
+                self.window?.rootViewController = LoginViewController()
+            }
+        }
+        
         //window?.rootViewController = LoginViewController()
-        window?.rootViewController = UINavigationController(rootViewController: MainViewController())
+        //window?.rootViewController = UINavigationController(rootViewController: MainViewController())
         
         UINavigationBar.appearance().barTintColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
         UINavigationBar.appearance().shadowImage = UIImage()
@@ -30,14 +45,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         application.statusBarStyle = .lightContent
         
-        let statusBarBackgroundView = UIView()
-        statusBarBackgroundView.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+//        let statusBarBackgroundView = UIView()
+//        statusBarBackgroundView.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+//        
+//        window?.addSubview(statusBarBackgroundView)
+//        window?.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: statusBarBackgroundView)
+//        window?.addConstrainWithVisualFormat(VSFormat: "V:|[v0(20)]", views: statusBarBackgroundView)
         
-        window?.addSubview(statusBarBackgroundView)
-        window?.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: statusBarBackgroundView)
-        window?.addConstrainWithVisualFormat(VSFormat: "V:|[v0(20)]", views: statusBarBackgroundView)
+        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         return true
+    }
+    
+    override init() {
+        FIRApp.configure()
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplicationOpenURLOptionsKey : Any] = [:]) -> Bool {
+        guard let sourceApplication = options[UIApplicationOpenURLOptionsKey.sourceApplication] as? String else {return false}
+        let annotation = options[UIApplicationOpenURLOptionsKey.annotation] as? String
+        return FBSDKApplicationDelegate.sharedInstance().application(app, open: url, sourceApplication: sourceApplication, annotation: annotation)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -56,6 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        FBSDKAppEvents.activateApp()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

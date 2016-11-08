@@ -6,8 +6,8 @@
 //  Copyright © 2016 ThanhTu. All rights reserved.
 //
 
-import Foundation
-
+import UIKit
+import Firebase
 struct Messages {
     let keyMess:String!
     let fromId:String!
@@ -23,25 +23,49 @@ struct Messages {
         self.timestamp = 0
     }
     
-    init(keyMess:String, fromId:String, toId:String, text:String) {
-        self.keyMess = keyMess
-        self.fromId = fromId
-        self.toId = toId
-        self.text = text
-        self.timestamp = 0
-    }
-    
-    init(keyMess:String , snapshot: Dictionary<String,AnyObject>) {
-        self.keyMess = keyMess
+    init(key:String , snapshot: Dictionary<String,AnyObject>) {
+        self.keyMess = key
         self.fromId = snapshot["fromId"] as! String
         self.toId = snapshot["toId"] as! String
         self.text = snapshot["text"] as! String
         self.timestamp = snapshot["timestamp"] as! NSNumber!
     }
     
-    // nếu fromId == idSender -> id người nhận
-    // fromId != idSender -> id sender
-    func chatPartnerId(currentUserId:String) -> String? {
-        return fromId == currentUserId ? toId : fromId
+    func chatPartnerId() -> String? {
+        return fromId == FIRAuth.auth()?.currentUser?.uid ? toId : fromId
+        //ban chat, neu = usercurrent thi tra ve id ban chat, nguoc lai
     }
 }
+
+//struct Messages {
+//    let messageId:String!
+//    let toId:String!
+//    var timestamp: Date = Date()
+//    let text:String!
+//    let mediaType:String!
+//    let fileURL:String!
+//    
+//    
+//    init(key: String , snapshot: Dictionary<String,AnyObject>){
+//        self.messageId = key
+//        self.toId = snapshot["toId"] as! String
+//        if let timeInterval1970 = snapshot["timestamp"] as? TimeInterval {
+//            let date:Date = Date(timeIntervalSince1970: timeInterval1970)
+//            self.timestamp = date
+//        }
+//        if let text = snapshot["text"] as? String {
+//            self.text = text
+//        }else{
+//            self.text = ""
+//        }
+//        self.mediaType = snapshot["mediaType"] as! String
+//        
+//        if let file = snapshot["fileURL"] as? String{
+//            self.fileURL = file
+//        }else{
+//            self.fileURL = ""
+//        }
+//    }
+//    
+//    
+//}

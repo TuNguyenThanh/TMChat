@@ -52,7 +52,7 @@ class ChatLogViewController: UIViewController {
         img.image = UIImage(named: "upload_image")
         img.isUserInteractionEnabled = true
         img.clipsToBounds = true
-        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ChatLogViewController.aChooseImage(tap:))))
+        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(ChatLogViewController.selectImage)))
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
@@ -68,46 +68,9 @@ class ChatLogViewController: UIViewController {
         print("dismiss view")
         self.dismiss(animated: true, completion: nil)
     }
-    
-    func abtnSend(){
-        print(inputTextField.text!)
-        inputTextField.text = nil
-    }
 
-    let picker = UIImagePickerController()
-    func aChooseImage(tap : UITapGestureRecognizer){
-        print("aaaa")
-        let alertView:UIAlertController = UIAlertController(title: "Chon Hinh", message: "Vui long chon", preferredStyle: UIAlertControllerStyle.alert)
-        let photoLibrary:UIAlertAction = UIAlertAction(title: "Photo Library", style: UIAlertActionStyle.default) { (photoLibrary) in
-            print("photo Lybrary")
-            self.picker.allowsEditing = false
-            self.picker.sourceType = .photoLibrary
-            self.picker.mediaTypes = UIImagePickerController.availableMediaTypes(for: .photoLibrary)!
-            self.present(self.picker, animated: true, completion: nil)
-        }
-        let camera:UIAlertAction = UIAlertAction(title: "Camera", style: UIAlertActionStyle.default) { (camera) in
-            print("Camera")
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                self.picker.allowsEditing = false
-                self.picker.sourceType = UIImagePickerControllerSourceType.camera
-                self.picker.cameraCaptureMode = .photo
-                self.picker.modalPresentationStyle = .fullScreen
-                self.present(self.picker,animated: true,completion: nil)
-            }else{
-                //self.noCamera()
-            }
-        }
-        alertView.addAction(photoLibrary)
-        alertView.addAction(camera)
-        
-        self.present(alertView, animated: true, completion: nil)
-    }
-    
-
-    
     func setupView(){
         self.view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        self.picker.delegate = self
         
         self.view.addSubview(myCollectionView)
         self.view.addSubview(inputComponents)
@@ -149,20 +112,42 @@ class ChatLogViewController: UIViewController {
         viewLine.rightAnchor.constraint(equalTo: inputComponents.rightAnchor).isActive = true
         viewLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-        arrMessages.append(Messages(keyMess: "k1", fromId: "I1", toId: "A1", text: "Hello"))
-        arrMessages.append(Messages(keyMess: "k2", fromId: "I1", toId: "A3", text: "Hello say you do"))
-        arrMessages.append(Messages(keyMess: "k3", fromId: "I1", toId: "A4", text: "Một bài test đã gây sóng gió cho biết bao nhiêu người,trong đó có cả người bản xứ."))
-        arrMessages.append(Messages(keyMess: "k4", fromId: "k1", toId: "A5", text: "Bạn có đủ tự tin để làm bài test này không nào? Thử ngay để biết trình độ tiếng Anh của mình. QuizV-Bài kiểm tra gây sóng gió ngay cả với người bản xứ"))
-        
+    }
+    
+    func observeMessages(){
+        Helper.helper.fetchUserMessages { (mess) in
+            //print(mess)
+            if mess.toId == userCurrent?.uid && mess.fromId == self.userTo?.uid || mess.toId == self.userTo?.uid && mess.fromId == userCurrent?.uid{
+                
+                self.arrMessages.append(mess)
+                DispatchQueue.main.async {
+                    self.myCollectionView.reloadData()
+                }
+            }
+        }
+    }
+    
+    func abtnSend(){
+        print(inputTextField.text!)
+        Helper.helper.sendMessage(text: inputTextField.text!,toId: (userTo?.uid)!, fromId: (userCurrent?.uid)!)
+        inputTextField.text = nil
     }
 
+    var userTo:User?
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+
+        observeMessages()
+        print((userTo?.uid)! as String)
+        print((userCurrent?.uid)! as String)
+        print(self.arrMessages)
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        self.myCollectionView.collectionViewLayout.invalidateLayout()
     }
 }
-
-
 
 extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDelegate {
     
@@ -174,21 +159,22 @@ extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDe
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellId, for: indexPath) as! ChatLogCollectionViewCell
         
         let messages = self.arrMessages[indexPath.row]
-        cell.imgAvatar.image = UIImage(named: "avatar")
         cell.txtTextMessages.text = messages.text
-        if messages.fromId == "k1" {
+        if messages.fromId == userCurrent?.uid {
             //outgoing bubble
             cell.bubbleView.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
-            cell.bubbleViewRightAnchor?.isActive = true
-            cell.bubbleViewLeftAnchor?.isActive = false
+            cell.bubbleViewRight?.isActive = true
+            cell.bubbleViewLeft?.isActive = false
             cell.imgAvatar.isHidden = true
-        }else{
+        }else {
             //incoming bubble
             cell.bubbleView.backgroundColor = #colorLiteral(red: 0.7450980544, green: 0.1568627506, blue: 0.07450980693, alpha: 1)
-            cell.bubbleViewRightAnchor?.isActive = false
-            cell.bubbleViewLeftAnchor?.isActive = true
+            cell.bubbleViewRight?.isActive = false
+            cell.bubbleViewLeft?.isActive = true
             cell.imgAvatar.isHidden = false
         }
+
+        cell.bubbleViewWith?.constant = estimateFrameForText(text: messages.text).width + 32
         return cell
     }
 }
@@ -196,11 +182,9 @@ extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDe
 extension ChatLogViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height:CGFloat = 80
-        
         if let isText = self.arrMessages[indexPath.row].text {
             height = estimateFrameForText(text: isText).height + 20
         }
-        
         return CGSize(width: self.view.frame.width, height: height)
     }
     
@@ -210,7 +194,6 @@ extension ChatLogViewController: UICollectionViewDelegateFlowLayout{
         let options = NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin)
         return NSString(string: text).boundingRect(with: size, options: options, attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 16)], context: nil)
     }
-    
 }
 
 extension ChatLogViewController: UITextFieldDelegate{
@@ -220,13 +203,57 @@ extension ChatLogViewController: UITextFieldDelegate{
     }
 }
 
-extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func selectImage(){
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.allowsEditing = true
+        imagePicker.navigationBar.isTranslucent = false
+        imagePicker.navigationBar.barTintColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1) 
+        imagePicker.navigationBar.tintColor = .white
+        imagePicker.navigationBar.titleTextAttributes = [ NSForegroundColorAttributeName : UIColor.white ]
+        
+        let alert = SCLAlertView()
+        alert.addButton("Photo Library") {
+            imagePicker.sourceType = .photoLibrary
+            imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: UIImagePickerControllerSourceType.photoLibrary)!
+            imagePicker.modalPresentationStyle = .popover
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+        alert.addButton("Camera") {
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+                imagePicker.cameraCaptureMode = .photo
+                imagePicker.modalPresentationStyle = .fullScreen
+                self.present(imagePicker, animated: true, completion: nil)
+            } else {
+                self.noCamera()
+            }
+        }
+        alert.showNotice("Chọn hình", subTitle: "Chọn 1 trong 2",closeButtonTitle: "Thoát")
+    }
+    
+    func noCamera(){
+        let alter:UIAlertController = UIAlertController(title: "No Camera", message: "Sorry, this device has no camera", preferredStyle: UIAlertControllerStyle.alert)
+        let OK = UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil)
+        alter.addAction(OK)
+        self.present(alter, animated: true, completion: nil)
+    }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        ///imgAvatar.image = chosenImage
-        print(chosenImage)
+//        var selectedImageFromPicker: UIImage?
+//        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+//            selectedImageFromPicker = editedImage
+//        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+//            selectedImageFromPicker = originalImage
+//        }
+//        
+//        if let selectedImage = selectedImageFromPicker {
+//            imgChooseAvatar.image = selectedImage
+//        }
         self.dismiss(animated:true, completion: nil)
     }
+
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
     }

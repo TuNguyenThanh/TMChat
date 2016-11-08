@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol FriendTableViewCellDelegate {
+    func sendFriend(uid:String)
+}
+
 class FriendTableViewCell: BaseTableViewCell {
     
     let lblName:UILabel = {
@@ -36,19 +40,35 @@ class FriendTableViewCell: BaseTableViewCell {
     
     let viewOnOff:UIView = {
         let v = UIView()
-        v.backgroundColor = #colorLiteral(red: 0.9686274529, green: 0.78039217, blue: 0.3450980484, alpha: 1)
         v.layer.cornerRadius = 5
         v.clipsToBounds = true
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
+    lazy var btnSendFriend:UIButton = {
+        let btn = UIButton()
+        btn.backgroundColor = #colorLiteral(red: 0.1215686277, green: 0.01176470611, blue: 0.4235294163, alpha: 1)
+        btn.setTitle("Ket ban", for: UIControlState.normal)
+        btn.addTarget(self, action: #selector(FriendTableViewCell.abtnSendFriend), for: UIControlEvents.touchUpInside)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
+    
+    func abtnSendFriend(){
+        print("touched")
+        self.delegate?.sendFriend(uid: uid!)
+    }
+    
+    var delegate:FriendTableViewCellDelegate?
+    var uid:String?
     
     override func setupView() {
         self.addSubview(imgAvatar)
         self.addSubview(lblName)
         self.addSubview(lblOnOff)
         self.addSubview(viewOnOff)
+        self.addSubview(btnSendFriend)
         
         imgAvatar.widthAnchor.constraint(equalTo: self.heightAnchor, constant: -20).isActive = true
         imgAvatar.heightAnchor.constraint(equalTo: imgAvatar.widthAnchor).isActive = true
@@ -67,6 +87,9 @@ class FriendTableViewCell: BaseTableViewCell {
         viewOnOff.heightAnchor.constraint(equalTo: viewOnOff.widthAnchor).isActive = true
         viewOnOff.centerYAnchor.constraint(equalTo: lblOnOff.centerYAnchor).isActive = true
         viewOnOff.rightAnchor.constraint(equalTo: lblOnOff.leftAnchor, constant: -8).isActive = true
+        
+        btnSendFriend.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        btnSendFriend.rightAnchor.constraint(equalTo: viewOnOff.leftAnchor, constant: -10).isActive = true
     }
     
     override func awakeFromNib() {

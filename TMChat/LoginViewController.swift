@@ -7,9 +7,16 @@
 //
 
 import UIKit
+import FBSDKLoginKit
 
 class LoginViewController: UIViewController  {
-
+    
+    let bg:UIImageView = {
+        let img = UIImageView()
+        img.image = UIImage(named: "bg")
+        img.translatesAutoresizingMaskIntoConstraints = false
+        return img
+    }()
     
     let logo:UILabel = {
         let lbl = UILabel()
@@ -37,7 +44,6 @@ class LoginViewController: UIViewController  {
         return txt
     }()
     
-    
     let viewLineEmail:UIView = {
         let v = UIView()
         v.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -56,6 +62,7 @@ class LoginViewController: UIViewController  {
     let txtPassword:UITextField = {
         let txt = UITextField()
         txt.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        txt.isSecureTextEntry = true
         txt.attributedPlaceholder = NSAttributedString(string:"Password", attributes:[NSForegroundColorAttributeName: UIColor.white])
         txt.translatesAutoresizingMaskIntoConstraints = false
         return txt
@@ -72,7 +79,7 @@ class LoginViewController: UIViewController  {
         let btn = UIButton(type: .system )
         btn.setTitle("Login", for: UIControlState.normal)
         btn.setTitleColor(UIColor.white, for: UIControlState.normal)
-        btn.backgroundColor = UIColor.clear
+        btn.backgroundColor = UIColor(red: 212/255, green: 41/255, blue: 41/255, alpha: 0.5)
         btn.layer.borderColor = UIColor.white.cgColor
         btn.layer.borderWidth = 2
         btn.layer.cornerRadius = 20
@@ -86,7 +93,7 @@ class LoginViewController: UIViewController  {
         let btn = UIButton(type: .system )
         btn.setTitle("Register", for: UIControlState.normal)
         btn.setTitleColor(UIColor.white, for: UIControlState.normal)
-        btn.backgroundColor = UIColor.clear
+        btn.backgroundColor = UIColor(red: 212/255, green: 41/255, blue: 41/255, alpha: 0.5)
         btn.layer.borderColor = UIColor.white.cgColor
         btn.layer.borderWidth = 2
         btn.layer.cornerRadius = 20
@@ -96,15 +103,16 @@ class LoginViewController: UIViewController  {
         return btn
     }()
     
-    let btnLoginWithFB:UIButton = {
+    lazy var btnLoginWithFB:UIButton = {
         let btn = UIButton(type: .system )
         btn.setTitle("Login with Facebook", for: UIControlState.normal)
         btn.setTitleColor(UIColor.white, for: UIControlState.normal)
-        btn.backgroundColor = UIColor.clear
+        btn.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
         btn.layer.borderColor = UIColor.white.cgColor
         btn.layer.borderWidth = 2
-        btn.layer.cornerRadius = 20
+        btn.layer.cornerRadius = 10
         btn.clipsToBounds = true
+        btn.addTarget(self, action: #selector(LoginViewController.abtnLoginFB), for: UIControlEvents.touchUpInside)
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
@@ -112,6 +120,7 @@ class LoginViewController: UIViewController  {
     
     func setuppView(){
         self.view.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
+        self.view.addSubview(bg)
         self.view.addSubview(logo)
         self.view.addSubview(txtEmail)
         self.view.addSubview(imgEmail)
@@ -126,11 +135,14 @@ class LoginViewController: UIViewController  {
         txtEmail.delegate = self
         txtPassword.delegate = self
         
+        self.view.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: bg)
+        self.view.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: bg)
+        
         logo.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        logo.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100).isActive = true
+        logo.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 180).isActive = true
       
         self.txtEmail.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        self.txtEmail.topAnchor.constraint(equalTo: self.logo.bottomAnchor, constant: 100).isActive = true
+        self.txtEmail.topAnchor.constraint(equalTo: self.logo.bottomAnchor, constant: 60).isActive = true
         self.txtEmail.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 112).isActive = true
         self.txtEmail.heightAnchor.constraint(equalToConstant: 40).isActive = true
 
@@ -179,8 +191,17 @@ class LoginViewController: UIViewController  {
     
     func abtnLogin(){
         print("Login")
-        let mainVC = MainViewController()
-        self.present( UINavigationController(rootViewController: mainVC), animated: true, completion: nil)
+        if Helper.helper.checkInputLogin(email: txtEmail.text!, pass: txtPassword.text!) == true {
+            Helper.helper.loginEmail(email: txtEmail.text!, password: txtPassword.text!) { (check) in
+                if check == true {
+                    Helper.helper.online()
+                    Helper.helper.fetchUserCurrent()
+                    self.present( UINavigationController(rootViewController: MainViewController()), animated: true, completion: nil)
+                }else{
+                    print("login error")
+                }
+            }
+        }
     }
     
     func abtnRegister(){
@@ -188,11 +209,24 @@ class LoginViewController: UIViewController  {
         let registerVC = RegisterViewController()
         self.present(registerVC, animated: true, completion: nil)
     }
+    
+   
 
+    func abtnLoginFB(){
+        print("Login FB")
+            Helper.helper.loginFB { (check) in
+            if check == true {
+                Helper.helper.online()
+                Helper.helper.fetchUserCurrent()
+                self.present(UINavigationController.init(rootViewController: MainViewController()), animated: true, completion: nil)
+            }else {
+                print("Chua login nhe")
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         setuppView()
     }

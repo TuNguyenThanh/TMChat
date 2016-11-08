@@ -7,9 +7,18 @@
 //
 
 import UIKit
+import FBSDKLoginKit
+
+protocol Page4CollectionViewCellDelegate {
+    func presentLoginVC()
+}
+
+protocol Page4CollectionViewCellDelegate2 {
+    func showPicker(picker:UIImagePickerController)
+    func dissmissVC()
+}
 
 class Page4CollectionViewCell: BaseCollectionViewCell {
-    
     
     lazy var tableView:UITableView = {
         let tbl = UITableView(frame: CGRect.zero, style: UITableViewStyle.plain)
@@ -23,14 +32,24 @@ class Page4CollectionViewCell: BaseCollectionViewCell {
         return tbl
     }()
     
+    var delegate:Page4CollectionViewCellDelegate?
+    var delegate2:Page4CollectionViewCellDelegate2?
     override func setupView() {
         backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
         self.addSubview(tableView)
         
         self.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: tableView)
         self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: tableView)
-    
+    }
+}
+
+extension Page4CollectionViewCell: HeaderTableViewCellDelegate{
+    func showPickerImageView(picker: UIImagePickerController) {
+        self.delegate2?.showPicker(picker: picker)
+    }
+
+    func dissmissVC() {
+        self.delegate2?.dissmissVC()
     }
 }
 
@@ -42,27 +61,28 @@ extension Page4CollectionViewCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellHeader", for: indexPath) as! HeaderTableViewCell
+            cell.delegate = self
+            cell.lblName.text = userCurrent?.userName
+            print(userCurrent?.avatarURL ?? "avatarUrl")
+            if userCurrent?.avatarURL != nil {
+                cell.imgAvatar.loadImage(urlString: (userCurrent?.avatarURL)!)
+            }
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellDetail", for: indexPath) as! DetailTableViewCell
-            
             if indexPath.row == 1 {
                 cell.imgIcon.image = UIImage(named: "email")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-                cell.lbl.text = "thanhtu0903016975@gmail.com"
+                cell.lbl.text = userCurrent?.email!
             }else if indexPath.row == 2 {
                 cell.imgIcon.image = UIImage(named: "phone")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-                cell.lbl.text = "0903016975"
+                cell.lbl.text = userCurrent?.phone!
             }else if indexPath.row == 3 {
-                cell.imgIcon.image = UIImage(named: "logout")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-                cell.lbl.text = "cap nhat thong tin"
+                cell.imgIcon.image = UIImage(named: "resetpass")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+                cell.lbl.text = "Đặt lại mật khẩu"
             }else if indexPath.row == 4 {
                 cell.imgIcon.image = UIImage(named: "logout")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-                cell.lbl.text = "Quen mat khhau"
-            }else if indexPath.row == 5 {
-                cell.imgIcon.image = UIImage(named: "logout")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
-                cell.lbl.text = "Logout"
+                cell.lbl.text = "Đăng xuất"
             }
-            
             
             return cell
         }
@@ -71,12 +91,28 @@ extension Page4CollectionViewCell: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             
-        }else if indexPath.row == 1{
+        }else if indexPath.row == 1 {
             print("email")
-        }else if indexPath.row == 2{
-            print("phone")
-        }else if indexPath.row == 3{
-            print("logout")
+        }else if indexPath.row == 2 {
+            let appearance = SCLAlertView.SCLAppearance(showCloseButton: true)
+            let alert = SCLAlertView(appearance: appearance)
+            let txt = alert.addTextField("Nhập số điện thoại...")
+            _ = alert.addButton("Thay đổi") {
+                Helper.helper.updateNumberPhone(numberPhone: txt.text!)
+                let cell = tableView.cellForRow(at: indexPath) as! DetailTableViewCell
+                cell.lbl.text = txt.text
+            }
+            _ = alert.showEdit("Thay đổi số điện thoại", subTitle:"Vui lòng nhập số điện thoại",closeButtonTitle: "Huỷ")
+        }else if indexPath.row == 3 {
+            //Reset password
+            Helper.helper.resetPasswordToEmail()
+        }else if indexPath.row == 4 {
+            //Logout
+            Helper.helper.logout(completion: { (check) in
+                if check == true {
+                    self.delegate?.presentLoginVC()
+                }
+            })
         }
     }
     
@@ -88,6 +124,7 @@ extension Page4CollectionViewCell: UITableViewDataSource, UITableViewDelegate {
         }
     }
 }
+
 
 
 

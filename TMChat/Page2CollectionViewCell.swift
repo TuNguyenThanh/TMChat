@@ -78,7 +78,8 @@ extension Page2CollectionViewCell: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        self.delegate?.push(title: "MTV Group")
+        
+        //self.delegate?.push(userTo: "MTV Group")
     }
 }
 
