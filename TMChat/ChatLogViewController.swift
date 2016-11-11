@@ -24,12 +24,6 @@ class ChatLogViewController: UIViewController {
         return coll
     }()
     
-    let inputComponents:UIView = {
-        let vi = UIView()
-        vi.translatesAutoresizingMaskIntoConstraints = false
-        return vi
-    }()
-    
     lazy var btnSend:UIButton = {
         let btn = UIButton(type: .system)
         btn.setTitle("Send", for: UIControlState.normal)
@@ -69,59 +63,30 @@ class ChatLogViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
+    var inputComponentsBottomAnchor:NSLayoutConstraint?
     func setupView(){
         self.view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        
         self.view.addSubview(myCollectionView)
-        self.view.addSubview(inputComponents)
-        inputComponents.addSubview(btnSend)
-        inputComponents.addSubview(imgChooseImage)
-        inputComponents.addSubview(inputTextField)
-        inputComponents.addSubview(viewLine)
         
         myCollectionView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
         myCollectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -50).isActive = true
         myCollectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         myCollectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
-        myCollectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 58, right: 0)
-        myCollectionView.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        
-        inputComponents.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
-        inputComponents.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        inputComponents.widthAnchor.constraint(equalTo: self.view.widthAnchor).isActive = true
-        inputComponents.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-        imgChooseImage.leftAnchor.constraint(equalTo: inputComponents.leftAnchor).isActive = true
-        imgChooseImage.topAnchor.constraint(equalTo: inputComponents.topAnchor).isActive = true
-        imgChooseImage.bottomAnchor.constraint(equalTo: inputComponents.bottomAnchor).isActive = true
-        imgChooseImage.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        btnSend.rightAnchor.constraint(equalTo: inputComponents.rightAnchor).isActive = true
-        btnSend.centerYAnchor.constraint(equalTo: inputComponents.centerYAnchor).isActive = true
-        btnSend.heightAnchor.constraint(equalTo: inputComponents.heightAnchor).isActive = true
-        btnSend.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        
-        inputTextField.topAnchor.constraint(equalTo: inputComponents.topAnchor).isActive = true
-        inputTextField.rightAnchor.constraint(equalTo: btnSend.leftAnchor).isActive = true
-        inputTextField.bottomAnchor.constraint(equalTo: inputComponents.bottomAnchor).isActive = true
-        inputTextField.leftAnchor.constraint(equalTo: imgChooseImage.rightAnchor, constant: 0).isActive = true
-        
-        viewLine.leftAnchor.constraint(equalTo: inputComponents.leftAnchor).isActive = true
-        viewLine.topAnchor.constraint(equalTo: inputComponents.topAnchor, constant: -1).isActive = true
-        viewLine.rightAnchor.constraint(equalTo: inputComponents.rightAnchor).isActive = true
-        viewLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
-        
+        myCollectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        myCollectionView.keyboardDismissMode = .interactive
+        myCollectionView.alwaysBounceVertical = true
     }
     
     func observeMessages(){
         Helper.helper.fetchUserMessages { (mess) in
             //print(mess)
-            if mess.toId == userCurrent?.uid && mess.fromId == self.userTo?.uid || mess.toId == self.userTo?.uid && mess.fromId == userCurrent?.uid{
-                
+            if mess.toId == userCurrent?.uid && mess.fromId == self.userTo?.uid || mess.toId == self.userTo?.uid && mess.fromId == userCurrent?.uid{                
                 self.arrMessages.append(mess)
                 DispatchQueue.main.async {
                     self.myCollectionView.reloadData()
+                    let indexPath = IndexPath(item: self.arrMessages.count - 1, section: 0)
+                    self.myCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.bottom, animated: true)
                 }
             }
         }
@@ -137,12 +102,94 @@ class ChatLogViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupKeyboard()
 
         observeMessages()
         print((userTo?.uid)! as String)
         print((userCurrent?.uid)! as String)
         print(self.arrMessages)
     }
+    
+    lazy var inputContainerView:UIView = {
+        let inputComponent = UIView()
+        inputComponent.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: 50)
+        inputComponent.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        
+        inputComponent.addSubview(self.btnSend)
+        inputComponent.addSubview(self.imgChooseImage)
+        inputComponent.addSubview(self.inputTextField)
+        inputComponent.addSubview(self.viewLine)
+
+        self.imgChooseImage.leftAnchor.constraint(equalTo: inputComponent.leftAnchor).isActive = true
+        self.imgChooseImage.topAnchor.constraint(equalTo: inputComponent.topAnchor).isActive = true
+        self.imgChooseImage.bottomAnchor.constraint(equalTo: inputComponent.bottomAnchor).isActive = true
+        self.imgChooseImage.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        self.btnSend.rightAnchor.constraint(equalTo: inputComponent.rightAnchor).isActive = true
+        self.btnSend.centerYAnchor.constraint(equalTo: inputComponent.centerYAnchor).isActive = true
+        self.btnSend.heightAnchor.constraint(equalTo: inputComponent.heightAnchor).isActive = true
+        self.btnSend.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        
+        self.inputTextField.topAnchor.constraint(equalTo: inputComponent.topAnchor).isActive = true
+        self.inputTextField.rightAnchor.constraint(equalTo: self.btnSend.leftAnchor).isActive = true
+        self.inputTextField.bottomAnchor.constraint(equalTo: inputComponent.bottomAnchor).isActive = true
+        self.inputTextField.leftAnchor.constraint(equalTo: self.imgChooseImage.rightAnchor, constant: 0).isActive = true
+        
+        self.viewLine.leftAnchor.constraint(equalTo: inputComponent.leftAnchor).isActive = true
+        self.viewLine.topAnchor.constraint(equalTo: inputComponent.topAnchor, constant: -1).isActive = true
+        self.viewLine.rightAnchor.constraint(equalTo: inputComponent.rightAnchor).isActive = true
+        self.viewLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        
+         return inputComponent
+    }()
+    
+    override var inputAccessoryView: UIView?{
+        get{
+            return inputContainerView
+        }
+    }
+    
+    override var canBecomeFirstResponder: Bool{
+        return true
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    func setupKeyboard(){
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil   )
+//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil   )
+         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil   )
+    }
+    
+    func handleKeyboardDidShow() {
+        if self.arrMessages.count > 0 {
+            let indexPath = IndexPath(item: self.arrMessages.count - 1, section: 0)
+            self.myCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: true)
+        }
+    }
+    
+    func keyboardWillShow(notification:Notification){
+        let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
+        let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
+        
+        UIView.animate(withDuration: keyboardDuration!) {
+            self.inputComponentsBottomAnchor?.constant = -(keyboardFrame?.height)!
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    func keyboardWillHide(notification:Notification){
+        let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
+        
+        UIView.animate(withDuration: keyboardDuration!) {
+            self.inputComponentsBottomAnchor?.constant = 0
+            self.view.layoutIfNeeded()
+        }
+    }
+
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         self.myCollectionView.collectionViewLayout.invalidateLayout()
@@ -160,6 +207,8 @@ extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDe
         
         let messages = self.arrMessages[indexPath.row]
         cell.txtTextMessages.text = messages.text
+        
+        cell.imgAvatar.loadImage(urlString: (userTo?.avatarURL)!)
         if messages.fromId == userCurrent?.uid {
             //outgoing bubble
             cell.bubbleView.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
@@ -173,8 +222,21 @@ extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDe
             cell.bubbleViewLeft?.isActive = true
             cell.imgAvatar.isHidden = false
         }
-
-        cell.bubbleViewWith?.constant = estimateFrameForText(text: messages.text).width + 32
+        
+        if let messageImageUrl = messages.urlImage {
+            cell.messImage.loadImage(urlString: messageImageUrl)
+            cell.messImage.isHidden = false
+            cell.bubbleView.backgroundColor = UIColor.clear
+        } else {
+            cell.messImage.isHidden = true
+        }
+        
+        if let text = messages.text {
+             cell.bubbleViewWith?.constant = estimateFrameForText(text: text).width + 32
+        }else if (messages.urlImage) != nil {
+            cell.bubbleViewWith?.constant = 200
+        }
+               
         return cell
     }
 }
@@ -182,10 +244,19 @@ extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDe
 extension ChatLogViewController: UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height:CGFloat = 80
-        if let isText = self.arrMessages[indexPath.row].text {
+        
+        let mess = self.arrMessages[indexPath.item]
+        if let isText = mess.text {
             height = estimateFrameForText(text: isText).height + 20
+        }else if let imageWidth = mess.imageWidth?.floatValue, let imageHeight = mess.imageHeight?.floatValue  {
+            // h1 / w1 = h2 / w2
+            // solve for h1
+            // h1 = h2 / w2 * w1
+            
+            height = CGFloat(imageHeight / imageWidth * 200)
         }
-        return CGSize(width: self.view.frame.width, height: height)
+        
+        return CGSize(width: UIScreen.main.bounds.width, height: height)
     }
     
     //get with height text chat bubble
@@ -241,16 +312,16 @@ extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-//        var selectedImageFromPicker: UIImage?
-//        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-//            selectedImageFromPicker = editedImage
-//        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-//            selectedImageFromPicker = originalImage
-//        }
-//        
-//        if let selectedImage = selectedImageFromPicker {
-//            imgChooseAvatar.image = selectedImage
-//        }
+        var selectedImageFromPicker: UIImage?
+        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+            selectedImageFromPicker = editedImage
+        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+            selectedImageFromPicker = originalImage
+        }
+
+        if let selectedImage = selectedImageFromPicker {
+            Helper.helper.sendMessImage(image: selectedImage, toId: (userTo?.uid)!, fromId: (userCurrent?.uid)!)
+        }
         self.dismiss(animated:true, completion: nil)
     }
 

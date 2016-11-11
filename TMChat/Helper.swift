@@ -471,41 +471,38 @@ class Helper {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
+    ///send message image
+    func sendMessImage(image:UIImage, toId:String, fromId:String){
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showWait("Loading", subTitle: "Vui lòng đợi tí nhé ...")
+        if let uploadData = UIImageJPEGRepresentation(image, 0.2){
+            let imageName = UUID().uuidString
+            self.STORAGE_REF.child("Messages-Images").child(imageName).put(uploadData, metadata: nil, completion: { (metadata, error) in
+                if error != nil {
+                    print(error?.localizedDescription ?? "error up image")
+                    return
+                }
+                
+                let imageUrl = metadata!.downloadURLs![0].absoluteString
+                print(imageUrl)
+                let timestamp = Date().timeIntervalSince1970
+                let values = ["type":"IMAGE", "urlImage":imageUrl, "fromId": fromId, "toId": toId, "timestamp": timestamp, "imageWidth": image.size.width, "imageHeight": image.size.height] as [String : Any]
+                let ref = self.MESSAGES_REF.childByAutoId()
+                ref.updateChildValues(values ,withCompletionBlock: { (error, ref) in
+                    if let error = error {
+                        print(error)
+                        return
+                    }
+                    
+                    let messageId = ref.key
+                    self.USER_MESSAGES_REF.child(fromId).updateChildValues([messageId:"1"])
+                    self.USER_MESSAGES_REF.child(toId).updateChildValues([messageId:"1"])
+                    alert.hideView()
+                })
+
+            })
+        }
+    }
     
     func fetchUsers(uid:String, completion:@escaping (User)->()){
         USER_REF.child(uid).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -529,7 +526,7 @@ class Helper {
     
     func fetchUserMessages(completion:@escaping (Messages)->()){
         guard let uid = FIRAuth.auth()?.currentUser?.uid else { return}
-        self.USER_MESSAGES_REF.child(uid).observe(.childAdded, with: { (snapshot) in
+        self.USER_MESSAGES_REF.child(uid).queryLimited(toLast: 10).observe(.childAdded, with: { (snapshot) in
             let messageId = snapshot.key
             print(messageId)
             self.MESSAGES_REF.child(messageId).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -544,7 +541,7 @@ class Helper {
     
     func sendMessage(text:String, toId:String, fromId:String){
         let timestamp = Date().timeIntervalSince1970
-        let values = ["text":text,"fromId": fromId, "toId": toId, "timestamp": timestamp] as [String : Any]
+        let values = ["type":"TEXT", "text":text,"fromId": fromId, "toId": toId, "timestamp": timestamp] as [String : Any]
         let ref = self.MESSAGES_REF.childByAutoId()
         ref.updateChildValues(values ,withCompletionBlock: { (error, ref) in
             if let error = error {

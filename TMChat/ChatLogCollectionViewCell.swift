@@ -16,6 +16,7 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         txt.font = UIFont.boldSystemFont(ofSize: 16)
         txt.backgroundColor = UIColor.clear
         txt.translatesAutoresizingMaskIntoConstraints = false
+        txt.isEditable = false
         return txt
     }()
     
@@ -36,6 +37,15 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
     }()
+    
+    let messImage:UIImageView = {
+        let imageView = UIImageView()
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.layer.cornerRadius = 16
+        imageView.clipsToBounds = true
+        imageView.contentMode = .scaleAspectFit
+        return imageView
+    }()
 
 
     var bubbleViewWith:NSLayoutConstraint?
@@ -47,6 +57,12 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         self.addSubview(bubbleView)
         self.addSubview(imgAvatar)
         bubbleView.addSubview(txtTextMessages)
+        bubbleView.addSubview(messImage)
+        
+        messImage.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true
+        messImage.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
+        messImage.widthAnchor.constraint(equalTo: bubbleView.widthAnchor).isActive = true
+        messImage.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
         
         imgAvatar.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
         imgAvatar.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true

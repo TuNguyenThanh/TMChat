@@ -33,7 +33,6 @@ class Page2CollectionViewCell: BaseCollectionViewCell {
         let attributeText = NSMutableAttributedString(string: "+", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 32), NSForegroundColorAttributeName: UIColor.white])
         
         let btn = UIButton()
-       // btn.setTitle("+", for: UIControlState.normal)
         btn.setAttributedTitle(attributeText, for: UIControlState.normal)
         btn.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
         btn.layer.cornerRadius = 25
