@@ -339,9 +339,7 @@ extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationCo
         imagePicker.navigationBar.tintColor = .white
         imagePicker.navigationBar.titleTextAttributes = [ NSForegroundColorAttributeName : UIColor.white ]
         
-        let appearance = SCLAlertView.SCLAppearance(
-            showCloseButton: false
-        )
+        let appearance = SCLAlertView.SCLAppearance( showCloseButton: false)
         let alert = SCLAlertView(appearance: appearance)
         alert.addButton("Photo Library") {
             imagePicker.sourceType = .photoLibrary
@@ -384,10 +382,13 @@ extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationCo
         if let selectedImage = selectedImageFromPicker {
             Helper.helper.sendMessImage(image: selectedImage, toId: (userTo?.uid)!, fromId: (userCurrent?.uid)!)
         }
+        
+        self.inputContainerView.alpha = 1
         self.dismiss(animated:true, completion: nil)
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.inputContainerView.alpha = 1
         self.dismiss(animated: true, completion: nil)
     }
 }

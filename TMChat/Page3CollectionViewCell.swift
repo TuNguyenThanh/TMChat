@@ -24,6 +24,29 @@ class Page3CollectionViewCell: BaseCollectionViewCell {
         return tbl
     }()
     
+    let line:UIView = {
+        let v = UIView()
+        v.backgroundColor = #colorLiteral(red: 0.09019608051, green: 0, blue: 0.3019607961, alpha: 1)
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    lazy var colFrientRequest:UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.sectionInset.left = 5
+        layout.sectionInset.right = 5
+        let coll = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
+        coll.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        coll.delegate = self
+        coll.dataSource = self
+        coll.register(FriendRequestCollectionViewCell.self, forCellWithReuseIdentifier: "CellFriendRequest")
+        coll.translatesAutoresizingMaskIntoConstraints = false
+        return coll
+    }()
+    
+    
+    
 //    ///hide key touch self
 //    func dismissKey(tap : UITapGestureRecognizer){
 //        self.endEditing(true)
@@ -44,15 +67,45 @@ class Page3CollectionViewCell: BaseCollectionViewCell {
     override func setupView() {
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         self.addSubview(myTableView)
+        self.addSubview(colFrientRequest)
+        colFrientRequest.addSubview(line)
         
-        self.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: myTableView)
+        self.addConstrainWithVisualFormat(VSFormat: "V:|-80-[v0]|", views: myTableView)
         self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: myTableView)
         
+        self.colFrientRequest.topAnchor.constraint(equalTo: self.topAnchor,constant: 0).isActive = true
+        self.colFrientRequest.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        self.colFrientRequest.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        self.colFrientRequest.bottomAnchor.constraint(equalTo: myTableView.topAnchor).isActive = true
+        
+        self.line.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        self.line.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        self.line.topAnchor.constraint(equalTo: self.colFrientRequest.topAnchor, constant: 0).isActive = true
+        self.line.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        
         loadUser()
-//        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Page3CollectionViewCell.dismissKey)))
+//      self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Page3CollectionViewCell.dismissKey)))
     }
     
 }
+
+
+extension Page3CollectionViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellFriendRequest", for: indexPath) as! FriendRequestCollectionViewCell
+        
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 60, height: 60)
+    }
+}
+
 
 extension Page3CollectionViewCell:UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -148,17 +201,17 @@ extension Page3CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100.0
+        return 80.0
     }
     
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y == 0 && checkSearch == false{
-//            let appearance = SCLAlertView.SCLAppearance( showCloseButton: false)
-//            let alert = SCLAlertView(appearance: appearance)
-//            alert.showWait("Load", subTitle: "Vui lòng đợi tý nhé ...")
-            self.arrUser.removeAll()
-            self.loadUser()
-//            alert.hideView()
-        }
-    }
+//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//        if scrollView.contentOffset.y == 0 && checkSearch == false{
+////            let appearance = SCLAlertView.SCLAppearance( showCloseButton: false)
+////            let alert = SCLAlertView(appearance: appearance)
+////            alert.showWait("Load", subTitle: "Vui lòng đợi tý nhé ...")
+//            self.arrUser.removeAll()
+//            self.loadUser()
+////            alert.hideView()
+//        }
+//    }
 }

@@ -29,7 +29,7 @@ class HomeTableViewCell: BaseTableViewCell {
     
     let imgAvatar:UIImageView = {
         let img = UIImageView()
-        img.layer.cornerRadius = 40
+        img.layer.cornerRadius = 30
         img.contentMode = .scaleAspectFill
         img.clipsToBounds = true
         img.translatesAutoresizingMaskIntoConstraints = false
@@ -62,12 +62,12 @@ class HomeTableViewCell: BaseTableViewCell {
         lblName.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
         lblName.leftAnchor.constraint(equalTo: imgAvatar.rightAnchor, constant: 10).isActive = true
         lblName.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
-        lblName.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        lblName.heightAnchor.constraint(equalToConstant: 30).isActive = true
         
         lblText.topAnchor.constraint(equalTo: lblName.bottomAnchor).isActive = true
         lblText.leftAnchor.constraint(equalTo: lblName.leftAnchor).isActive = true
         lblText.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -20).isActive = true
-        lblText.heightAnchor.constraint(equalToConstant: 30).isActive = true
+        lblText.heightAnchor.constraint(equalToConstant: 20).isActive = true
         
         lblTimestamp.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
         lblTimestamp.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 10).isActive = true

@@ -35,6 +35,7 @@
 		26525A761DAA51BF00863510 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26525A751DAA51BF00863510 /* Messages.swift */; };
 		26525A7A1DAA6EB600863510 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26525A791DAA6EB600863510 /* LoginViewController.swift */; };
 		26C694351DA90D6A005E8E10 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26C694341DA90D6A005E8E10 /* HomeTableViewCell.swift */; };
+		26E877451DD5FB7E00707B06 /* FriendRequestCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E877441DD5FB7E00707B06 /* FriendRequestCollectionViewCell.swift */; };
 		26E89F471DC5D35E003DC35B /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 26E89F461DC5D35E003DC35B /* GoogleService-Info.plist */; };
 		26E89F4B1DC5D631003DC35B /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26E89F4A1DC5D631003DC35B /* Helper.swift */; };
 		26F9C8C51DB10641004C88A2 /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26F9C8C41DB10641004C88A2 /* BaseTableViewCell.swift */; };
@@ -75,6 +76,7 @@
 		26525A751DAA51BF00863510 /* Messages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		26525A791DAA6EB600863510 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		26C694341DA90D6A005E8E10 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
+		26E877441DD5FB7E00707B06 /* FriendRequestCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendRequestCollectionViewCell.swift; sourceTree = "<group>"; };
 		26E89F461DC5D35E003DC35B /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		26E89F4A1DC5D631003DC35B /* Helper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
 		26F9C8C41DB10641004C88A2 /* BaseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
@@ -251,6 +253,7 @@
 			children = (
 				264155541DA89FC200473333 /* Page3CollectionViewCell.swift */,
 				26F9C8C91DB12025004C88A2 /* FriendTableViewCell.swift */,
+				26E877441DD5FB7E00707B06 /* FriendRequestCollectionViewCell.swift */,
 			);
 			name = Friend;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				263234C81DC6138700561CB6 /* SCLExtensions.swift in Sources */,
 				264155591DA8A0DB00473333 /* ExtensionFunc.swift in Sources */,
 				26525A761DAA51BF00863510 /* Messages.swift in Sources */,
+				26E877451DD5FB7E00707B06 /* FriendRequestCollectionViewCell.swift in Sources */,
 				262A20B11DB085F300B8A5B7 /* HeaderTableViewCell.swift in Sources */,
 				264155551DA89FC200473333 /* Page3CollectionViewCell.swift in Sources */,
 				26E89F4B1DC5D631003DC35B /* Helper.swift in Sources */,
