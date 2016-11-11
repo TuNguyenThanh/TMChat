@@ -40,6 +40,7 @@ class Page4CollectionViewCell: BaseCollectionViewCell {
         
         self.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: tableView)
         self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: tableView)
+        
     }
 }
 

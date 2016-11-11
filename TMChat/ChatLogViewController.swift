@@ -194,6 +194,56 @@ class ChatLogViewController: UIViewController {
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         self.myCollectionView.collectionViewLayout.invalidateLayout()
     }
+    
+    
+    var startFrame:CGRect?
+    var backgroundView:UIView!
+    func performZoomImage(image:UIImageView){
+        self.startFrame = image.superview?.convert(image.frame, to: nil)
+        //print(startFrame)
+        
+        let zoomingImage = UIImageView(frame: startFrame!)
+        zoomingImage.backgroundColor = #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)
+        zoomingImage.image = image.image
+        zoomingImage.isUserInteractionEnabled = true
+        zoomingImage.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(imageZoomOut)))
+        
+        if let keyWindown = UIApplication.shared.keyWindow{
+            self.backgroundView = UIView(frame: keyWindown.frame)
+            self.backgroundView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            self.backgroundView.alpha = 0
+            
+            keyWindown.addSubview(self.backgroundView)
+            keyWindown.addSubview(zoomingImage)
+            
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: { 
+                self.backgroundView.alpha = 1
+                self.inputContainerView.alpha = 0
+                
+                // math?
+                // h2 / w1 = h1 / w1
+                // h2 = h1 / w1 * w1
+                
+                let height = (self.startFrame?.height)! / (self.startFrame?.width)! * keyWindown.frame.width
+                zoomingImage.frame = CGRect(x: 0, y: 0, width: keyWindown.frame.size.width , height: height)
+                zoomingImage.center = keyWindown.center
+            }, completion: nil )
+        }
+    }
+    
+    func imageZoomOut(tap:UITapGestureRecognizer){
+        if let zoomOut = tap.view {
+            zoomOut.layer.cornerRadius = 16
+            zoomOut.clipsToBounds = true
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: { 
+                zoomOut.frame = self.startFrame!
+                self.backgroundView.alpha = 0
+                self.inputContainerView.alpha = 1
+            }, completion: { (true) in
+                zoomOut.removeFromSuperview()
+            })
+        }
+    }
 }
 
 extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDelegate {
@@ -207,6 +257,7 @@ extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDe
         
         let messages = self.arrMessages[indexPath.row]
         cell.txtTextMessages.text = messages.text
+        cell.chatlogViewController = self
         
         cell.imgAvatar.loadImage(urlString: (userTo?.avatarURL)!)
         if messages.fromId == userCurrent?.uid {
@@ -232,9 +283,11 @@ extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDe
         }
         
         if let text = messages.text {
-             cell.bubbleViewWith?.constant = estimateFrameForText(text: text).width + 32
+            cell.bubbleViewWith?.constant = estimateFrameForText(text: text).width + 32
+            cell.txtTextMessages.isHidden = false
         }else if (messages.urlImage) != nil {
             cell.bubbleViewWith?.constant = 200
+            cell.txtTextMessages.isHidden = true
         }
                
         return cell
@@ -276,6 +329,8 @@ extension ChatLogViewController: UITextFieldDelegate{
 
 extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func selectImage(){
+        self.inputContainerView.alpha = 0
+        
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.allowsEditing = true
@@ -284,7 +339,10 @@ extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationCo
         imagePicker.navigationBar.tintColor = .white
         imagePicker.navigationBar.titleTextAttributes = [ NSForegroundColorAttributeName : UIColor.white ]
         
-        let alert = SCLAlertView()
+        let appearance = SCLAlertView.SCLAppearance(
+            showCloseButton: false
+        )
+        let alert = SCLAlertView(appearance: appearance)
         alert.addButton("Photo Library") {
             imagePicker.sourceType = .photoLibrary
             imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: UIImagePickerControllerSourceType.photoLibrary)!
@@ -301,7 +359,11 @@ extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationCo
                 self.noCamera()
             }
         }
-        alert.showNotice("Chọn hình", subTitle: "Chọn 1 trong 2",closeButtonTitle: "Thoát")
+        alert.addButton("Thoát") {
+             self.inputContainerView.alpha = 1
+        }
+        
+        alert.showNotice("Chọn hình", subTitle: "Chọn 1 trong 2")
     }
     
     func noCamera(){

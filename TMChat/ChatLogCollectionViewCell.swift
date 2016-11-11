@@ -38,19 +38,29 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         return img
     }()
     
-    let messImage:UIImageView = {
+    lazy var messImage:UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.layer.cornerRadius = 16
         imageView.clipsToBounds = true
+        imageView.isUserInteractionEnabled = true
         imageView.contentMode = .scaleAspectFit
+        imageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapImageZoom)))
         return imageView
     }()
+    
+    func tapImageZoom(tap:UITapGestureRecognizer){
+        print("tap")
+        if let image = tap.view as? UIImageView {
+            self.chatlogViewController?.performZoomImage(image: image)
+        }
+    }
 
 
     var bubbleViewWith:NSLayoutConstraint?
     var bubbleViewRight:NSLayoutConstraint?
     var bubbleViewLeft:NSLayoutConstraint?
+    var chatlogViewController:ChatLogViewController?
     
     override func setupView() {
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)

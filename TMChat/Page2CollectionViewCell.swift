@@ -49,6 +49,7 @@ class Page2CollectionViewCell: BaseCollectionViewCell {
     
     var delegate:pushChatLogControllerDelegate?
     var delegate1:Page2CollectionViewCellDelegate?
+    
     override func setupView() {
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
@@ -77,7 +78,6 @@ extension Page2CollectionViewCell: UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         //self.delegate?.push(userTo: "MTV Group")
     }
 }

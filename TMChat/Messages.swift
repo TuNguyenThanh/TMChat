@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Firebase
+
 struct Messages {
     let keyMess:String!
     let type:String!

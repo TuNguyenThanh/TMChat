@@ -24,6 +24,13 @@ class Page3CollectionViewCell: BaseCollectionViewCell {
         return tbl
     }()
     
+//    ///hide key touch self
+//    func dismissKey(tap : UITapGestureRecognizer){
+//        self.endEditing(true)
+//        self.checkSearch = false
+//        search.setShowsCancelButton(false, animated: true)
+//    }
+    
     func loadUser(){
         Helper.helper.fetchFriend { (user) in
             self.arrUser.append(user)
@@ -42,6 +49,7 @@ class Page3CollectionViewCell: BaseCollectionViewCell {
         self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: myTableView)
         
         loadUser()
+//        self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Page3CollectionViewCell.dismissKey)))
     }
     
 }

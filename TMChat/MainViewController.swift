@@ -108,6 +108,7 @@ class MainViewController: UIViewController {
                 
         setupView()
         setupMenuBar()
+        
         print("main viewdidload")
     }
     

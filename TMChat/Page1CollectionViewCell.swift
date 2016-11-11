@@ -27,9 +27,9 @@ class Page1CollectionViewCell: BaseCollectionViewCell {
         self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: myTableView)
         
         observeUserMessage()
-       
     }
     
+        
     func observeUserMessage(){
         Helper.helper.fetchUserMessages { (mess) in
             print(self.arrMess)
