@@ -231,8 +231,47 @@ class Helper {
         })
     }
     
-    func sendFriend(uid:String){
-        rootREF.child("Friend").child((userCurrent?.uid)!).updateChildValues([uid:"1"])
+//    func sendFriend(uid:String){
+//        rootREF.child("Friend").child((userCurrent?.uid)!).updateChildValues([uid:"1"])
+//    }
+
+    func fetchFriendRequestCheck(uid:String,completion:@escaping (String)->()){
+        rootREF.child("FriendRequest").child(uid).observe(.childAdded, with: {(snapshot) in
+            completion(snapshot.key)
+        })
+    }
+    
+    
+    func sendFriendRequest(uid:String){
+        rootREF.child("FriendRequest").child((userCurrent?.uid)!).observe(.childAdded, with: {(snapshot) in
+            print(snapshot.key)
+            if snapshot.key == "" {
+                rootREF.child("FriendRequest").child(uid).updateChildValues([(userCurrent?.uid)!:"1"])
+            }else{
+                rootREF.child("Friend").child((userCurrent?.uid)!).updateChildValues([uid:"1"])
+                rootREF.child("FriendRequest").child((userCurrent?.uid)!).child(uid).removeValue()
+                rootREF.child("FriendRequest").child(uid).child((userCurrent?.uid)!).removeValue()
+            }
+            return
+        })
+
+        rootREF.child("FriendRequest").child(uid).updateChildValues([(userCurrent?.uid)!:"1"])
+    }
+    
+    func saveFriend(uid:String){
+         rootREF.child("Friend").child((userCurrent?.uid)!).updateChildValues([uid:"1"])
+         rootREF.child("Friend").child(uid).updateChildValues([(userCurrent?.uid)!:"1"])
+         rootREF.child("FriendRequest").child((userCurrent?.uid)!).child(uid).removeValue()
+    }
+    
+    func removeFriendRequest(uid:String){
+        rootREF.child("FriendRequest").child(uid).child((userCurrent?.uid)!).removeValue()
+    }
+    
+    func fetchFriendRequest(completion:@escaping (String)->()){
+        rootREF.child("FriendRequest").child((userCurrent?.uid)!).observe(.childAdded, with: {(snapshot) in
+            completion(snapshot.key)
+        })
     }
     
     

@@ -67,6 +67,8 @@ class Page1CollectionViewCell: BaseCollectionViewCell {
         let tbl = UITableView(frame: CGRect.zero, style: UITableViewStyle.plain)
         tbl.delegate = self
         tbl.dataSource = self
+        tbl.separatorColor = UIColor.clear
+        tbl.separatorStyle = .none
         tbl.register(HomeTableViewCell.self, forCellReuseIdentifier: self.cellId)
         tbl.translatesAutoresizingMaskIntoConstraints = false
         return tbl

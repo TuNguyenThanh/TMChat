@@ -10,6 +10,7 @@ import UIKit
 
 protocol FriendTableViewCellDelegate {
     func sendFriend(uid:String)
+    func cancelFriendRequest(uid:String)
 }
 
 class FriendTableViewCell: BaseTableViewCell {
@@ -47,9 +48,14 @@ class FriendTableViewCell: BaseTableViewCell {
     }()
     
     lazy var btnSendFriend:UIButton = {
-        let btn = UIButton()
-        btn.backgroundColor = #colorLiteral(red: 0.1215686277, green: 0.01176470611, blue: 0.4235294163, alpha: 1)
-        btn.setTitle("Ket ban", for: UIControlState.normal)
+        let btn = UIButton(type: .system)
+        btn.backgroundColor = UIColor.clear
+        btn.layer.cornerRadius = 5
+        btn.clipsToBounds = true
+        btn.layer.borderWidth = 1
+        btn.layer.borderColor = UIColor.blue.cgColor
+        btn.setTitle("Kết bạn", for: UIControlState.normal)
+        btn.setTitleColor(UIColor.blue, for: UIControlState.normal)
         btn.addTarget(self, action: #selector(FriendTableViewCell.abtnSendFriend), for: UIControlEvents.touchUpInside)
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
@@ -57,13 +63,20 @@ class FriendTableViewCell: BaseTableViewCell {
     
     func abtnSendFriend(){
         print("touched")
-        self.delegate?.sendFriend(uid: uid!)
+        if btnSendFriend.currentTitle == "Kết bạn" {
+            self.delegate?.sendFriend(uid: uid!)
+            btnSendFriend.setTitle("Huỷ", for: UIControlState.normal)
+        }else{
+            self.delegate?.cancelFriendRequest(uid: uid!)
+            btnSendFriend.setTitle("Kết bạn", for: UIControlState.normal)
+        }
     }
     
     var delegate:FriendTableViewCellDelegate?
     var uid:String?
     
     override func setupView() {
+        self.selectionStyle = .none
         self.addSubview(imgAvatar)
         self.addSubview(lblName)
         self.addSubview(lblOnOff)

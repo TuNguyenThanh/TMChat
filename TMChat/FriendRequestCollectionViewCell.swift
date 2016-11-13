@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol FriendRequestCollectionViewCellDelegate {
+    func  sendFriendRequest(uid:String, indexPath:Int)
+}
+
 class FriendRequestCollectionViewCell: BaseCollectionViewCell {
     lazy var imageAvatar:UIImageView = {
         let img = UIImageView()
@@ -16,7 +20,7 @@ class FriendRequestCollectionViewCell: BaseCollectionViewCell {
         img.clipsToBounds = true
         img.translatesAutoresizingMaskIntoConstraints = false
         img.isUserInteractionEnabled = true
-        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(abtnRequest)))
+        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(abtnSendRequest)))
         return img
     }()
     
@@ -24,28 +28,22 @@ class FriendRequestCollectionViewCell: BaseCollectionViewCell {
         let v = UIView()
         v.layer.cornerRadius = 5
         v.clipsToBounds = true
-        v.backgroundColor = #colorLiteral(red: 0.9607843161, green: 0.7058823705, blue: 0.200000003, alpha: 1)
+        v.backgroundColor = #colorLiteral(red: 0.5843137503, green: 0.8235294223, blue: 0.4196078479, alpha: 1)
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
     }()
     
-    func abtnRequest(){
+    func abtnSendRequest(){
         print("tap")
-        let appearance = SCLAlertView.SCLAppearance( showCloseButton: false)
-        let alert = SCLAlertView(appearance: appearance)
-        alert.addButton("Bỏ qua") {
-            print("bo qua")
-        }
-        alert.addButton("Kết bạn") {
-            print("ket ban")
-        }
-        
-        alert.showNotice("Kết bạn", subTitle: "Yêu cầu kết bạn")
+        self.delegate?.sendFriendRequest(uid: uid!,indexPath: indexPath!)
     }
     
+    var delegate:FriendRequestCollectionViewCellDelegate?
+    var uid:String?
+    var indexPath:Int?
     
     override func setupView() {
-        self.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
         self.addSubview(imageAvatar)
         self.addSubview(viewOnOff)

@@ -56,7 +56,6 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         }
     }
 
-
     var bubbleViewWith:NSLayoutConstraint?
     var bubbleViewRight:NSLayoutConstraint?
     var bubbleViewLeft:NSLayoutConstraint?

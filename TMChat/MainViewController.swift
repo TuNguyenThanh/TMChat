@@ -11,7 +11,7 @@ import UIKit
 class MainViewController: UIViewController {
     
     let arrIdCell:Array<String> = ["Cell1","Cell2","Cell3","Cell4"]
-    let titles = ["Home", "Messages", "Friends", "Setting"]
+    let titles = ["Home", "Group", "Friends", "Setting"]
     let menuBar:MenuBarViewController = MenuBarViewController()
     
     lazy var myCollectionView:UICollectionView = {

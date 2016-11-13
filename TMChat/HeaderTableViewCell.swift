@@ -31,6 +31,7 @@ class HeaderTableViewCell: BaseTableViewCell {
     lazy var lblName:UILabel = {
         let lbl = UILabel()
         lbl.textColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        lbl.font = UIFont(name: "HelveticaNeue", size: 23)
         lbl.textAlignment = .center
         lbl.isUserInteractionEnabled = true
         lbl.clipsToBounds = true

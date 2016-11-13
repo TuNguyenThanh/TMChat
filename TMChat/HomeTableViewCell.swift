@@ -48,6 +48,7 @@ class HomeTableViewCell: BaseTableViewCell {
     
     override func setupView(){
         self.backgroundColor  = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        self.selectionStyle = .none
         
         self.addSubview(imgAvatar)
         self.addSubview(lblName)

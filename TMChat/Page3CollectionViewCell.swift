@@ -11,14 +11,21 @@ import UIKit
 class Page3CollectionViewCell: BaseCollectionViewCell {
     
     let cellId:String = "Cell"
-    var arrUser:Array<User> = Array<User>()
+    var arrUserFriend:Array<User> = Array<User>()    //All Friend of userCurrent
+    var arrUserFilter:Array<User> = Array<User>()    //Search
+    var arrFriendRequest:Array<User> = Array<User>() //All request Friend
+    
+    var lastContentOffset:CGFloat = 0.0
     var delegate:pushChatLogControllerDelegate?
+    var checkupdown:Bool = false
     var checkSearch:Bool = false
     
     lazy var myTableView:UITableView = {
         let tbl = UITableView(frame: CGRect.zero, style: UITableViewStyle.plain)
         tbl.delegate = self
         tbl.dataSource = self
+        tbl.separatorColor = UIColor.clear
+        tbl.separatorStyle = .none
         tbl.register(FriendTableViewCell.self, forCellReuseIdentifier: self.cellId)
         tbl.translatesAutoresizingMaskIntoConstraints = false
         return tbl
@@ -31,72 +38,128 @@ class Page3CollectionViewCell: BaseCollectionViewCell {
         return v
     }()
     
+    let lblNote:UILabel = {
+        let lbl = UILabel()
+        lbl.text = "No request"
+        lbl.textColor = #colorLiteral(red: 0.1215686277, green: 0.01176470611, blue: 0.4235294163, alpha: 1)
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    
     lazy var colFrientRequest:UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset.left = 5
         layout.sectionInset.right = 5
         let coll = UICollectionView(frame: CGRect.zero, collectionViewLayout: layout)
-        coll.backgroundColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1)
+        coll.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         coll.delegate = self
         coll.dataSource = self
         coll.register(FriendRequestCollectionViewCell.self, forCellWithReuseIdentifier: "CellFriendRequest")
         coll.translatesAutoresizingMaskIntoConstraints = false
         return coll
     }()
-    
-    
-    
-//    ///hide key touch self
-//    func dismissKey(tap : UITapGestureRecognizer){
-//        self.endEditing(true)
-//        self.checkSearch = false
-//        search.setShowsCancelButton(false, animated: true)
-//    }
-    
-    func loadUser(){
+
+    ///load all user friend of userCurrent
+    func loadUserFriend(){
         Helper.helper.fetchFriend { (user) in
-            self.arrUser.append(user)
+            self.arrUserFriend.append(user)
+            self.arrUserFilter.append(user)
             DispatchQueue.main.async {
                 self.myTableView.reloadData()
             }
         }
     }
     
+    ///load request friend
+    func loadFriendRequest(){
+        Helper.helper.fetchFriendRequest { (uid) in
+            //print(uid)
+            Helper.helper.fetchUsers(uid: uid, completion: { (user) in
+                if user.uid != userCurrent?.uid {
+                    if self.arrUserFriend.count != 0 {
+                        if self.arrUserFriend.contains(where: {$0.uid != user.uid}){
+                            self.arrFriendRequest.append(user)
+                        }
+                    }else{
+                        self.arrFriendRequest.append(user)
+                    }
+                }
+                DispatchQueue.main.async {
+                    self.colFrientRequest.reloadData()
+                }
+            })
+        }
+    }
+    
     var search:UISearchBar!
+    var topAnchorSelf:NSLayoutConstraint?
+    var topAnchorBottomColl:NSLayoutConstraint?
+
     override func setupView() {
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        self.addSubview(myTableView)
         self.addSubview(colFrientRequest)
+        self.addSubview(myTableView)
         colFrientRequest.addSubview(line)
+        colFrientRequest.addSubview(lblNote)
+    
+        topAnchorSelf = self.myTableView.topAnchor.constraint(equalTo: self.topAnchor,constant: 0)
+        topAnchorSelf?.isActive = true
         
-        self.addConstrainWithVisualFormat(VSFormat: "V:|-80-[v0]|", views: myTableView)
-        self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: myTableView)
+        topAnchorBottomColl = self.myTableView.topAnchor.constraint(equalTo: self.topAnchor,constant: 80)
+        topAnchorBottomColl?.isActive = false
+        
+        self.myTableView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        self.myTableView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        self.myTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
         self.colFrientRequest.topAnchor.constraint(equalTo: self.topAnchor,constant: 0).isActive = true
         self.colFrientRequest.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         self.colFrientRequest.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        self.colFrientRequest.bottomAnchor.constraint(equalTo: myTableView.topAnchor).isActive = true
+        self.colFrientRequest.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         self.line.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         self.line.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         self.line.topAnchor.constraint(equalTo: self.colFrientRequest.topAnchor, constant: 0).isActive = true
         self.line.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
-        loadUser()
-//      self.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Page3CollectionViewCell.dismissKey)))
+        self.lblNote.centerXAnchor.constraint(equalTo: colFrientRequest.centerXAnchor).isActive = true
+        self.lblNote.centerYAnchor.constraint(equalTo: colFrientRequest.centerYAnchor).isActive = true
+        
+        loadUserFriend()
+        loadFriendRequest() 
     }
-    
 }
 
 
+/*
+ // MARK: - CollectionView Request Friend
+ */
 extension Page3CollectionViewCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10
+        if self.arrFriendRequest.count == 0 {
+            self.lblNote.isHidden = false
+        }else{
+            self.lblNote.isHidden = true
+        }
+        return self.arrFriendRequest.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CellFriendRequest", for: indexPath) as! FriendRequestCollectionViewCell
+        
+        let user = arrFriendRequest[indexPath.row]
+        
+        cell.imageAvatar.loadImage(urlString: user.avatarURL)
+        cell.delegate = self
+        cell.uid = user.uid
+        cell.indexPath = indexPath.row
+        
+        if user.online == false {
+            cell.viewOnOff.backgroundColor = UIColor.gray
+        }else{
+            cell.viewOnOff.backgroundColor = UIColor.green
+        }
         
         return cell
     }
@@ -106,14 +169,37 @@ extension Page3CollectionViewCell: UICollectionViewDelegate, UICollectionViewDat
     }
 }
 
+/*
+ // MARK: - CollectionView Request Friend Delegate
+ */
+extension Page3CollectionViewCell: FriendRequestCollectionViewCellDelegate{
+    func sendFriendRequest(uid: String, indexPath: Int) {
+        let appearance = SCLAlertView.SCLAppearance( showCloseButton: false)
+        let alert = SCLAlertView(appearance: appearance)
+        alert.addButton("Bỏ qua") {
+        
+        }
+        alert.addButton("Kết bạn") {
+            Helper.helper.saveFriend(uid: uid)
+            ///remove item
+            self.arrFriendRequest.remove(at: indexPath)
+            self.colFrientRequest.reloadData()
+        }
+        alert.showNotice("Kết bạn", subTitle: "Yêu cầu kết bạn")
+    }
+}
 
+
+/*
+ // MARK: - Search Bar
+*/
 extension Page3CollectionViewCell:UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.checkSearch = false
+        self.endEditing(true)
         searchBar.text = ""
         search.setShowsCancelButton(false, animated: true)
-        self.arrUser.removeAll()
-        loadUser()
+        self.myTableView.reloadData()
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -126,7 +212,8 @@ extension Page3CollectionViewCell:UISearchBarDelegate {
         print(searchText)
         if searchText != "" {
             search.setShowsCancelButton(true, animated: true)
-            self.arrUser.removeAll()
+            self.arrUserFilter.removeAll()
+            
             let key:String = searchText
             let t = rootREF.child("User").queryOrdered(byChild: "username").queryEqual(toValue: key)
             t.observe(.childAdded, with:  { (snapshot) in
@@ -134,44 +221,62 @@ extension Page3CollectionViewCell:UISearchBarDelegate {
                 DispatchQueue.main.async {
                     if let dic = snapshot.value as? [String:AnyObject]{
                         let user = User(key: snapshot.key, snapshot: dic)
-                        //print(user)
-                        self.arrUser.append(user)
+                        self.arrUserFilter.append(user)
                     }
                     self.myTableView.reloadData()
                 }
             })
-            
-            if self.arrUser.count == 0{
-                self.myTableView.reloadData()
-            }
-        }else{
-            self.arrUser.removeAll()
-            loadUser()
+        }
+        else{
+            self.checkSearch = false
+            self.myTableView.reloadData()
         }
     }
 }
 
-
-extension Page3CollectionViewCell: FriendTableViewCellDelegate{
-    func sendFriend(uid: String) {
-        Helper.helper.sendFriend(uid: uid)
-    }
-}
-
+/*
+    // MARK: - Tableview Friend
+*/
 extension Page3CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.arrUser.count
+        if checkSearch == false {
+            return self.arrUserFriend.count
+        }
+        return self.arrUserFilter.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.cellId, for: indexPath) as! FriendTableViewCell
         cell.delegate = self
-      
-        let user:User = self.arrUser[indexPath.row]
-        cell.uid = user.uid
-        cell.btnSendFriend.isHidden = true
         
+        var user:User!
+        if checkSearch == false {
+            user = self.arrUserFriend[indexPath.row]
+            ///Check isFriend -> Bool |=> isHiden button send friend request
+            cell.btnSendFriend.isHidden = true
+        }else{
+            user = self.arrUserFilter[indexPath.row]
+            if self.arrUserFriend.contains(where: {$0.uid == user.uid}){
+                cell.btnSendFriend.isHidden = true
+            }else{
+                cell.btnSendFriend.isHidden = false
+                //bat button ket ban
+                 Helper.helper.fetchFriendRequestCheck(uid: user.uid, completion: { (id) in
+                    if id == userCurrent?.uid {
+                        cell.btnSendFriend.setTitle("Huỷ", for: UIControlState.normal)
+                    }
+                })
+                cell.btnSendFriend.setTitle("Kết bạn", for: UIControlState.normal)
+                
+            }
+            if user.uid == userCurrent?.uid {
+                cell.btnSendFriend.isHidden = true
+            }
+        }
+        
+        cell.uid = user.uid
         cell.lblName.text = user.userName
+        
         cell.imgAvatar.loadImage(urlString: user.avatarURL)
         if user.online == false {
             cell.lblOnOff.text = "Offline"
@@ -185,8 +290,19 @@ extension Page3CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let user = self.arrUser[indexPath.row]
-        self.delegate?.push(userTo: user)
+        var user:User!
+        if checkSearch == false {
+            user = self.arrUserFriend[indexPath.row]
+            self.delegate?.push(userTo: user)
+        }else{
+            user = self.arrUserFilter[indexPath.row]
+            if self.arrUserFriend.contains(where: {$0.uid == user.uid}){
+                self.delegate?.push(userTo: user)
+            }
+            if user.uid == userCurrent?.uid {
+                self.delegate?.push(userTo: user)
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -204,14 +320,43 @@ extension Page3CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
         return 80.0
     }
     
-//    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-//        if scrollView.contentOffset.y == 0 && checkSearch == false{
-////            let appearance = SCLAlertView.SCLAppearance( showCloseButton: false)
-////            let alert = SCLAlertView(appearance: appearance)
-////            alert.showWait("Load", subTitle: "Vui lòng đợi tý nhé ...")
-//            self.arrUser.removeAll()
-//            self.loadUser()
-////            alert.hideView()
-//        }
-//    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        //print(scrollView.contentOffset.y)
+        if scrollView == myTableView {
+            if scrollView.contentOffset.y == 0 && checkupdown == false{
+                UIView.animate(withDuration: 0.5, animations: { 
+                    self.topAnchorSelf?.isActive = false
+                    self.topAnchorBottomColl?.isActive = true
+                })
+                checkupdown = true
+            }else if scrollView.contentOffset.y == 0 && checkupdown == true{
+                UIView.animate(withDuration: 0.5, animations: { 
+                    self.topAnchorSelf?.isActive = true
+                    self.topAnchorBottomColl?.isActive = false
+                })
+                checkupdown = false
+            }
+            
+            // update the new position acquired
+            self.lastContentOffset = scrollView.contentOffset.y
+        }
+    }
 }
+
+/*
+ // MARK: - Tableview Friend Delageta
+ */
+extension Page3CollectionViewCell: FriendTableViewCellDelegate{
+    func sendFriend(uid: String) {
+        Helper.helper.sendFriendRequest(uid: uid)
+    }
+    
+    func cancelFriendRequest(uid: String) {
+        Helper.helper.removeFriendRequest(uid: uid)
+    }
+    
+}
+
+
+
+

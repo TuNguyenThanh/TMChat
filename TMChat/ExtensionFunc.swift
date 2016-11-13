@@ -27,6 +27,15 @@ extension UINavigationBar {
     }
 }
 
+extension Array where Element: Equatable {
+    // Remove first collection element that is equal to the given `object`:
+    mutating func remove(object: Element) {
+        if let index = index(of: object) {
+            remove(at: index)
+        }
+    }
+}
+
 
 class LeftPaddedTextField: UITextField {
     override func textRect(forBounds bounds: CGRect) -> CGRect {
