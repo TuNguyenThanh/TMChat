@@ -322,35 +322,44 @@ class Helper {
                 //upload image
                 let metadata = FIRStorageMetadata()
                 metadata.contentType = "image/jpeg"
-                if let uploadData = UIImagePNGRepresentation(imgAvatar.image!){
-                    self.STORAGE_REF.child("profileImage/\(user.uid)").put(uploadData, metadata: metadata, completion: { (metadata, error) in
-                        if let error = error {
+                
+                var dataSize:Data = UIImageJPEGRepresentation(imgAvatar.image!,1.0)!
+                if dataSize.count > 3000 {
+                    dataSize = UIImageJPEGRepresentation(imgAvatar.image!,0.1)!
+                }else if dataSize.count > 2000{
+                    dataSize = UIImageJPEGRepresentation(imgAvatar.image!,0.3)!
+                }else if dataSize.count > 1000 {
+                    dataSize = UIImageJPEGRepresentation(imgAvatar.image!,0.5)!
+                }
+
+                self.STORAGE_REF.child("profileImage/\(user.uid)").put(dataSize, metadata: metadata, completion: { (metadata, error) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                        return
+                    }
+                    
+                    let fileUrl:String = metadata!.downloadURLs![0].absoluteString
+                    changeRequest.photoURL = URL(string: fileUrl)
+                    changeRequest.commitChanges(completion: { (error) in
+                        if let error = error{
                             print(error.localizedDescription)
                             return
                         }
-                        
-                        let fileUrl:String = metadata!.downloadURLs![0].absoluteString
-                        changeRequest.photoURL = URL(string: fileUrl)
-                        changeRequest.commitChanges(completion: { (error) in
-                            if let error = error{
-                                print(error.localizedDescription)
-                                return
-                            }
-                        })
-                        
-                        let infoUser:[String:Any] = ["email":email, "username":username, "numberPhone": "+84", "avatarURL":fileUrl, "online":false] as [String:Any]
-                        ///create node in database
-                        self.USER_REF.child(user.uid).setValue(infoUser, withCompletionBlock: { (error, ref) in
-                            if error != nil {
-                                print(error ?? "error")
-                            }
-                            
-                            alert.hideView()
-                            //return true when not error
-                            completion(true)
-                        })
                     })
-                }
+                    
+                    let infoUser:[String:Any] = ["email":email, "username":username, "numberPhone": "+84", "avatarURL":fileUrl, "online":false] as [String:Any]
+                    ///create node in database
+                    self.USER_REF.child(user.uid).setValue(infoUser, withCompletionBlock: { (error, ref) in
+                        if error != nil {
+                            print(error ?? "error")
+                        }
+                        
+                        alert.hideView()
+                        //return true when not error
+                        completion(true)
+                    })
+                })
+             
             }
         }
     }
@@ -482,31 +491,39 @@ class Helper {
             let filePath = "profileImage/\(user.uid)"
             let metadata = FIRStorageMetadata()
             metadata.contentType = "image/jpeg"
-            if let uploadData = UIImagePNGRepresentation((imgAvatar.image)!){
-                self.STORAGE_REF.child(filePath).put(uploadData, metadata: metadata, completion: { (metadata, error) in
-                    if let error = error {
-                        print("\(error.localizedDescription)")
-                        return
-                    }
-                    let fileUrl = metadata!.downloadURLs![0].absoluteString
-                    let changeRequestPhoto = user.profileChangeRequest()
-                    changeRequestPhoto.photoURL = URL(string: fileUrl)
-                    changeRequestPhoto.commitChanges(completion: { (error) in
-                        if let error = error {
-                            print(error.localizedDescription)
-                            return
-                        }else{
-                            alert.hideView()
-                            DispatchQueue.main.async {
-                                let alertSuccess = SCLAlertView()
-                                alertSuccess.showSuccess("Thành Công 😎", subTitle: "Thông tin đã được cập nhật", closeButtonTitle: "Đồng ý")
-                            }
-                            print ("profile update")
-                        }
-                    })
-                    self.USER_REF.child(user.uid).updateChildValues(["avatarURL":fileUrl])
-                })
+            
+            var dataSize:Data = UIImageJPEGRepresentation(imgAvatar.image!,1.0)!
+            if dataSize.count > 3000 {
+                dataSize = UIImageJPEGRepresentation(imgAvatar.image!,0.1)!
+            }else if dataSize.count > 2000{
+                dataSize = UIImageJPEGRepresentation(imgAvatar.image!,0.3)!
+            }else if dataSize.count > 1000 {
+                dataSize = UIImageJPEGRepresentation(imgAvatar.image!,0.5)!
             }
+            
+            self.STORAGE_REF.child(filePath).put(dataSize, metadata: metadata, completion: { (metadata, error) in
+                if let error = error {
+                    print("\(error.localizedDescription)")
+                    return
+                }
+                let fileUrl = metadata!.downloadURLs![0].absoluteString
+                let changeRequestPhoto = user.profileChangeRequest()
+                changeRequestPhoto.photoURL = URL(string: fileUrl)
+                changeRequestPhoto.commitChanges(completion: { (error) in
+                    if let error = error {
+                        print(error.localizedDescription)
+                        return
+                    }else{
+                        alert.hideView()
+                        DispatchQueue.main.async {
+                            let alertSuccess = SCLAlertView()
+                            alertSuccess.showSuccess("Thành Công 😎", subTitle: "Thông tin đã được cập nhật", closeButtonTitle: "Đồng ý")
+                        }
+                        print ("profile update")
+                    }
+                })
+                self.USER_REF.child(user.uid).updateChildValues(["avatarURL":fileUrl])
+            })
         }
     }
     
@@ -521,7 +538,6 @@ class Helper {
                     print(error?.localizedDescription ?? "error up image")
                     return
                 }
-                
                 let imageUrl = metadata!.downloadURLs![0].absoluteString
                 print(imageUrl)
                 let timestamp = Date().timeIntervalSince1970
@@ -594,6 +610,66 @@ class Helper {
         })
     }
     
+    
+    func uploadVideo(fromId:String, toId:String, videoUrl:URL, thumbnailImage:UIImage, completion:@escaping (String)->()){
+        let alert = SCLAlertView(appearance: appearance)
+        alert.showWait("Loading", subTitle: "Vui lòng đợi tí nhé ...")
+        
+         let timestamp = Date().timeIntervalSince1970
+        let filename = "Video/\(timestamp).mov"
+        let uploadTask = self.STORAGE_REF.child(filename).putFile(videoUrl, metadata: nil, completion: { (metadata, error) in
+            if error != nil {
+                print(error ?? "upload video error")
+                return
+            }
+            
+            if let storageUrl = metadata?.downloadURL()?.absoluteString {
+                //print(storageUrl)
+                //upload image of video
+                if let uploadData = UIImageJPEGRepresentation(thumbnailImage, 0.2){
+                    let imageName = UUID().uuidString
+                    self.STORAGE_REF.child("Messages-Images").child(imageName).put(uploadData, metadata: nil, completion: { (metadata, error) in
+                        if error != nil {
+                            print(error?.localizedDescription ?? "error up image")
+                            return
+                        }
+                        let imageUrl = metadata!.downloadURLs![0].absoluteString
+                        
+                        //save database
+                        let values = ["type":"VIDEO", "urlVideo":storageUrl, "urlImage": imageUrl, "fromId": fromId, "toId": toId, "timestamp": timestamp, "imageWidth": thumbnailImage.size.width, "imageHeight": thumbnailImage.size.height] as [String : Any]
+                        
+                        let ref = self.MESSAGES_REF.childByAutoId()
+                        ref.updateChildValues(values ,withCompletionBlock: { (error, ref) in
+                            if let error = error {
+                                print(error)
+                                return
+                            }
+                            
+                            let messageId = ref.key
+                            self.USER_MESSAGES_REF.child(fromId).updateChildValues([messageId:"1"])
+                            self.USER_MESSAGES_REF.child(toId).updateChildValues([messageId:"1"])
+                            
+                        })
+                    })
+                }
+            }
+        })
+        
+        uploadTask.observe(.progress, handler: {(snapshot) in
+            if let completedUnitCount = snapshot.progress?.completedUnitCount{
+                completion(String(completedUnitCount))
+            }
+        })
+        
+        uploadTask.observe(.success, handler: {(snapshot) in
+            completion((userCurrent?.userName)!)
+            alert.hideView()
+        })
+    }
+    
+    
+   
+
     
     
 }

@@ -94,9 +94,15 @@ extension Page1CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
                         //toId == userCurrent.uid -> nguoi gui la nguoi co from id
                         let userName:String = user.userName!
                         let arrName = userName.components(separatedBy: " ")
-                        if mess.text == nil {
+                        if mess.text == nil && mess.type == "IMAGE" {
                             cell.lblText.text = "\(arrName[arrName.count - 1]): đã gửi 1 hình ảnh."
-                        }else{
+                        }
+                        
+                        if mess.text == nil && mess.type == "VIDEO" {
+                            cell.lblText.text = "\(arrName[arrName.count - 1]): đã gửi 1 video."
+                        }
+                        
+                        if mess.text != nil && mess.type == "TEXT" {
                             cell.lblText.text = "\(arrName[arrName.count - 1]): \(mess.text!)"
                         }
                     }
@@ -106,9 +112,15 @@ extension Page1CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
                     DispatchQueue.main.async {
                         cell.lblName.text = user.userName
                         cell.imgAvatar.loadImage(urlString: user.avatarURL)
-                        if mess.text == nil {
+                        if mess.text == nil && mess.type == "IMAGE" {
                             cell.lblText.text = "Bạn: đã gửi 1 hình ảnh."
-                        }else{
+                        }
+                        
+                        if mess.text == nil && mess.type == "VIDEO" {
+                            cell.lblText.text = "Bạn: đã gửi 1 video."
+                        }
+                        
+                        if mess.text != nil && mess.type == "TEXT" {
                             cell.lblText.text = "Bạn: \(mess.text!)"
                         }
                     }

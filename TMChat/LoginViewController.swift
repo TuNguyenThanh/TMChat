@@ -186,6 +186,12 @@ class LoginViewController: UIViewController  {
         self.btnLoginWithFB.leftAnchor.constraint(equalTo: self.imgPassword.leftAnchor).isActive = true
         self.btnLoginWithFB.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKey)))
+    }
+    
+    ///hide key touch self
+    func dismissKey(tap : UITapGestureRecognizer){
+        view.endEditing(true)
     }
     
     

@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import MobileCoreServices
+import AVFoundation
 
 class ChatLogViewController: UIViewController {
     let cellId:String = "Cell"
@@ -63,19 +65,25 @@ class ChatLogViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
-    var inputComponentsBottomAnchor:NSLayoutConstraint?
+    var collectionViewBottomAnchor:NSLayoutConstraint?
+    var bottomConstraint:CGFloat!
     func setupView(){
         self.view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         self.view.addSubview(myCollectionView)
         
         myCollectionView.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
-        myCollectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -50).isActive = true
+        
+        collectionViewBottomAnchor = myCollectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -50)
+        collectionViewBottomAnchor?.isActive = true
+        bottomConstraint = collectionViewBottomAnchor?.constant
+        
         myCollectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
         myCollectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
         
         myCollectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         myCollectionView.keyboardDismissMode = .interactive
         myCollectionView.alwaysBounceVertical = true
+        
     }
     
     func observeMessages(){
@@ -140,7 +148,7 @@ class ChatLogViewController: UIViewController {
         self.viewLine.rightAnchor.constraint(equalTo: inputComponent.rightAnchor).isActive = true
         self.viewLine.heightAnchor.constraint(equalToConstant: 1).isActive = true
         
-         return inputComponent
+        return inputComponent
     }()
     
     override var inputAccessoryView: UIView?{
@@ -159,25 +167,29 @@ class ChatLogViewController: UIViewController {
     }
     
     func setupKeyboard(){
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil   )
-//        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil   )
-         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil   )
+         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: NSNotification.Name.UIKeyboardWillShow, object: nil   )
+         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: nil   )
+         //NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardDidShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil   )
     }
     
-    func handleKeyboardDidShow() {
-        if self.arrMessages.count > 0 {
-            let indexPath = IndexPath(item: self.arrMessages.count - 1, section: 0)
-            self.myCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: true)
-        }
-    }
+//    func handleKeyboardDidShow() {
+//        if self.arrMessages.count > 0 {
+//            let indexPath = IndexPath(item: self.arrMessages.count - 1, section: 0)
+//            self.myCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: true)
+//        }
+//    }
     
     func keyboardWillShow(notification:Notification){
         let keyboardFrame = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
         
         UIView.animate(withDuration: keyboardDuration!) {
-            self.inputComponentsBottomAnchor?.constant = -(keyboardFrame?.height)!
+            self.collectionViewBottomAnchor?.constant = -(keyboardFrame?.height)!
             self.view.layoutIfNeeded()
+            if self.arrMessages.count > 0 {
+                let indexPath = IndexPath(item: self.arrMessages.count - 1, section: 0)
+                self.myCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: true)
+            }
         }
     }
     
@@ -185,8 +197,12 @@ class ChatLogViewController: UIViewController {
         let keyboardDuration = (notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as AnyObject).doubleValue
         
         UIView.animate(withDuration: keyboardDuration!) {
-            self.inputComponentsBottomAnchor?.constant = 0
+            self.collectionViewBottomAnchor?.constant = self.bottomConstraint
             self.view.layoutIfNeeded()
+            if self.arrMessages.count > 0 {
+                let indexPath = IndexPath(item: self.arrMessages.count - 1, section: 0)
+                self.myCollectionView.scrollToItem(at: indexPath, at: UICollectionViewScrollPosition.top, animated: true)
+            }
         }
     }
 
@@ -256,6 +272,7 @@ extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDe
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: self.cellId, for: indexPath) as! ChatLogCollectionViewCell
         
         let messages = self.arrMessages[indexPath.row]
+        cell.urlVideo = messages.urlVideo
         cell.txtTextMessages.text = messages.text
         cell.chatlogViewController = self
         
@@ -288,6 +305,12 @@ extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDe
         }else if (messages.urlImage) != nil {
             cell.bubbleViewWith?.constant = 200
             cell.txtTextMessages.isHidden = true
+        }
+        
+        if messages.urlVideo != nil {
+            cell.btnPlay.isHidden = false
+        }else{
+            cell.btnPlay.isHidden = true
         }
                
         return cell
@@ -333,6 +356,7 @@ extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationCo
         
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        imagePicker.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
         imagePicker.allowsEditing = true
         imagePicker.navigationBar.isTranslucent = false
         imagePicker.navigationBar.barTintColor = #colorLiteral(red: 0.2196078449, green: 0.007843137719, blue: 0.8549019694, alpha: 1) 
@@ -371,25 +395,48 @@ extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationCo
         self.present(alter, animated: true, completion: nil)
     }
     
+    
+    private func thumbnailImageForVideo(fileUrl: URL) -> UIImage? {
+        let asset = AVAsset(url: fileUrl)
+        let imageGenerator = AVAssetImageGenerator(asset: asset)
+        do{
+            let thumbnailCGImage = try imageGenerator.copyCGImage(at: CMTimeMake(1, 60), actualTime: nil)
+            return UIImage(cgImage: thumbnailCGImage)
+        }catch{
+            print("error thumb")
+            return nil
+        }
+    }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        var selectedImageFromPicker: UIImage?
-        if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
-            selectedImageFromPicker = editedImage
-        } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
-            selectedImageFromPicker = originalImage
+        if let videoUrl = info[UIImagePickerControllerMediaURL] as? URL{
+            //choose video
+            if let thumbnailImage:UIImage = self.thumbnailImageForVideo(fileUrl: videoUrl) {
+                Helper.helper.uploadVideo(fromId: (userCurrent?.uid)!, toId: (userTo?.uid)!, videoUrl: videoUrl, thumbnailImage: thumbnailImage, completion: { (proccess) in
+                    self.title = proccess
+                })
+            }            
+        }else{
+            //choose image
+            var selectedImageFromPicker: UIImage?
+            if let editedImage = info["UIImagePickerControllerEditedImage"] as? UIImage {
+                selectedImageFromPicker = editedImage
+            } else if let originalImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
+                selectedImageFromPicker = originalImage
+            }
+            
+            if let selectedImage = selectedImageFromPicker {
+                Helper.helper.sendMessImage(image: selectedImage, toId: (userTo?.uid)!, fromId: (userCurrent?.uid)!)
+            }
+            
         }
-
-        if let selectedImage = selectedImageFromPicker {
-            Helper.helper.sendMessImage(image: selectedImage, toId: (userTo?.uid)!, fromId: (userCurrent?.uid)!)
-        }
-        
-        self.inputContainerView.alpha = 1
         self.dismiss(animated:true, completion: nil)
+        self.inputContainerView.alpha = 1
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        self.inputContainerView.alpha = 1
         self.dismiss(animated: true, completion: nil)
+        self.inputContainerView.alpha = 1
     }
 }
 

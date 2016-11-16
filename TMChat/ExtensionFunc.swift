@@ -52,8 +52,11 @@ extension UIImageView{
     func loadImage(urlString:String){
         let activity = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         activity.color = UIColor.magenta
-        activity.frame = CGRect(x: self.frame.size.width / 2, y: self.frame.size.height / 2, width: 0, height: 0)
+        activity.translatesAutoresizingMaskIntoConstraints = false
         self.addSubview(activity)
+        activity.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        activity.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        
         activity.startAnimating()
         self.image = UIImage(named: "defaultImage")//nil
         

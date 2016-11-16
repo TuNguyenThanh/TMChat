@@ -14,6 +14,7 @@ struct Messages {
     let fromId:String!
     let toId:String!
     let text:String!
+    let urlVideo:String!
     let urlImage:String!
     let timestamp:NSNumber!
     let imageWidth:NSNumber!
@@ -26,6 +27,7 @@ struct Messages {
         self.text = ""
         self.type = "TEXT"
         self.urlImage = ""
+        self.urlVideo = ""
         self.timestamp = 0
         self.imageWidth = 0
         self.imageHeight = 0
@@ -39,6 +41,7 @@ struct Messages {
         self.timestamp = snapshot["timestamp"] as! NSNumber!
         self.text = snapshot["text"] as? String
         self.urlImage = snapshot["urlImage"] as? String
+        self.urlVideo = snapshot["urlVideo"] as? String
         self.imageWidth = snapshot["imageWidth"] as? NSNumber
         self.imageHeight = snapshot["imageHeight"] as? NSNumber
     }

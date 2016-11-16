@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ChatLogCollectionViewCell: BaseCollectionViewCell {
     
@@ -49,17 +50,62 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         return imageView
     }()
     
+    lazy var btnPlay:UIButton = {
+        let btn = UIButton(type: .system)
+        btn.setImage(UIImage(named: "play"), for: UIControlState.normal)
+        btn.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        btn.addTarget(self, action: #selector(abtnPlayVideo), for: UIControlEvents.touchUpInside)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
+    
     func tapImageZoom(tap:UITapGestureRecognizer){
         print("tap")
+        if urlVideo != nil {
+            return
+        }
+        
         if let image = tap.view as? UIImageView {
             self.chatlogViewController?.performZoomImage(image: image)
         }
+    }
+    
+    let activityIndicatorView:UIActivityIndicatorView = {
+        let aiv = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        aiv.translatesAutoresizingMaskIntoConstraints = false
+        aiv.hidesWhenStopped = true
+        return aiv
+    }()
+    
+    var playerLayer:AVPlayerLayer?
+    var player:AVPlayer?
+    
+    func abtnPlayVideo(){
+        if let url = self.urlVideo {
+            player = AVPlayer(url: URL(string: url)!)
+            
+            playerLayer = AVPlayerLayer(player: player)
+            playerLayer?.frame = bubbleView.bounds
+            bubbleView.layer.addSublayer(playerLayer!)
+            
+            player?.play()
+            activityIndicatorView.startAnimating()
+            btnPlay.isHidden = true
+        }
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        playerLayer?.removeFromSuperlayer()
+        player?.pause()
+        activityIndicatorView.stopAnimating()
     }
 
     var bubbleViewWith:NSLayoutConstraint?
     var bubbleViewRight:NSLayoutConstraint?
     var bubbleViewLeft:NSLayoutConstraint?
     var chatlogViewController:ChatLogViewController?
+    var urlVideo:String?
     
     override func setupView() {
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
@@ -67,6 +113,8 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         self.addSubview(imgAvatar)
         bubbleView.addSubview(txtTextMessages)
         bubbleView.addSubview(messImage)
+        bubbleView.addSubview(btnPlay)
+        bubbleView.addSubview(activityIndicatorView)
         
         messImage.leftAnchor.constraint(equalTo: bubbleView.leftAnchor).isActive = true
         messImage.topAnchor.constraint(equalTo: bubbleView.topAnchor).isActive = true
@@ -97,6 +145,16 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         txtTextMessages.leftAnchor.constraint(equalTo: bubbleView.leftAnchor, constant: 8).isActive = true
         txtTextMessages.rightAnchor.constraint(equalTo: bubbleView.rightAnchor, constant: -8).isActive = true
         txtTextMessages.heightAnchor.constraint(equalTo: bubbleView.heightAnchor).isActive = true
+        
+        btnPlay.centerXAnchor.constraint(equalTo: bubbleView.centerXAnchor).isActive = true
+        btnPlay.centerYAnchor.constraint(equalTo: bubbleView.centerYAnchor).isActive = true
+        btnPlay.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        btnPlay.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        activityIndicatorView.centerXAnchor.constraint(equalTo: bubbleView.centerXAnchor).isActive = true
+        activityIndicatorView.centerYAnchor.constraint(equalTo: bubbleView.centerYAnchor).isActive = true
+        activityIndicatorView.widthAnchor.constraint(equalToConstant: 50).isActive = true
+        activityIndicatorView.heightAnchor.constraint(equalToConstant: 50).isActive = true
     }
 
 }

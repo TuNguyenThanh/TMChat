@@ -210,6 +210,8 @@ class RegisterViewController: UIViewController {
         self.btnCancel.rightAnchor.constraint(equalTo: self.txtPassword.rightAnchor, constant: -8).isActive = true
         self.btnCancel.widthAnchor.constraint(equalTo: self.txtPassword.widthAnchor, multiplier: 1/2).isActive = true
         self.btnCancel.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKey)))
     }
     
     func abtnCancel(){
