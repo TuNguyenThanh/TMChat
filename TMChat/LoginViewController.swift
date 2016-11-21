@@ -118,6 +118,27 @@ class LoginViewController: UIViewController  {
     }()
 
     
+    lazy var lblForgotPassword:UILabel = {
+        let lbl = UILabel()
+        lbl.text = "Quên mật khẩu"
+        lbl.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        lbl.isUserInteractionEnabled = true
+        lbl.clipsToBounds = true
+        lbl.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(forgotPassword)))
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    
+    func forgotPassword(){
+        let appearance = SCLAlertView.SCLAppearance(showCloseButton: true)
+        let alert = SCLAlertView(appearance: appearance)
+        let txt = alert.addTextField("Nhập địa chỉ email...")
+        _ = alert.addButton("Đồng ý") {
+            Helper.helper.forgotPassword(email: txt.text!)
+        }
+        _ = alert.showEdit("Quên mật khẩu", subTitle:"Vui lòng nhập địa chỉ email",closeButtonTitle: "Huỷ")
+    }
+    
     func setuppView(){
         self.view.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
         self.view.addSubview(bg)
@@ -131,6 +152,7 @@ class LoginViewController: UIViewController  {
         self.view.addSubview(btnLogin)
         self.view.addSubview(btnRegister)
         self.view.addSubview(btnLoginWithFB)
+        self.view.addSubview(lblForgotPassword)
         
         txtEmail.delegate = self
         txtPassword.delegate = self
@@ -185,6 +207,9 @@ class LoginViewController: UIViewController  {
         self.btnLoginWithFB.rightAnchor.constraint(equalTo: self.txtPassword.rightAnchor, constant: -8).isActive = true
         self.btnLoginWithFB.leftAnchor.constraint(equalTo: self.imgPassword.leftAnchor).isActive = true
         self.btnLoginWithFB.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        
+        self.lblForgotPassword.topAnchor.constraint(equalTo: self.btnLoginWithFB.bottomAnchor, constant: 8).isActive = true
+        self.lblForgotPassword.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         
         self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKey)))
     }

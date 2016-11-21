@@ -46,12 +46,14 @@ class MainViewController: UIViewController {
         navigationItem.titleView = labelTitle
         
         //icon
-        let searchBarButtonItem = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
+        let btnSearchBar = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
         
-        navigationItem.rightBarButtonItems = [searchBarButtonItem]
+        navigationItem.rightBarButtonItems = [btnSearchBar]
     }
     
     func handleSearch() {
+//        Helper.helper.logout(completion: { (check) in
+//        })
         let indexPath = IndexPath(item: 2, section: 0)
         if let titleLabel = navigationItem.titleView as? UILabel {
             titleLabel.text = "  \(titles[2])"
@@ -181,7 +183,7 @@ extension MainViewController: UICollectionViewDelegateFlowLayout {
 extension MainViewController: pushChatLogControllerDelegate{
     func push(userTo: User) {
         let chatLogVC = ChatLogViewController()
-        chatLogVC.title = userTo.userName
+        chatLogVC.title = userTo.name
         chatLogVC.userTo = userTo
         self.navigationController?.pushViewController(chatLogVC, animated: true)
     }

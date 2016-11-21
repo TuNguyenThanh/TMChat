@@ -30,7 +30,7 @@ class RegisterViewController: UIViewController {
         return img
     }()
     
-    let imgUsername:UIImageView = {
+    let imgName:UIImageView = {
         let img = UIImageView()
         img.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         img.image = UIImage(named: "friend")?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
@@ -38,15 +38,15 @@ class RegisterViewController: UIViewController {
         return img
     }()
     
-    let txtUsername:UITextField = {
+    let txtName:UITextField = {
         let txt = UITextField()
         txt.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        txt.attributedPlaceholder = NSAttributedString(string:"Username", attributes:[NSForegroundColorAttributeName: UIColor.white])
+        txt.attributedPlaceholder = NSAttributedString(string:"Name", attributes:[NSForegroundColorAttributeName: UIColor.white])
         txt.translatesAutoresizingMaskIntoConstraints = false
         return txt
     }()
     
-    let viewLineUsername:UIView = {
+    let viewLineName:UIView = {
         let v = UIView()
         v.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         v.translatesAutoresizingMaskIntoConstraints = false
@@ -132,9 +132,9 @@ class RegisterViewController: UIViewController {
         self.view.backgroundColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
         self.view.addSubview(bg)
         self.view.addSubview(imgChooseAvatar)
-        self.view.addSubview(txtUsername)
-        self.view.addSubview(imgUsername)
-        self.view.addSubview(viewLineUsername)
+        self.view.addSubview(txtName)
+        self.view.addSubview(imgName)
+        self.view.addSubview(viewLineName)
         self.view.addSubview(txtEmail)
         self.view.addSubview(imgEmail)
         self.view.addSubview(viewLineEmail)
@@ -144,7 +144,7 @@ class RegisterViewController: UIViewController {
         self.view.addSubview(btnRegister)
         self.view.addSubview(btnCancel)
         
-        txtUsername.delegate = self
+        txtName.delegate = self
         txtEmail.delegate = self
         txtPassword.delegate = self
         
@@ -156,25 +156,25 @@ class RegisterViewController: UIViewController {
         imgChooseAvatar.heightAnchor.constraint(equalToConstant: 128).isActive = true
         imgChooseAvatar.widthAnchor.constraint(equalToConstant: 128).isActive = true
         
-        self.txtUsername.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        self.txtUsername.topAnchor.constraint(equalTo: self.imgChooseAvatar.bottomAnchor, constant: 40).isActive = true
-        self.txtUsername.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 112).isActive = true
-        self.txtUsername.heightAnchor.constraint(equalToConstant: 40).isActive = true
+        self.txtName.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.txtName.topAnchor.constraint(equalTo: self.imgChooseAvatar.bottomAnchor, constant: 40).isActive = true
+        self.txtName.leftAnchor.constraint(equalTo: self.view.leftAnchor, constant: 112).isActive = true
+        self.txtName.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        self.imgUsername.rightAnchor.constraint(equalTo: self.txtUsername.leftAnchor, constant: -8).isActive = true
-        self.imgUsername.bottomAnchor.constraint(equalTo: self.txtUsername.bottomAnchor, constant: -8).isActive = true
-        self.imgUsername.heightAnchor.constraint(equalTo: self.txtUsername.heightAnchor, constant: -8).isActive = true
-        self.imgUsername.widthAnchor.constraint(equalTo: self.imgUsername.heightAnchor).isActive = true
+        self.imgName.rightAnchor.constraint(equalTo: self.txtName.leftAnchor, constant: -8).isActive = true
+        self.imgName.bottomAnchor.constraint(equalTo: self.txtName.bottomAnchor, constant: -8).isActive = true
+        self.imgName.heightAnchor.constraint(equalTo: self.txtName.heightAnchor, constant: -8).isActive = true
+        self.imgName.widthAnchor.constraint(equalTo: self.imgName.heightAnchor).isActive = true
         
-        self.viewLineUsername.heightAnchor.constraint(equalToConstant: 2).isActive = true
-        self.viewLineUsername.leftAnchor.constraint(equalTo: self.imgUsername.leftAnchor).isActive = true
-        self.viewLineUsername.topAnchor.constraint(equalTo: self.txtUsername.bottomAnchor, constant: 0).isActive = true
-        self.viewLineUsername.rightAnchor.constraint(equalTo: self.txtUsername.rightAnchor).isActive = true
+        self.viewLineName.heightAnchor.constraint(equalToConstant: 2).isActive = true
+        self.viewLineName.leftAnchor.constraint(equalTo: self.imgName.leftAnchor).isActive = true
+        self.viewLineName.topAnchor.constraint(equalTo: self.txtName.bottomAnchor, constant: 0).isActive = true
+        self.viewLineName.rightAnchor.constraint(equalTo: self.txtName.rightAnchor).isActive = true
 
         self.txtEmail.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        self.txtEmail.topAnchor.constraint(equalTo: self.viewLineUsername.bottomAnchor, constant: 20).isActive = true
-        self.txtEmail.leftAnchor.constraint(equalTo: self.txtUsername.leftAnchor).isActive = true
-        self.txtEmail.heightAnchor.constraint(equalTo: txtUsername.heightAnchor).isActive = true
+        self.txtEmail.topAnchor.constraint(equalTo: self.viewLineName.bottomAnchor, constant: 20).isActive = true
+        self.txtEmail.leftAnchor.constraint(equalTo: self.txtName.leftAnchor).isActive = true
+        self.txtEmail.heightAnchor.constraint(equalTo: txtName.heightAnchor).isActive = true
         
         self.imgEmail.rightAnchor.constraint(equalTo: self.txtEmail.leftAnchor, constant: -8).isActive = true
         self.imgEmail.bottomAnchor.constraint(equalTo: self.txtEmail.bottomAnchor, constant: -8).isActive = true
@@ -211,16 +211,22 @@ class RegisterViewController: UIViewController {
         self.btnCancel.widthAnchor.constraint(equalTo: self.txtPassword.widthAnchor, multiplier: 1/2).isActive = true
         self.btnCancel.heightAnchor.constraint(equalToConstant: 40).isActive = true
         
-        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(LoginViewController.dismissKey)))
+        self.view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(RegisterViewController.dismissKey)))
     }
+    
+    ///hide key touch self
+    func dismissKey(tap : UITapGestureRecognizer){
+        self.view.endEditing(true)
+    }
+
     
     func abtnCancel(){
         self.dismiss(animated: true, completion: nil)
     }
     
     func abtnRegister(){
-        if Helper.helper.checkInputRegister(username: txtUsername.text!, email: txtEmail.text!, pass: txtPassword.text!) == true {
-            Helper.helper.registerUser(username: txtUsername.text!, email: txtEmail.text!, password: txtPassword.text!, imgAvatar: imgChooseAvatar) { (check) in
+        if Helper.helper.checkInputRegister(name: txtName.text!, email: txtEmail.text!, pass: txtPassword.text!) == true {
+            Helper.helper.registerUser(name: txtName.text!, email: txtEmail.text!, password: txtPassword.text!, imgAvatar: imgChooseAvatar) { (check) in
                 if check == true {
                     self.dismiss(animated: true, completion: nil)
                 }else{
@@ -239,9 +245,9 @@ class RegisterViewController: UIViewController {
 
 extension RegisterViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        if textField == txtUsername {
+        if textField == txtName {
             UIView.animate(withDuration: 0.5, animations: {
-                self.viewLineUsername.backgroundColor = UIColor.lightGray
+                self.viewLineName.backgroundColor = UIColor.lightGray
             })
         } else if textField == txtEmail {
             UIView.animate(withDuration: 0.5, animations: {
@@ -256,9 +262,9 @@ extension RegisterViewController: UITextFieldDelegate {
     }
     
     func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
-        if textField == txtUsername {
+        if textField == txtName {
             UIView.animate(withDuration: 0.5, animations: {
-                self.viewLineUsername.backgroundColor = UIColor.white
+                self.viewLineName.backgroundColor = UIColor.white
             })
         } else if textField == txtEmail {
             UIView.animate(withDuration: 0.5, animations: {

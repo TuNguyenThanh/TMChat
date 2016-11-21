@@ -77,6 +77,16 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         return aiv
     }()
     
+    let lblTimestamp:UILabel = {
+        let lbl = UILabel()
+        lbl.textColor = UIColor.darkGray
+        lbl.text = "dbjwfhjb"
+        lbl.textAlignment = .center
+        lbl.font = UIFont.boldSystemFont(ofSize: 13)
+        lbl.translatesAutoresizingMaskIntoConstraints = false
+        return lbl
+    }()
+    
     var playerLayer:AVPlayerLayer?
     var player:AVPlayer?
     
@@ -111,6 +121,7 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         self.addSubview(bubbleView)
         self.addSubview(imgAvatar)
+        self.addSubview(lblTimestamp)
         bubbleView.addSubview(txtTextMessages)
         bubbleView.addSubview(messImage)
         bubbleView.addSubview(btnPlay)
@@ -125,6 +136,7 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         imgAvatar.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
         imgAvatar.widthAnchor.constraint(equalToConstant: 32).isActive = true
         imgAvatar.heightAnchor.constraint(equalToConstant: 32).isActive = true
+        
         
         ///--
         bubbleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
@@ -155,6 +167,12 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         activityIndicatorView.centerYAnchor.constraint(equalTo: bubbleView.centerYAnchor).isActive = true
         activityIndicatorView.widthAnchor.constraint(equalToConstant: 50).isActive = true
         activityIndicatorView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        lblTimestamp.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        lblTimestamp.bottomAnchor.constraint(equalTo: self.bubbleView.bottomAnchor, constant: 20).isActive = true
+        lblTimestamp.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        lblTimestamp.heightAnchor.constraint(equalToConstant: 30).isActive = true
+
     }
 
 }

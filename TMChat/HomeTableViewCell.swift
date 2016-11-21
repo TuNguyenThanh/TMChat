@@ -40,6 +40,7 @@ class HomeTableViewCell: BaseTableViewCell {
         let lbl = UILabel()
         lbl.text = "HH:MM:SS"
         lbl.textColor = UIColor.darkGray
+        lbl.textAlignment = .center
         lbl.font = UIFont.boldSystemFont(ofSize: 13)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
@@ -72,7 +73,7 @@ class HomeTableViewCell: BaseTableViewCell {
         
         lblTimestamp.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
         lblTimestamp.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 10).isActive = true
-        lblTimestamp.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        lblTimestamp.widthAnchor.constraint(equalToConstant: 150).isActive = true
         lblTimestamp.heightAnchor.constraint(equalToConstant: 40).isActive = true
     }
     

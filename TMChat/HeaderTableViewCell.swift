@@ -46,7 +46,7 @@ class HeaderTableViewCell: BaseTableViewCell {
         let txt = alert.addTextField("Nhập tên...")
         _ = alert.addButton("Thay đổi") {
            self.lblName.text = txt.text
-            Helper.helper.updateUsername(username: txt.text!)
+            Helper.helper.updateName(name: txt.text!)
         }
         _ = alert.showEdit("Thay đổi tên", subTitle:"Bạn có muốn thay đổi tên hay không?", closeButtonTitle: "Huỷ")
     }

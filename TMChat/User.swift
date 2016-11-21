@@ -10,7 +10,7 @@ import Foundation
 
 struct User {
     let uid:String!
-    let userName:String!
+    let name:String!
     let email:String!
     let phone:String!
     let avatarURL:String!
@@ -18,7 +18,7 @@ struct User {
     
     init() {
         self.uid = ""
-        self.userName = ""
+        self.name = ""
         self.email = ""
         self.phone = ""
         self.avatarURL = ""
@@ -27,7 +27,7 @@ struct User {
     
     init(key: String , snapshot: Dictionary<String,AnyObject>) {
         self.uid = key
-        self.userName = snapshot["username"] as! String
+        self.name = snapshot["name"] as! String
         self.email = snapshot["email"] as! String
         self.phone = snapshot["numberPhone"] as! String
         self.avatarURL = snapshot["avatarURL"] as! String

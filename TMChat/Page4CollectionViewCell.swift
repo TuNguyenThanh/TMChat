@@ -40,7 +40,6 @@ class Page4CollectionViewCell: BaseCollectionViewCell {
         
         self.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: tableView)
         self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: tableView)
-        
     }
 }
 
@@ -63,7 +62,7 @@ extension Page4CollectionViewCell: UITableViewDataSource, UITableViewDelegate {
         if indexPath.row == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "CellHeader", for: indexPath) as! HeaderTableViewCell
             cell.delegate = self
-            cell.lblName.text = userCurrent?.userName
+            cell.lblName.text = userCurrent?.name
             print(userCurrent?.avatarURL ?? "avatarUrl")
             if userCurrent?.avatarURL != nil {
                 cell.imgAvatar.loadImage(urlString: (userCurrent?.avatarURL)!)

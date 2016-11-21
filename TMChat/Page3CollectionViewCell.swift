@@ -215,7 +215,7 @@ extension Page3CollectionViewCell:UISearchBarDelegate {
             self.arrUserFilter.removeAll()
             
             let key:String = searchText
-            let t = rootREF.child("User").queryOrdered(byChild: "username").queryEqual(toValue: key)
+            let t = rootREF.child("User").queryOrdered(byChild: "name").queryEqual(toValue: key)
             t.observe(.childAdded, with:  { (snapshot) in
                 print(snapshot)
                 DispatchQueue.main.async {
@@ -275,7 +275,7 @@ extension Page3CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
         }
         
         cell.uid = user.uid
-        cell.lblName.text = user.userName
+        cell.lblName.text = user.name
         
         cell.imgAvatar.loadImage(urlString: user.avatarURL)
         if user.online == false {

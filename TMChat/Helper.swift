@@ -75,12 +75,12 @@ class Helper {
     }
     
     ///Check Register
-    func checkInputRegister(username:String, email:String, pass:String) -> Bool {
+    func checkInputRegister(name:String, email:String, pass:String) -> Bool {
         var check = false
         let alert = SCLAlertView()
-        //Check username
-        if username == ""{
-            alert.showError("Error", subTitle: "Vui lòng nhập Username")
+        //Check name
+        if name == ""{
+            alert.showError("Error", subTitle: "Vui lòng nhập name")
         }else{
             //Check email
             if email == ""{
@@ -163,7 +163,7 @@ class Helper {
                             let email:String = user.email != nil ? user.email! : "Email of Facebook's user"
                             let urlPhoto:String = (user.photoURL?.absoluteString)!
                             
-                            let infoUser:[String:Any] = ["email":email, "username":displayName, "numberPhone": "+84", "avatarURL":urlPhoto, "online":false] as [String:Any]
+                            let infoUser:[String:Any] = ["email":email, "name":displayName, "numberPhone": "+84", "avatarURL":urlPhoto, "online":false] as [String:Any]
                             self.USER_REF.child(uid).setValue(infoUser)
                             userCurrent = User(key: uid, snapshot: infoUser as Dictionary<String, AnyObject>)
                             alert.hideView()
@@ -241,7 +241,6 @@ class Helper {
         })
     }
     
-    
     func sendFriendRequest(uid:String){
         rootREF.child("FriendRequest").child((userCurrent?.uid)!).observe(.childAdded, with: {(snapshot) in
             print(snapshot.key)
@@ -254,7 +253,6 @@ class Helper {
             }
             return
         })
-
         rootREF.child("FriendRequest").child(uid).updateChildValues([(userCurrent?.uid)!:"1"])
     }
     
@@ -274,7 +272,6 @@ class Helper {
         })
     }
     
-    
     ///Sign in user with email TMChat - login success return true
     func loginEmail(email:String, password:String, completion:@escaping (Bool)->()){
         let alert = SCLAlertView(appearance: appearance)
@@ -293,7 +290,7 @@ class Helper {
                 let email:String = user.email!
                 let urlPhoto:String = (user.photoURL?.absoluteString)!
                 
-                let infoUser:[String:Any] = ["email":email, "username":displayName, "numberPhone": "+84", "avatarURL":urlPhoto, "online":false] as [String:Any]
+                let infoUser:[String:Any] = ["email":email, "name":displayName, "numberPhone": "+84", "avatarURL":urlPhoto, "online":false] as [String:Any]
                 userCurrent = User(key: uid, snapshot: infoUser as Dictionary<String, AnyObject>)
                 alert.hideView()
                 completion(true)
@@ -302,7 +299,7 @@ class Helper {
     }
     
     ///Sign up user with email TMChat
-    func registerUser(username:String, email:String, password:String, imgAvatar:UIImageView, completion:@escaping (Bool)->()){
+    func registerUser(name:String, email:String, password:String, imgAvatar:UIImageView, completion:@escaping (Bool)->()){
         let alert = SCLAlertView(appearance: appearance)
         alert.showWait("Đăng Ký", subTitle: "Vui lòng đợi tí nhé ...")
         FIRAuth.auth()?.createUser(withEmail: email, password: password) { (user, error) in
@@ -317,7 +314,7 @@ class Helper {
             //not error & have user
             if let user = user {
                 let changeRequest = user.profileChangeRequest()
-                changeRequest.displayName = username
+                changeRequest.displayName = name
                 
                 //upload image
                 let metadata = FIRStorageMetadata()
@@ -347,7 +344,7 @@ class Helper {
                         }
                     })
                     
-                    let infoUser:[String:Any] = ["email":email, "username":username, "numberPhone": "+84", "avatarURL":fileUrl, "online":false] as [String:Any]
+                    let infoUser:[String:Any] = ["email":email, "name":name, "numberPhone": "+84", "avatarURL":fileUrl, "online":false] as [String:Any]
                     ///create node in database
                     self.USER_REF.child(user.uid).setValue(infoUser, withCompletionBlock: { (error, ref) in
                         if error != nil {
@@ -393,16 +390,31 @@ class Helper {
         }
         alert.showWarning("Reset Password", subTitle: "Bạn có muốn reset password ?", closeButtonTitle: "Huỷ")
     }
+    
+    func forgotPassword(email:String){
+        FIRAuth.auth()?.sendPasswordReset(withEmail: email) { error in
+            if error != nil {
+                // An error happened.
+                print(error ?? "error")
+            } else {
+                // Password reset email sent.
+                DispatchQueue.main.async {
+                    let alert1 = SCLAlertView()
+                    alert1.showSuccess("Thành Công 😎", subTitle: "Vui lòng kiểm tra Email \(email)", closeButtonTitle: "Đồng ý")
+                }
+            }
+        }
+    }
 
     ///Update Profile User
-    func updateUser(username:String? ,numberPhone:String?, imgAvatar:UIImageView?){
+    func updateUser(name:String? ,numberPhone:String?, imgAvatar:UIImageView?){
         let alert = SCLAlertView(appearance: appearance)
         alert.showWait("Loading", subTitle: "Vui lòng đợi tí nhé ...")
         
         let user = FIRAuth.auth()?.currentUser
         if let user = user {
             let changeRequest = user.profileChangeRequest()
-            changeRequest.displayName = username
+            changeRequest.displayName = name
             changeRequest.commitChanges(completion: { (error) in
                 if let error = error{
                     print(error.localizedDescription)
@@ -435,21 +447,21 @@ class Helper {
                             print ("profile update")
                         }
                     })
-                    self.USER_REF.child(user.uid).updateChildValues(["username":username!, "numberPhone": numberPhone!, "avatarURL":fileUrl])
+                    self.USER_REF.child(user.uid).updateChildValues(["name":name!, "numberPhone": numberPhone!, "avatarURL":fileUrl])
                 })
             }
         }
     }
     
-    ///Update New Username Current
-    func updateUsername(username:String){
+    ///Update New name Current
+    func updateName(name:String){
         let alert = SCLAlertView(appearance: appearance)
         alert.showWait("Loading", subTitle: "Vui lòng đợi tí nhé ...")
         
         let user = FIRAuth.auth()?.currentUser
         if let user = user {
             let changeRequest = user.profileChangeRequest()
-            changeRequest.displayName = username
+            changeRequest.displayName = name
             changeRequest.commitChanges(completion: { (error) in
                 if let error = error{
                     print(error.localizedDescription)
@@ -457,7 +469,7 @@ class Helper {
                 }
             })
             
-            self.USER_REF.child(user.uid).updateChildValues(["username":username])
+            self.USER_REF.child(user.uid).updateChildValues(["name":name])
             alert.hideView()
             DispatchQueue.main.async {
                 let alertSuccess = SCLAlertView()
@@ -648,7 +660,6 @@ class Helper {
                             let messageId = ref.key
                             self.USER_MESSAGES_REF.child(fromId).updateChildValues([messageId:"1"])
                             self.USER_MESSAGES_REF.child(toId).updateChildValues([messageId:"1"])
-                            
                         })
                     })
                 }
@@ -662,7 +673,7 @@ class Helper {
         })
         
         uploadTask.observe(.success, handler: {(snapshot) in
-            completion((userCurrent?.userName)!)
+            completion((userCurrent?.name)!)
             alert.hideView()
         })
     }

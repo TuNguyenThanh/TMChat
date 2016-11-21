@@ -307,6 +307,27 @@ extension ChatLogViewController: UICollectionViewDataSource , UICollectionViewDe
             cell.txtTextMessages.isHidden = true
         }
         
+        if let seconds = messages.timestamp?.doubleValue {
+            let timestampDate = Date(timeIntervalSince1970: seconds)
+            let dateFormater = DateFormatter()
+            
+            //get day mess
+            let dfDay = DateFormatter()
+            dfDay.dateFormat = "d"
+            let day:Int = Int( dfDay.string(from: timestampDate))!
+            
+            //get day now
+            let dayNow:Int = Int( dfDay.string(from: Date()))!
+            
+            if dayNow > day {
+                dateFormater.dateFormat = "E, hh:mm a"
+            }else{
+                dateFormater.dateFormat = "hh:mm a"
+            }
+            
+            cell.lblTimestamp.text = dateFormater.string(from: timestampDate)
+        }
+        
         if messages.urlVideo != nil {
             cell.btnPlay.isHidden = false
         }else{

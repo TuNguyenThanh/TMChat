@@ -63,6 +63,7 @@ class Page1CollectionViewCell: BaseCollectionViewCell {
         }
     }
     
+    
     lazy var myTableView:UITableView = {
         let tbl = UITableView(frame: CGRect.zero, style: UITableViewStyle.plain)
         tbl.delegate = self
@@ -88,11 +89,11 @@ extension Page1CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
             if userCurrent?.uid == mess.toId {
                 Helper.helper.fetchUsers(uid: mess.fromId, completion: {(user)in
                     DispatchQueue.main.async {
-                        cell.lblName.text = user.userName
+                        cell.lblName.text = user.name
                         cell.imgAvatar.loadImage(urlString: user.avatarURL)
                         
                         //toId == userCurrent.uid -> nguoi gui la nguoi co from id
-                        let userName:String = user.userName!
+                        let userName:String = user.name!
                         let arrName = userName.components(separatedBy: " ")
                         if mess.text == nil && mess.type == "IMAGE" {
                             cell.lblText.text = "\(arrName[arrName.count - 1]): đã gửi 1 hình ảnh."
@@ -110,7 +111,7 @@ extension Page1CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
             }else{
                 Helper.helper.fetchUsers(uid: mess.toId, completion: {(user)in
                     DispatchQueue.main.async {
-                        cell.lblName.text = user.userName
+                        cell.lblName.text = user.name
                         cell.imgAvatar.loadImage(urlString: user.avatarURL)
                         if mess.text == nil && mess.type == "IMAGE" {
                             cell.lblText.text = "Bạn: đã gửi 1 hình ảnh."
@@ -129,15 +130,27 @@ extension Page1CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
         }
         
         
-        
         if let seconds = mess.timestamp?.doubleValue {
             let timestampDate = Date(timeIntervalSince1970: seconds)
-            
             let dateFormater = DateFormatter()
-            dateFormater.dateFormat = "hh:mm:ss a"
+
+            //get day mess
+            let dfDay = DateFormatter()
+            dfDay.dateFormat = "d"
+            let day:Int = Int( dfDay.string(from: timestampDate))!
+            
+            //get day now
+            let dayNow:Int = Int( dfDay.string(from: Date()))!
+            
+            if dayNow > day {
+                dateFormater.dateFormat = "E, hh:mm a"
+            }else{
+                dateFormater.dateFormat = "hh:mm a"
+            }
             
             cell.lblTimestamp.text = dateFormater.string(from: timestampDate)
         }
+        
         
         return cell
     }
