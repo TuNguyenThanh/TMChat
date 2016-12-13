@@ -172,7 +172,6 @@ class ChatLogCollectionViewCell: BaseCollectionViewCell {
         lblTimestamp.bottomAnchor.constraint(equalTo: self.bubbleView.bottomAnchor, constant: 20).isActive = true
         lblTimestamp.widthAnchor.constraint(equalToConstant: 100).isActive = true
         lblTimestamp.heightAnchor.constraint(equalToConstant: 30).isActive = true
-
     }
 
 }

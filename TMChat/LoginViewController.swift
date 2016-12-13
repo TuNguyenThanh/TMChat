@@ -63,7 +63,7 @@ class LoginViewController: UIViewController  {
         let txt = UITextField()
         txt.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         txt.isSecureTextEntry = true
-        txt.attributedPlaceholder = NSAttributedString(string:"Password", attributes:[NSForegroundColorAttributeName: UIColor.white])
+        txt.attributedPlaceholder = NSAttributedString(string:"Mật khẩu", attributes:[NSForegroundColorAttributeName: UIColor.white])
         txt.translatesAutoresizingMaskIntoConstraints = false
         return txt
     }()
@@ -77,7 +77,7 @@ class LoginViewController: UIViewController  {
     
     lazy var btnLogin:UIButton = {
         let btn = UIButton(type: .system )
-        btn.setTitle("Login", for: UIControlState.normal)
+        btn.setTitle("Đăng nhập", for: UIControlState.normal)
         btn.setTitleColor(UIColor.white, for: UIControlState.normal)
         btn.backgroundColor = UIColor(red: 212/255, green: 41/255, blue: 41/255, alpha: 0.5)
         btn.layer.borderColor = UIColor.white.cgColor
@@ -91,7 +91,7 @@ class LoginViewController: UIViewController  {
 
     lazy var btnRegister:UIButton = {
         let btn = UIButton(type: .system )
-        btn.setTitle("Register", for: UIControlState.normal)
+        btn.setTitle("Đăng ký", for: UIControlState.normal)
         btn.setTitleColor(UIColor.white, for: UIControlState.normal)
         btn.backgroundColor = UIColor(red: 212/255, green: 41/255, blue: 41/255, alpha: 0.5)
         btn.layer.borderColor = UIColor.white.cgColor
@@ -105,7 +105,7 @@ class LoginViewController: UIViewController  {
     
     lazy var btnLoginWithFB:UIButton = {
         let btn = UIButton(type: .system )
-        btn.setTitle("Login with Facebook", for: UIControlState.normal)
+        btn.setTitle("Đăng nhập bằng Facebook", for: UIControlState.normal)
         btn.setTitleColor(UIColor.white, for: UIControlState.normal)
         btn.backgroundColor = UIColor.blue.withAlphaComponent(0.5)
         btn.layer.borderColor = UIColor.white.cgColor
@@ -134,7 +134,12 @@ class LoginViewController: UIViewController  {
         let alert = SCLAlertView(appearance: appearance)
         let txt = alert.addTextField("Nhập địa chỉ email...")
         _ = alert.addButton("Đồng ý") {
-            Helper.helper.forgotPassword(email: txt.text!)
+            if txt.text == "" {
+                let alert = SCLAlertView()
+                alert.showError("Thông báo", subTitle: "Vui lòng nhập email", closeButtonTitle: "Thử lại")
+            }else{
+                Helper.helper.forgotPassword(email: txt.text!)
+            }
         }
         _ = alert.showEdit("Quên mật khẩu", subTitle:"Vui lòng nhập địa chỉ email",closeButtonTitle: "Huỷ")
     }
@@ -153,6 +158,7 @@ class LoginViewController: UIViewController  {
         self.view.addSubview(btnRegister)
         self.view.addSubview(btnLoginWithFB)
         self.view.addSubview(lblForgotPassword)
+        
         
         txtEmail.delegate = self
         txtPassword.delegate = self
@@ -260,8 +266,28 @@ class LoginViewController: UIViewController  {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         setuppView()
+        observeKeyboardNotifications()
     }
 
+    ///Keyboard show or hiden
+    fileprivate func observeKeyboardNotifications(){
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHiden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+    }
+    
+    ///Keyboard show
+    func keyboardShow(){
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.view.frame = CGRect(x: 0, y: -100, width: self.view.frame.width, height: self.view.frame.height)
+        }, completion: nil)
+    }
+    
+    ///Keyboard hiden
+    func keyboardHiden(){
+        UIView.animate(withDuration: 0, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        }, completion: nil)
+    }
     
 
 }

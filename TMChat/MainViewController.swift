@@ -11,7 +11,7 @@ import UIKit
 class MainViewController: UIViewController {
     
     let arrIdCell:Array<String> = ["Cell1","Cell2","Cell3","Cell4"]
-    let titles = ["Home", "Group", "Friends", "Setting"]
+    let titles:Array<String> = ["Trang chủ", "Nhóm", "Bạn bè", "Thông tin"]
     let menuBar:MenuBarViewController = MenuBarViewController()
     
     lazy var myCollectionView:UICollectionView = {
@@ -40,7 +40,7 @@ class MainViewController: UIViewController {
     func setupNavigationView(){
         let labelTitle = UILabel(frame: CGRect(x: 0, y: 0, width: self.view.frame.width - 32, height: self.view.frame.height))
         labelTitle.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        labelTitle.text = "  Home"
+        labelTitle.text = "  Trang chủ"
         labelTitle.font = UIFont.boldSystemFont(ofSize: 18)
         navigationController?.navigationBar.isTranslucent = false
         navigationItem.titleView = labelTitle
@@ -107,7 +107,7 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         setupView()
         setupMenuBar()
         

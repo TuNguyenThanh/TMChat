@@ -41,7 +41,7 @@ class RegisterViewController: UIViewController {
     let txtName:UITextField = {
         let txt = UITextField()
         txt.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        txt.attributedPlaceholder = NSAttributedString(string:"Name", attributes:[NSForegroundColorAttributeName: UIColor.white])
+        txt.attributedPlaceholder = NSAttributedString(string:"Tên người dùng", attributes:[NSForegroundColorAttributeName: UIColor.white])
         txt.translatesAutoresizingMaskIntoConstraints = false
         return txt
     }()
@@ -88,7 +88,7 @@ class RegisterViewController: UIViewController {
         let txt = UITextField()
         txt.textColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         txt.isSecureTextEntry = true
-        txt.attributedPlaceholder = NSAttributedString(string:"Password", attributes:[NSForegroundColorAttributeName: UIColor.white])
+        txt.attributedPlaceholder = NSAttributedString(string:"Mật khẩu", attributes:[NSForegroundColorAttributeName: UIColor.white])
         txt.translatesAutoresizingMaskIntoConstraints = false
         return txt
     }()
@@ -102,7 +102,7 @@ class RegisterViewController: UIViewController {
     
     lazy var btnCancel:UIButton = {
         let btn = UIButton(type: .system )
-        btn.setTitle("Cancel", for: UIControlState.normal)
+        btn.setTitle("Huỷ", for: UIControlState.normal)
         btn.setTitleColor(UIColor.white, for: UIControlState.normal)
         btn.backgroundColor = UIColor(red: 212/255, green: 41/255, blue: 41/255, alpha: 0.5)
         btn.layer.borderColor = UIColor.white.cgColor
@@ -116,7 +116,7 @@ class RegisterViewController: UIViewController {
     
     lazy var btnRegister:UIButton = {
         let btn = UIButton(type: .system )
-        btn.setTitle("Register", for: UIControlState.normal)
+        btn.setTitle("Đăng ký", for: UIControlState.normal)
         btn.setTitleColor(UIColor.white, for: UIControlState.normal)
         btn.backgroundColor = UIColor(red: 212/255, green: 41/255, blue: 41/255, alpha: 0.5)
         btn.layer.borderColor = UIColor.white.cgColor
@@ -239,6 +239,28 @@ class RegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        observeKeyboardNotifications()
+    }
+    
+    
+    ///Keyboard show or hiden
+    fileprivate func observeKeyboardNotifications(){
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardShow), name: NSNotification.Name.UIKeyboardDidShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardHiden), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+    }
+    
+    ///Keyboard show
+    func keyboardShow(){
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.view.frame = CGRect(x: 0, y: -140, width: self.view.frame.width, height: self.view.frame.height)
+        }, completion: nil)
+    }
+    
+    ///Keyboard hiden
+    func keyboardHiden(){
+        UIView.animate(withDuration: 0, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
+        }, completion: nil)
     }
 }
 

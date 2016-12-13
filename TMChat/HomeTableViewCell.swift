@@ -8,8 +8,6 @@
 
 import UIKit
 
-
-
 class HomeTableViewCell: BaseTableViewCell {
     
     let lblName:UILabel = {

@@ -40,13 +40,13 @@ class Page3CollectionViewCell: BaseCollectionViewCell {
     
     let lblNote:UILabel = {
         let lbl = UILabel()
-        lbl.text = "No request"
+        lbl.text = "Không có yêu cầu kết bạn"
         lbl.textColor = #colorLiteral(red: 0.1215686277, green: 0.01176470611, blue: 0.4235294163, alpha: 1)
         lbl.translatesAutoresizingMaskIntoConstraints = false
         return lbl
     }()
     
-    lazy var colFrientRequest:UICollectionView = {
+    lazy var colFriendRequest:UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.sectionInset.left = 5
@@ -86,7 +86,7 @@ class Page3CollectionViewCell: BaseCollectionViewCell {
                     }
                 }
                 DispatchQueue.main.async {
-                    self.colFrientRequest.reloadData()
+                    self.colFriendRequest.reloadData()
                 }
             })
         }
@@ -98,10 +98,10 @@ class Page3CollectionViewCell: BaseCollectionViewCell {
 
     override func setupView() {
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        self.addSubview(colFrientRequest)
+        self.addSubview(colFriendRequest)
         self.addSubview(myTableView)
-        colFrientRequest.addSubview(line)
-        colFrientRequest.addSubview(lblNote)
+        colFriendRequest.addSubview(line)
+        colFriendRequest.addSubview(lblNote)
     
         topAnchorSelf = self.myTableView.topAnchor.constraint(equalTo: self.topAnchor,constant: 0)
         topAnchorSelf?.isActive = true
@@ -113,18 +113,18 @@ class Page3CollectionViewCell: BaseCollectionViewCell {
         self.myTableView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
         self.myTableView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
-        self.colFrientRequest.topAnchor.constraint(equalTo: self.topAnchor,constant: 0).isActive = true
-        self.colFrientRequest.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        self.colFrientRequest.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        self.colFrientRequest.heightAnchor.constraint(equalToConstant: 80).isActive = true
+        self.colFriendRequest.topAnchor.constraint(equalTo: self.topAnchor,constant: 0).isActive = true
+        self.colFriendRequest.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        self.colFriendRequest.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        self.colFriendRequest.heightAnchor.constraint(equalToConstant: 80).isActive = true
         
         self.line.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
         self.line.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-        self.line.topAnchor.constraint(equalTo: self.colFrientRequest.topAnchor, constant: 0).isActive = true
+        self.line.topAnchor.constraint(equalTo: self.colFriendRequest.topAnchor, constant: 0).isActive = true
         self.line.heightAnchor.constraint(equalToConstant: 2).isActive = true
         
-        self.lblNote.centerXAnchor.constraint(equalTo: colFrientRequest.centerXAnchor).isActive = true
-        self.lblNote.centerYAnchor.constraint(equalTo: colFrientRequest.centerYAnchor).isActive = true
+        self.lblNote.centerXAnchor.constraint(equalTo: colFriendRequest.centerXAnchor).isActive = true
+        self.lblNote.centerYAnchor.constraint(equalTo: colFriendRequest.centerYAnchor).isActive = true
         
         loadUserFriend()
         loadFriendRequest() 
@@ -150,7 +150,7 @@ extension Page3CollectionViewCell: UICollectionViewDelegate, UICollectionViewDat
         
         let user = arrFriendRequest[indexPath.row]
         
-        cell.imageAvatar.loadImage(urlString: user.avatarURL)
+        cell.imgAvatar.loadImage(urlString: user.avatarURL)
         cell.delegate = self
         cell.uid = user.uid
         cell.indexPath = indexPath.row
@@ -183,7 +183,7 @@ extension Page3CollectionViewCell: FriendRequestCollectionViewCellDelegate{
             Helper.helper.saveFriend(uid: uid)
             ///remove item
             self.arrFriendRequest.remove(at: indexPath)
-            self.colFrientRequest.reloadData()
+            self.colFriendRequest.reloadData()
         }
         alert.showNotice("Kết bạn", subTitle: "Yêu cầu kết bạn")
     }
@@ -253,24 +253,24 @@ extension Page3CollectionViewCell: UITableViewDelegate, UITableViewDataSource {
         if checkSearch == false {
             user = self.arrUserFriend[indexPath.row]
             ///Check isFriend -> Bool |=> isHiden button send friend request
-            cell.btnSendFriend.isHidden = true
+            cell.btnSendRequest.isHidden = true
         }else{
             user = self.arrUserFilter[indexPath.row]
             if self.arrUserFriend.contains(where: {$0.uid == user.uid}){
-                cell.btnSendFriend.isHidden = true
+                cell.btnSendRequest.isHidden = true
             }else{
-                cell.btnSendFriend.isHidden = false
+                cell.btnSendRequest.isHidden = false
                 //bat button ket ban
                  Helper.helper.fetchFriendRequestCheck(uid: user.uid, completion: { (id) in
                     if id == userCurrent?.uid {
-                        cell.btnSendFriend.setTitle("Huỷ", for: UIControlState.normal)
+                        cell.btnSendRequest.setTitle("Huỷ", for: UIControlState.normal)
                     }
                 })
-                cell.btnSendFriend.setTitle("Kết bạn", for: UIControlState.normal)
+                cell.btnSendRequest.setTitle("Kết bạn", for: UIControlState.normal)
                 
             }
             if user.uid == userCurrent?.uid {
-                cell.btnSendFriend.isHidden = true
+                cell.btnSendRequest.isHidden = true
             }
         }
         

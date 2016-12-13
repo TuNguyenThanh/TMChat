@@ -20,7 +20,7 @@ protocol Page4CollectionViewCellDelegate2 {
 
 class Page4CollectionViewCell: BaseCollectionViewCell {
     
-    lazy var tableView:UITableView = {
+    lazy var myTableView:UITableView = {
         let tbl = UITableView(frame: CGRect.zero, style: UITableViewStyle.plain)
         tbl.dataSource = self
         tbl.delegate = self
@@ -36,10 +36,10 @@ class Page4CollectionViewCell: BaseCollectionViewCell {
     var delegate2:Page4CollectionViewCellDelegate2?
     override func setupView() {
         backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        self.addSubview(tableView)
+        self.addSubview(myTableView)
         
-        self.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: tableView)
-        self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: tableView)
+        self.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: myTableView)
+        self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: myTableView)
     }
 }
 
@@ -95,14 +95,31 @@ extension Page4CollectionViewCell: UITableViewDataSource, UITableViewDelegate {
             print("email")
         }else if indexPath.row == 2 {
             let appearance = SCLAlertView.SCLAppearance(showCloseButton: true)
+            // Initialize SCLAlertView using custom Appearance
             let alert = SCLAlertView(appearance: appearance)
-            let txt = alert.addTextField("Nhập số điện thoại...")
-            _ = alert.addButton("Thay đổi") {
+            
+            // Creat the subview
+            let subview = UIView(frame: CGRect(x: 0, y: 0, width: 216, height: 70))
+            let x = (subview.frame.width - 180) / 2
+            
+            // Add textfield 1
+            let txt = UITextField(frame: CGRect(x: x, y: 10, width: 180, height: 40))
+            txt.layer.borderColor = UIColor.blue.cgColor
+            txt.layer.borderWidth = 1
+            txt.keyboardType = .phonePad
+            txt.layer.cornerRadius = 5
+            txt.placeholder = "Nhập số điện thoại..."
+            txt.textAlignment = NSTextAlignment.center
+            subview.addSubview(txt)
+            
+            alert.customSubview = subview
+            alert.addButton("Thay đổi") {
                 Helper.helper.updateNumberPhone(numberPhone: txt.text!)
                 let cell = tableView.cellForRow(at: indexPath) as! DetailTableViewCell
                 cell.lbl.text = txt.text
             }
-            _ = alert.showEdit("Thay đổi số điện thoại", subTitle:"Vui lòng nhập số điện thoại",closeButtonTitle: "Huỷ")
+            alert.showEdit("Thay đổi số điện thoại", subTitle:"Vui lòng nhập số điện thoại",closeButtonTitle: "Huỷ")
+            
         }else if indexPath.row == 3 {
             //Reset password
             Helper.helper.resetPasswordToEmail()

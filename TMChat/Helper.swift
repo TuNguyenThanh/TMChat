@@ -58,14 +58,14 @@ class Helper {
         var check:Bool = false
         let alert = SCLAlertView()
         if email == "" {
-            alert.showError("Error", subTitle: "Vui lòng nhập Email")
+            alert.showError("Lỗi", subTitle: "Vui lòng nhập Email", closeButtonTitle: "Thử lại")
         } else {
             //Kiem tra chuoi nhap co phai la email khong
             if isValidEmail(testStr: email) == false {
-                alert.showError("Error", subTitle: "Đây không phải là Email")
+                alert.showError("Lỗi", subTitle: "Đây không phải là Email", closeButtonTitle: "Thử lại")
             }else{
                 if pass == "" {
-                    alert.showError("Error", subTitle: "Vui lòng nhập password")
+                    alert.showError("Lỗi", subTitle: "Vui lòng nhập mật khẩu", closeButtonTitle: "Thử lại")
                 }else{
                     check = true
                 }
@@ -80,19 +80,19 @@ class Helper {
         let alert = SCLAlertView()
         //Check name
         if name == ""{
-            alert.showError("Error", subTitle: "Vui lòng nhập name")
+            alert.showError("Lỗi", subTitle: "Vui lòng nhập tên", closeButtonTitle: "Thử lại")
         }else{
             //Check email
             if email == ""{
-                alert.showError("Error", subTitle: "Vui lòng nhập Email")
+                alert.showError("Lỗi", subTitle: "Vui lòng nhập Email", closeButtonTitle: "Thử lại")
             }else{
                 //Kiem tra chuoi nhap co phai la email khong
                 if isValidEmail(testStr: email) == false {
-                    alert.showError("Error", subTitle: "Đây không phải là Email")
+                    alert.showError("Lỗi", subTitle: "Đây không phải là Email", closeButtonTitle: "Thử lại")
                 }else{
                     //Check pass
                     if pass == ""{
-                        alert.showError("Error", subTitle: "Vui lòng nhập Password")
+                        alert.showError("Lỗi", subTitle: "Vui lòng nhập mật khẩu", closeButtonTitle: "Thử lại")
                     }else{
                         //Thoa yeu cau
                         check = true
@@ -111,16 +111,18 @@ class Helper {
         case 17007:
             alert.showError("Thông báo", subTitle: "Email này đã có người đăng ký", closeButtonTitle: "Thử lại")
         case 17009:
-            alert.showError("Thông báo", subTitle: "Password không hợp lệ",closeButtonTitle: "Thử lại")
+            alert.showError("Thông báo", subTitle: "Mật khẩu không hợp lệ",closeButtonTitle: "Thử lại")
         case 17011:
             alert.showError("Thông báo", subTitle: "Email không tồn tại", closeButtonTitle: "Thử lại")
         case 17026:
-            alert.showError("Thông báo", subTitle: "Password phải nhiều hơn 6 ký tự", closeButtonTitle: "Thử lại")
+            alert.showError("Thông báo", subTitle: "Mật khẩu phải nhiều hơn 6 ký tự", closeButtonTitle: "Thử lại")
         case 17020:
             alert.showError("Thông báo", subTitle: "Kết nối bị gián đoạn, kiểm tra kết nối Internet", closeButtonTitle: "Thử lại")
+        case 17008:
+            alert.showError("Thông báo", subTitle: "Đây không phải là Email", closeButtonTitle: "Thử lại")
             
         default:
-            alert.showError("Thông báo", subTitle: "default")
+            alert.showError("Thông báo", subTitle: code.description)
             print(code.description)
         }
     }
@@ -374,11 +376,12 @@ class Helper {
     ///Password reset email sent.
     func resetPasswordToEmail(){
         let alert = SCLAlertView()
-        alert.addButton("Reset Password") {
+        alert.addButton("Đồng ý") {
             FIRAuth.auth()?.sendPasswordReset(withEmail: (userCurrent?.email)!) { error in
                 if error != nil {
                     // An error happened.
                     print(error ?? "error")
+                    self.errorFirebase(code: (error?._code)!)
                 } else {
                     // Password reset email sent.
                     DispatchQueue.main.async {
@@ -388,14 +391,16 @@ class Helper {
                 }
             }
         }
-        alert.showWarning("Reset Password", subTitle: "Bạn có muốn reset password ?", closeButtonTitle: "Huỷ")
+        alert.showWarning("Đặt lại mật khẩu", subTitle: "Bạn có muốn Đặt lại mật khẩu?", closeButtonTitle: "Huỷ")
     }
     
     func forgotPassword(email:String){
+        
         FIRAuth.auth()?.sendPasswordReset(withEmail: email) { error in
             if error != nil {
                 // An error happened.
                 print(error ?? "error")
+                self.errorFirebase(code: (error?._code)!)
             } else {
                 // Password reset email sent.
                 DispatchQueue.main.async {
@@ -407,51 +412,51 @@ class Helper {
     }
 
     ///Update Profile User
-    func updateUser(name:String? ,numberPhone:String?, imgAvatar:UIImageView?){
-        let alert = SCLAlertView(appearance: appearance)
-        alert.showWait("Loading", subTitle: "Vui lòng đợi tí nhé ...")
-        
-        let user = FIRAuth.auth()?.currentUser
-        if let user = user {
-            let changeRequest = user.profileChangeRequest()
-            changeRequest.displayName = name
-            changeRequest.commitChanges(completion: { (error) in
-                if let error = error{
-                    print(error.localizedDescription)
-                    return
-                }
-            })
-            
-            let filePath = "profileImage/\(user.uid)"
-            let metadata = FIRStorageMetadata()
-            metadata.contentType = "image/jpeg"
-            if let uploadData = UIImagePNGRepresentation((imgAvatar?.image)!){
-                self.STORAGE_REF.child(filePath).put(uploadData, metadata: metadata, completion: { (metadata, error) in
-                    if let error = error {
-                        print("\(error.localizedDescription)")
-                        return
-                    }
-                    let fileUrl = metadata!.downloadURLs![0].absoluteString
-                    let changeRequestPhoto = user.profileChangeRequest()
-                    changeRequestPhoto.photoURL = URL(string: fileUrl)
-                    changeRequestPhoto.commitChanges(completion: { (error) in
-                        if let error = error {
-                            print(error.localizedDescription)
-                            return
-                        }else{
-                            alert.hideView()
-                            DispatchQueue.main.async {
-                                let alertSuccess = SCLAlertView()
-                                alertSuccess.showSuccess("Thành Công 😎", subTitle: "Thông tin đã được cập nhật", closeButtonTitle: "Đồng ý")
-                            }
-                            print ("profile update")
-                        }
-                    })
-                    self.USER_REF.child(user.uid).updateChildValues(["name":name!, "numberPhone": numberPhone!, "avatarURL":fileUrl])
-                })
-            }
-        }
-    }
+//    func updateUser(name:String? ,numberPhone:String?, imgAvatar:UIImageView?){
+//        let alert = SCLAlertView(appearance: appearance)
+//        alert.showWait("Loading", subTitle: "Vui lòng đợi tí nhé ...")
+//        
+//        let user = FIRAuth.auth()?.currentUser
+//        if let user = user {
+//            let changeRequest = user.profileChangeRequest()
+//            changeRequest.displayName = name
+//            changeRequest.commitChanges(completion: { (error) in
+//                if let error = error{
+//                    print(error.localizedDescription)
+//                    return
+//                }
+//            })
+//            
+//            let filePath = "profileImage/\(user.uid)"
+//            let metadata = FIRStorageMetadata()
+//            metadata.contentType = "image/jpeg"
+//            if let uploadData = UIImagePNGRepresentation((imgAvatar?.image)!){
+//                self.STORAGE_REF.child(filePath).put(uploadData, metadata: metadata, completion: { (metadata, error) in
+//                    if let error = error {
+//                        print("\(error.localizedDescription)")
+//                        return
+//                    }
+//                    let fileUrl = metadata!.downloadURLs![0].absoluteString
+//                    let changeRequestPhoto = user.profileChangeRequest()
+//                    changeRequestPhoto.photoURL = URL(string: fileUrl)
+//                    changeRequestPhoto.commitChanges(completion: { (error) in
+//                        if let error = error {
+//                            print(error.localizedDescription)
+//                            return
+//                        }else{
+//                            alert.hideView()
+//                            DispatchQueue.main.async {
+//                                let alertSuccess = SCLAlertView()
+//                                alertSuccess.showSuccess("Thành Công 😎", subTitle: "Thông tin đã được cập nhật", closeButtonTitle: "Đồng ý")
+//                            }
+//                            print ("profile update")
+//                        }
+//                    })
+//                    self.USER_REF.child(user.uid).updateChildValues(["name":name!, "numberPhone": numberPhone!, "avatarURL":fileUrl])
+//                })
+//            }
+//        }
+//    }
     
     ///Update New name Current
     func updateName(name:String){

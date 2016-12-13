@@ -45,8 +45,13 @@ class HeaderTableViewCell: BaseTableViewCell {
         let alert = SCLAlertView(appearance: appearance)
         let txt = alert.addTextField("Nhập tên...")
         _ = alert.addButton("Thay đổi") {
-           self.lblName.text = txt.text
-            Helper.helper.updateName(name: txt.text!)
+            if txt.text == "" {
+                let alert = SCLAlertView()
+                alert.showError("Thông báo", subTitle: "Vui lòng nhập tên", closeButtonTitle: "Thử lại")
+            }else{
+                self.lblName.text = txt.text
+                Helper.helper.updateName(name: txt.text!)
+            }
         }
         _ = alert.showEdit("Thay đổi tên", subTitle:"Bạn có muốn thay đổi tên hay không?", closeButtonTitle: "Huỷ")
     }
@@ -96,7 +101,6 @@ extension HeaderTableViewCell: UIImagePickerControllerDelegate, UINavigationCont
             imagePicker.sourceType = .photoLibrary
             imagePicker.mediaTypes = UIImagePickerController.availableMediaTypes(for: UIImagePickerControllerSourceType.photoLibrary)!
             imagePicker.modalPresentationStyle = .popover
-           
             self.delegate?.showPickerImageView(picker: imagePicker)
         }
         alert.addButton("Camera") {

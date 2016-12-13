@@ -19,7 +19,7 @@ class GroupCollectionViewCell: BaseCollectionViewCell {
         return img
     }()
     
-    let lblTitle:UILabel = {
+    let lblGroupName:UILabel = {
         let lbl = UILabel()
         lbl.textColor = #colorLiteral(red: 0.3647058904, green: 0.06666667014, blue: 0.9686274529, alpha: 1)
         lbl.textAlignment = .center
@@ -32,14 +32,14 @@ class GroupCollectionViewCell: BaseCollectionViewCell {
         self.backgroundColor = #colorLiteral(red: 0.8039215803, green: 0.8039215803, blue: 0.8039215803, alpha: 1)
         
         self.addSubview(imgGroup)
-        self.addSubview(lblTitle)
+        self.addSubview(lblGroupName)
                 
         self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: imgGroup)
         self.addConstrainWithVisualFormat(VSFormat: "V:|[v0(150)]", views: imgGroup)
         
-        self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: lblTitle)
-        lblTitle.topAnchor.constraint(equalTo: imgGroup.bottomAnchor).isActive = true
-        lblTitle.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: lblGroupName)
+        lblGroupName.topAnchor.constraint(equalTo: imgGroup.bottomAnchor).isActive = true
+        lblGroupName.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
         
         self.layer.cornerRadius = 5
         self.layer.borderColor = UIColor.black.cgColor

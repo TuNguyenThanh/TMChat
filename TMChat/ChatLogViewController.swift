@@ -1,5 +1,5 @@
 //
-//  ABCViewController.swift
+//  ChatLogViewController.swift
 //  TMChat
 //
 //  Created by Nguyễn Thanh Tú on 10/14/16.
@@ -28,7 +28,7 @@ class ChatLogViewController: UIViewController {
     
     lazy var btnSend:UIButton = {
         let btn = UIButton(type: .system)
-        btn.setTitle("Send", for: UIControlState.normal)
+        btn.setTitle("Gửi", for: UIControlState.normal)
         btn.addTarget(self, action: #selector(abtnSend), for: UIControlEvents.touchUpInside)
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
@@ -36,7 +36,7 @@ class ChatLogViewController: UIViewController {
     
     lazy var inputTextField:UITextField = {
         let txt = UITextField()
-        txt.placeholder = "Enter messages..."
+        txt.placeholder = "Nhập tin nhắn..."
         txt.delegate = self
         txt.translatesAutoresizingMaskIntoConstraints = false
         return txt
@@ -405,7 +405,6 @@ extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationCo
         alert.addButton("Thoát") {
              self.inputContainerView.alpha = 1
         }
-        
         alert.showNotice("Chọn hình", subTitle: "Chọn 1 trong 2")
     }
     
@@ -415,7 +414,6 @@ extension ChatLogViewController: UIImagePickerControllerDelegate, UINavigationCo
         alter.addAction(OK)
         self.present(alter, animated: true, completion: nil)
     }
-    
     
     private func thumbnailImageForVideo(fileUrl: URL) -> UIImage? {
         let asset = AVAsset(url: fileUrl)

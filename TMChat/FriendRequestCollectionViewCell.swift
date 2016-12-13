@@ -13,14 +13,14 @@ protocol FriendRequestCollectionViewCellDelegate {
 }
 
 class FriendRequestCollectionViewCell: BaseCollectionViewCell {
-    lazy var imageAvatar:UIImageView = {
+    lazy var imgAvatar:UIImageView = {
         let img = UIImageView()
         img.image = UIImage(named: "avatar")
         img.layer.cornerRadius = 30
         img.clipsToBounds = true
         img.translatesAutoresizingMaskIntoConstraints = false
         img.isUserInteractionEnabled = true
-        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(abtnSendRequest)))
+        img.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(aimgSendRequest)))
         return img
     }()
     
@@ -33,7 +33,7 @@ class FriendRequestCollectionViewCell: BaseCollectionViewCell {
         return v
     }()
     
-    func abtnSendRequest(){
+    func aimgSendRequest(){
         print("tap")
         self.delegate?.sendFriendRequest(uid: uid!,indexPath: indexPath!)
     }
@@ -45,11 +45,11 @@ class FriendRequestCollectionViewCell: BaseCollectionViewCell {
     override func setupView() {
         self.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         
-        self.addSubview(imageAvatar)
+        self.addSubview(imgAvatar)
         self.addSubview(viewOnOff)
         
-        self.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: imageAvatar)
-        self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: imageAvatar)
+        self.addConstrainWithVisualFormat(VSFormat: "V:|[v0]|", views: imgAvatar)
+        self.addConstrainWithVisualFormat(VSFormat: "H:|[v0]|", views: imgAvatar)
         
         self.viewOnOff.widthAnchor.constraint(equalToConstant: 10).isActive = true
         self.viewOnOff.heightAnchor.constraint(equalToConstant: 10).isActive = true

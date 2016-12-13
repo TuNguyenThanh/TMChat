@@ -47,7 +47,7 @@ class FriendTableViewCell: BaseTableViewCell {
         return v
     }()
     
-    lazy var btnSendFriend:UIButton = {
+    lazy var btnSendRequest:UIButton = {//sendRequest
         let btn = UIButton(type: .system)
         btn.backgroundColor = UIColor.clear
         btn.layer.cornerRadius = 5
@@ -63,12 +63,12 @@ class FriendTableViewCell: BaseTableViewCell {
     
     func abtnSendFriend(){
         print("touched")
-        if btnSendFriend.currentTitle == "Kết bạn" {
+        if btnSendRequest.currentTitle == "Kết bạn" {
             self.delegate?.sendFriend(uid: uid!)
-            btnSendFriend.setTitle("Huỷ", for: UIControlState.normal)
+            btnSendRequest.setTitle("Huỷ", for: UIControlState.normal)
         }else{
             self.delegate?.cancelFriendRequest(uid: uid!)
-            btnSendFriend.setTitle("Kết bạn", for: UIControlState.normal)
+            btnSendRequest.setTitle("Kết bạn", for: UIControlState.normal)
         }
     }
     
@@ -81,7 +81,7 @@ class FriendTableViewCell: BaseTableViewCell {
         self.addSubview(lblName)
         self.addSubview(lblOnOff)
         self.addSubview(viewOnOff)
-        self.addSubview(btnSendFriend)
+        self.addSubview(btnSendRequest)
         
         imgAvatar.widthAnchor.constraint(equalTo: self.heightAnchor, constant: -20).isActive = true
         imgAvatar.heightAnchor.constraint(equalTo: imgAvatar.widthAnchor).isActive = true
@@ -101,8 +101,8 @@ class FriendTableViewCell: BaseTableViewCell {
         viewOnOff.centerYAnchor.constraint(equalTo: lblOnOff.centerYAnchor).isActive = true
         viewOnOff.rightAnchor.constraint(equalTo: lblOnOff.leftAnchor, constant: -8).isActive = true
         
-        btnSendFriend.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        btnSendFriend.rightAnchor.constraint(equalTo: viewOnOff.leftAnchor, constant: -10).isActive = true
+        btnSendRequest.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        btnSendRequest.rightAnchor.constraint(equalTo: viewOnOff.leftAnchor, constant: -10).isActive = true
     }
     
     override func awakeFromNib() {

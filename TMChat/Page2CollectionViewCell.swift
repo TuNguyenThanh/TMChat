@@ -73,7 +73,7 @@ extension Page2CollectionViewCell: UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! GroupCollectionViewCell
-        cell.lblTitle.text = "MTV Group"
+        cell.lblGroupName.text = "MTV Group"
         return cell
     }
     
